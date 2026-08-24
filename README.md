@@ -2,10 +2,19 @@
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Flealhq%2Fleal-go-sdk)
 
-The Leal Go library provides convenient access to the Leal APIs from Go.
+Digital loyalty stamp cards in Apple Wallet and Google Wallet, for local
+businesses. This library covers the whole [Leal](https://www.getleal.com)
+API, so you can enrol customers, add stamps, redeem rewards and read a
+card's wallet links from your own application.
+
+- Guides and a page for every language: [www.getleal.com/developers](https://www.getleal.com/developers)
+- Create an API token: [app.getleal.com/api_tokens](https://app.getleal.com/api_tokens)
+- The OpenAPI description these libraries are built from: [www.getleal.com/openapi.json](https://www.getleal.com/openapi.json)
+
 
 ## Table of Contents
 
+- [Documentation](#documentation)
 - [Reference](#reference)
 - [Usage](#usage)
 - [Environments](#environments)
@@ -17,6 +26,10 @@ The Leal Go library provides convenient access to the Leal APIs from Go.
   - [Timeouts](#timeouts)
   - [Explicit Null](#explicit-null)
 - [Contributing](#contributing)
+
+## Documentation
+
+API reference documentation is available [here](https://app.getleal.com/docs/api.html).
 
 ## Reference
 
@@ -43,13 +56,13 @@ func do() {
             "<token>",
         ),
     )
-    request := &leal.CreateCardsRequest{
+    request := &leal.StampCustomerCardsRequest{
         AccountID: 1,
-        Card: &leal.CreateCardsRequestCard{
-            Name: "name",
-        },
+        CustomerID: 1,
+        ID: 1,
+        Stamps: 1,
     }
-    client.Cards.Create(
+    client.CustomerCards.Stamp(
         context.TODO(),
         request,
     )
@@ -73,7 +86,7 @@ Structured error types are returned from API calls that return non-success statu
 with the `errors.Is` and `errors.As` APIs, so you can access the error like so:
 
 ```go
-response, err := client.Cards.Create(...)
+response, err := client.CustomerCards.Stamp(...)
 if err != nil {
     var apiError *core.APIError
     if errors.As(err, &apiError) {
@@ -107,7 +120,7 @@ client := client.NewClient(
 )
 
 // Specify options for an individual request.
-response, err := client.Cards.Create(
+response, err := client.CustomerCards.Stamp(
     ...,
     option.WithToken("<YOUR_API_KEY>"),
 )
@@ -122,7 +135,7 @@ when you need to examine the response headers received from the API call. (When 
 the raw HTTP response data will be included automatically in the Page response object.)
 
 ```go
-response, err := client.Cards.WithRawResponse.Create(...)
+response, err := client.CustomerCards.WithRawResponse.Stamp(...)
 if err != nil {
     return err
 }
@@ -160,7 +173,7 @@ client := client.NewClient(
     option.WithMaxAttempts(1),
 )
 
-response, err := client.Cards.Create(
+response, err := client.CustomerCards.Stamp(
     ...,
     option.WithMaxAttempts(1),
 )
@@ -174,7 +187,7 @@ Setting a timeout for each individual request is as simple as using the standard
 ctx, cancel := context.WithTimeout(ctx, time.Second)
 defer cancel()
 
-response, err := client.Cards.Create(ctx, ...)
+response, err := client.CustomerCards.Stamp(ctx, ...)
 ```
 
 ### Explicit Null
@@ -196,7 +209,7 @@ type ExampleRequest struct {
 request := &ExampleRequest{}
 request.SetName(nil)
 
-response, err := client.Cards.Create(ctx, request, ...)
+response, err := client.CustomerCards.Stamp(ctx, request, ...)
 ```
 
 ## Contributing
