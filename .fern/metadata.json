@@ -1,0 +1,16 @@
+{
+  "cliVersion": "5.102.0",
+  "generatorName": "fernapi/fern-go-sdk",
+  "generatorVersion": "1.57.8",
+  "generatorConfig": {
+    "packageName": "leal",
+    "module": {
+      "path": "github.com/lealhq/leal-go-sdk"
+    }
+  },
+  "originGitCommit": "1ac63d1266a2e1fa65495a243730b91cc7bb36c7",
+  "originGitCommitIsDirty": false,
+  "invokedBy": "ci",
+  "ciProvider": "github",
+  "sdkVersion": "v0.0.8"
+}

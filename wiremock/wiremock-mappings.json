@@ -1,0 +1,1175 @@
+{
+  "mappings": [
+    {
+      "id": "9d2bf9ad-a829-49a0-9766-4877d94886a9",
+      "name": "List all stores - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "[\n  {\n    \"cards_count\": 1,\n    \"created_at\": \"created_at\",\n    \"customers_count\": 1,\n    \"display_store_name\": \"display_store_name\",\n    \"id\": 1,\n    \"locations_count\": 1,\n    \"name\": \"name\",\n    \"personal\": true,\n    \"posters_count\": 1,\n    \"store_name\": \"store_name\",\n    \"updated_at\": \"updated_at\"\n  }\n]",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9d2bf9ad-a829-49a0-9766-4877d94886a9",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "c7282311-fd15-4ed2-9a3b-7f478783c029",
+      "name": "Show a store - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"cards_count\": 1,\n  \"created_at\": \"created_at\",\n  \"customers_count\": 1,\n  \"display_store_name\": \"display_store_name\",\n  \"id\": 1,\n  \"locations_count\": 1,\n  \"name\": \"name\",\n  \"personal\": true,\n  \"posters_count\": 1,\n  \"store_name\": \"store_name\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c7282311-fd15-4ed2-9a3b-7f478783c029",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "eff2dfcd-6f71-4201-aeee-06e2bff1f1fd",
+      "name": "Update a store - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{id}",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"cards_count\": 1,\n  \"created_at\": \"created_at\",\n  \"customers_count\": 1,\n  \"display_store_name\": \"display_store_name\",\n  \"id\": 1,\n  \"locations_count\": 1,\n  \"name\": \"name\",\n  \"personal\": true,\n  \"posters_count\": 1,\n  \"store_name\": \"store_name\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "eff2dfcd-6f71-4201-aeee-06e2bff1f1fd",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6f4f1cda-29c2-46e9-87f5-7736381dd87a",
+      "name": "List loyalty cards - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/cards",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "[\n  {\n    \"archived_at\": \"archived_at\",\n    \"card_color\": \"card_color\",\n    \"created_at\": \"created_at\",\n    \"customer_cards_count\": 1,\n    \"header_text\": \"header_text\",\n    \"id\": 1,\n    \"initial_stamps\": 1,\n    \"name\": \"name\",\n    \"rewards_count\": 1,\n    \"stamp_background_color\": \"stamp_background_color\",\n    \"stamp_color\": \"stamp_color\",\n    \"stamp_icon\": \"stamp_icon\",\n    \"stamps_required\": 1,\n    \"strip_color\": \"strip_color\",\n    \"strip_preset\": \"strip_preset\",\n    \"strip_type\": \"strip_type\",\n    \"text_color\": \"text_color\",\n    \"updated_at\": \"updated_at\"\n  }\n]",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6f4f1cda-29c2-46e9-87f5-7736381dd87a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "38c62ec1-82ec-4965-8641-933b22c9dc8a",
+      "name": "Create a loyalty card - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/cards",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "38c62ec1-82ec-4965-8641-933b22c9dc8a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "82a09a29-9e60-4579-87dc-36d550594b96",
+      "name": "Show a loyalty card - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/cards/{id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "82a09a29-9e60-4579-87dc-36d550594b96",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "15a16050-1976-4a38-824e-831c5bb0ee9e",
+      "name": "Update a loyalty card - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/cards/{id}",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "15a16050-1976-4a38-824e-831c5bb0ee9e",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "37441909-6316-47dc-9003-d8a3cdf90392",
+      "name": "List or look up customers - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/customers",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"customers\": [\n    \"customers\"\n  ],\n  \"pagination\": {\n    \"count\": 1,\n    \"items\": 1,\n    \"page\": 1,\n    \"pages\": 1\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "37441909-6316-47dc-9003-d8a3cdf90392",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "3ddb566f-2f36-40f0-953b-bfbd65c17a59",
+      "name": "Create a customer - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/customers",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"account_id\": 1,\n  \"birthday\": \"birthday\",\n  \"created_at\": \"created_at\",\n  \"customer_cards\": [\n    \"customer_cards\"\n  ],\n  \"email\": \"email\",\n  \"external_references\": [\n    \"external_references\"\n  ],\n  \"first_name\": \"first_name\",\n  \"id\": 1,\n  \"last_name\": \"last_name\",\n  \"metadata\": {\n    \"key\": \"value\"\n  },\n  \"phone\": \"phone\",\n  \"stamp_count\": 1,\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3ddb566f-2f36-40f0-953b-bfbd65c17a59",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "3c0766b9-b553-4799-9486-2b216596bb68",
+      "name": "Show a customer - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/customers/{id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"birthday\": \"birthday\",\n  \"created_at\": \"created_at\",\n  \"customer_cards\": [\n    \"customer_cards\"\n  ],\n  \"email\": \"email\",\n  \"external_references\": [\n    \"external_references\"\n  ],\n  \"first_name\": \"first_name\",\n  \"id\": 1,\n  \"last_name\": \"last_name\",\n  \"metadata\": {\n    \"key\": \"value\"\n  },\n  \"phone\": \"phone\",\n  \"stamp_count\": 1,\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3c0766b9-b553-4799-9486-2b216596bb68",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "245e1d87-2fdf-4c95-ab12-91bb85de0ef5",
+      "name": "Update a customer - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/customers/{id}",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"birthday\": \"birthday\",\n  \"created_at\": \"created_at\",\n  \"customer_cards\": [\n    \"customer_cards\"\n  ],\n  \"email\": \"email\",\n  \"external_references\": [\n    \"external_references\"\n  ],\n  \"first_name\": \"first_name\",\n  \"id\": 1,\n  \"last_name\": \"last_name\",\n  \"metadata\": {\n    \"key\": \"value\"\n  },\n  \"phone\": \"phone\",\n  \"stamp_count\": 1,\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "245e1d87-2fdf-4c95-ab12-91bb85de0ef5",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "83c5916c-d250-4bb8-b913-442b67bd5128",
+      "name": "List customer cards - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/customers/{customer_id}/customer_cards",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "customer_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "[\n  {\n    \"apple_wallet_url\": \"apple_wallet_url\",\n    \"card_id\": 1,\n    \"card_name\": \"card_name\",\n    \"created_at\": \"created_at\",\n    \"google_wallet_url\": \"google_wallet_url\",\n    \"id\": 1,\n    \"issued_at\": \"issued_at\",\n    \"pass_installed\": true,\n    \"progress_percentage\": 1.1,\n    \"stamps_count\": 1,\n    \"stamps_remaining\": 1,\n    \"status\": \"status\",\n    \"updated_at\": \"updated_at\",\n    \"uuid\": \"uuid\"\n  }\n]",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "83c5916c-d250-4bb8-b913-442b67bd5128",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d25f0193-e413-4920-8b79-06c47a15e8f8",
+      "name": "Show a customer card - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/customers/{customer_id}/customer_cards/{id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "customer_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"apple_wallet_url\": \"apple_wallet_url\",\n  \"available_rewards\": [\n    \"available_rewards\"\n  ],\n  \"card_id\": 1,\n  \"card_name\": \"card_name\",\n  \"created_at\": \"created_at\",\n  \"customer_id\": 1,\n  \"google_wallet_url\": \"google_wallet_url\",\n  \"id\": 1,\n  \"issued_at\": \"issued_at\",\n  \"pass_installed\": true,\n  \"progress_percentage\": 1.1,\n  \"stamps_count\": 1,\n  \"stamps_remaining\": 1,\n  \"status\": \"status\",\n  \"updated_at\": \"updated_at\",\n  \"uuid\": \"uuid\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d25f0193-e413-4920-8b79-06c47a15e8f8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "8d74de74-7acb-4f17-bf58-d6645300d896",
+      "name": "Redeem a reward - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/customers/{customer_id}/customer_cards/{id}/redeem",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "customer_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"redemption\": {\n    \"id\": 1,\n    \"redeemed_at\": \"redeemed_at\",\n    \"reward_id\": 1,\n    \"reward_name\": \"reward_name\",\n    \"stamps_remaining\": 1,\n    \"stamps_spent\": 1\n  },\n  \"success\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8d74de74-7acb-4f17-bf58-d6645300d896",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "4352f507-4a9e-4bb7-89e5-d993e49f0b11",
+      "name": "Add stamps - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/customers/{customer_id}/customer_cards/{id}/stamp",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "customer_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"apple_wallet_url\": \"apple_wallet_url\",\n  \"available_rewards\": [\n    \"available_rewards\"\n  ],\n  \"card_id\": 1,\n  \"card_name\": \"card_name\",\n  \"created_at\": \"created_at\",\n  \"customer_id\": 1,\n  \"google_wallet_url\": \"google_wallet_url\",\n  \"id\": 1,\n  \"issued_at\": \"issued_at\",\n  \"pass_installed\": true,\n  \"progress_percentage\": 1.1,\n  \"stamps_count\": 1,\n  \"stamps_remaining\": 1,\n  \"status\": \"status\",\n  \"updated_at\": \"updated_at\",\n  \"uuid\": \"uuid\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "4352f507-4a9e-4bb7-89e5-d993e49f0b11",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "cf7849d8-e482-4225-8af3-1131581a3c42",
+      "name": "List all locations - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/locations",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "[\n  {\n    \"account_id\": 1,\n    \"address\": \"address\",\n    \"created_at\": \"created_at\",\n    \"id\": 1,\n    \"latitude\": 1.1,\n    \"longitude\": 1.1,\n    \"name\": \"name\",\n    \"updated_at\": \"updated_at\"\n  }\n]",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cf7849d8-e482-4225-8af3-1131581a3c42",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f33c42c3-c040-430e-a74a-fb6ef95e549c",
+      "name": "Create a location - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/locations",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"account_id\": 1,\n  \"address\": \"address\",\n  \"created_at\": \"created_at\",\n  \"id\": 1,\n  \"latitude\": 1.1,\n  \"longitude\": 1.1,\n  \"name\": \"name\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f33c42c3-c040-430e-a74a-fb6ef95e549c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "48bdc2e7-dd24-4cad-afe3-51677b5ae7ac",
+      "name": "Show a location - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/locations/{id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"address\": \"address\",\n  \"created_at\": \"created_at\",\n  \"id\": 1,\n  \"latitude\": 1.1,\n  \"longitude\": 1.1,\n  \"name\": \"name\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "48bdc2e7-dd24-4cad-afe3-51677b5ae7ac",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "c2ba152a-5f81-46d4-b0c1-edbe8a97e635",
+      "name": "Delete a location - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/locations/{id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c2ba152a-5f81-46d4-b0c1-edbe8a97e635",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f06a9e6a-d391-4869-8709-93995b9add71",
+      "name": "Update a location - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/locations/{id}",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"address\": \"address\",\n  \"created_at\": \"created_at\",\n  \"id\": 1,\n  \"latitude\": 1.1,\n  \"longitude\": 1.1,\n  \"name\": \"name\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f06a9e6a-d391-4869-8709-93995b9add71",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ed355590-2fbe-449b-bc8e-649f8b1e3066",
+      "name": "List posters - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/posters",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "[\n  {\n    \"account_id\": 1,\n    \"active\": true,\n    \"card_id\": 1,\n    \"created_at\": \"created_at\",\n    \"display_url\": \"display_url\",\n    \"id\": 1,\n    \"paper_size\": \"paper_size\",\n    \"primary_color\": \"primary_color\",\n    \"qr_code_url\": \"qr_code_url\",\n    \"secondary_color\": \"secondary_color\",\n    \"signup_url\": \"signup_url\",\n    \"text_color\": \"text_color\",\n    \"title\": \"title\",\n    \"updated_at\": \"updated_at\"\n  }\n]",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ed355590-2fbe-449b-bc8e-649f8b1e3066",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1c21bdb7-cc21-4d8f-b0d4-b95451cb1823",
+      "name": "Create a poster - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/posters",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1c21bdb7-cc21-4d8f-b0d4-b95451cb1823",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1b4a0c89-beea-4bb9-b1a6-b08947e58a74",
+      "name": "Show a poster - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/posters/{id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1b4a0c89-beea-4bb9-b1a6-b08947e58a74",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "215316a4-b667-4eee-9676-804eba8bd058",
+      "name": "Delete a poster - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/posters/{id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "215316a4-b667-4eee-9676-804eba8bd058",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "5379f790-bb60-4726-ab7a-eaf2a41d77b7",
+      "name": "Update a poster - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/posters/{id}",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5379f790-bb60-4726-ab7a-eaf2a41d77b7",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ce2873b6-fbee-406c-ab31-4f50875ac43c",
+      "name": "List rewards - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/rewards",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "[\n  {\n    \"account_id\": 1,\n    \"active\": true,\n    \"card_id\": 1,\n    \"created_at\": \"created_at\",\n    \"description\": \"description\",\n    \"id\": 1,\n    \"name\": \"name\",\n    \"position\": 1,\n    \"stamps_required\": 1,\n    \"updated_at\": \"updated_at\"\n  }\n]",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ce2873b6-fbee-406c-ab31-4f50875ac43c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ec501e2b-4a4c-4ddb-9fcb-9dbf69138ea0",
+      "name": "Create a reward - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/rewards",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"description\": \"description\",\n  \"id\": 1,\n  \"name\": \"name\",\n  \"position\": 1,\n  \"stamps_required\": 1,\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ec501e2b-4a4c-4ddb-9fcb-9dbf69138ea0",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a75b75d7-b454-4c4c-acff-512dc6c7e21d",
+      "name": "Show a reward - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/rewards/{id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"description\": \"description\",\n  \"id\": 1,\n  \"name\": \"name\",\n  \"position\": 1,\n  \"stamps_required\": 1,\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a75b75d7-b454-4c4c-acff-512dc6c7e21d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "13e391e7-aa2d-40dc-b3cf-d0dfd00ce7d8",
+      "name": "Delete a reward - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/rewards/{id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "13e391e7-aa2d-40dc-b3cf-d0dfd00ce7d8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ff79f199-efef-4edb-9a39-0ea1ec483f43",
+      "name": "Update a reward - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/accounts/{account_id}/rewards/{id}",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "account_id": {
+            "equalTo": "1"
+          },
+          "id": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"description\": \"description\",\n  \"id\": 1,\n  \"name\": \"name\",\n  \"position\": 1,\n  \"stamps_required\": 1,\n  \"updated_at\": \"updated_at\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ff79f199-efef-4edb-9a39-0ea1ec483f43",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d7051122-c167-4261-bfa4-bdcfd2a41ec0",
+      "name": "Service status - default",
+      "request": {
+        "urlPathTemplate": "/api/v1/status",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"api_version\": \"api_version\",\n  \"authentication\": \"authentication\",\n  \"developer_portal_url\": \"developer_portal_url\",\n  \"documentation_url\": \"documentation_url\",\n  \"openapi_url\": \"openapi_url\",\n  \"rate_limit\": {\n    \"limit\": 1,\n    \"scope\": \"scope\",\n    \"window_seconds\": 1\n  },\n  \"status\": \"status\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d7051122-c167-4261-bfa4-bdcfd2a41ec0",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    }
+  ],
+  "meta": {
+    "total": 31
+  }
+}
