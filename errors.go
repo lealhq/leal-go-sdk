@@ -7,6 +7,30 @@ import (
 	core "github.com/lealhq/leal-go-sdk/core"
 )
 
+// This API version was retired and no longer serves requests. Move to the current version.
+type GoneError struct {
+	*core.APIError
+	Body *Error
+}
+
+func (g *GoneError) UnmarshalJSON(data []byte) error {
+	var body *Error
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	g.StatusCode = 410
+	g.Body = body
+	return nil
+}
+
+func (g *GoneError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(g.Body)
+}
+
+func (g *GoneError) Unwrap() error {
+	return g.APIError
+}
+
 // Store not found or not accessible
 type NotFoundError struct {
 	*core.APIError

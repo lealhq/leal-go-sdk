@@ -1150,7 +1150,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"api_version\": \"api_version\",\n  \"authentication\": \"authentication\",\n  \"developer_portal_url\": \"developer_portal_url\",\n  \"documentation_url\": \"documentation_url\",\n  \"openapi_url\": \"openapi_url\",\n  \"rate_limit\": {\n    \"limit\": 1,\n    \"scope\": \"scope\",\n    \"window_seconds\": 1\n  },\n  \"status\": \"status\"\n}",
+        "body": "{\n  \"api_version\": \"api_version\",\n  \"authentication\": \"authentication\",\n  \"developer_portal_url\": \"developer_portal_url\",\n  \"documentation_url\": \"documentation_url\",\n  \"openapi_url\": \"openapi_url\",\n  \"rate_limit\": {\n    \"limit\": 1,\n    \"scope\": \"scope\",\n    \"window_seconds\": 1\n  },\n  \"status\": \"status\",\n  \"versioning\": {\n    \"current\": \"current\",\n    \"deprecated\": [\n      \"deprecated\"\n    ],\n    \"policy_url\": \"policy_url\",\n    \"signalling\": \"signalling\",\n    \"supported\": [\n      \"supported\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }

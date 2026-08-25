@@ -17,6 +17,7 @@ var (
 	checkStatusResponseFieldOpenapiURL         = big.NewInt(1 << 4)
 	checkStatusResponseFieldRateLimit          = big.NewInt(1 << 5)
 	checkStatusResponseFieldStatus             = big.NewInt(1 << 6)
+	checkStatusResponseFieldVersioning         = big.NewInt(1 << 7)
 )
 
 type CheckStatusResponse struct {
@@ -32,7 +33,8 @@ type CheckStatusResponse struct {
 	OpenapiURL string                        `json:"openapi_url" url:"openapi_url"`
 	RateLimit  *CheckStatusResponseRateLimit `json:"rate_limit" url:"rate_limit"`
 	// 'ok' while the API is serving requests
-	Status string `json:"status" url:"status"`
+	Status     string                         `json:"status" url:"status"`
+	Versioning *CheckStatusResponseVersioning `json:"versioning" url:"versioning"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -88,6 +90,13 @@ func (c *CheckStatusResponse) GetStatus() string {
 		return ""
 	}
 	return c.Status
+}
+
+func (c *CheckStatusResponse) GetVersioning() *CheckStatusResponseVersioning {
+	if c == nil {
+		return nil
+	}
+	return c.Versioning
 }
 
 func (c *CheckStatusResponse) GetExtraProperties() map[string]interface{} {
@@ -151,6 +160,13 @@ func (c *CheckStatusResponse) SetRateLimit(rateLimit *CheckStatusResponseRateLim
 func (c *CheckStatusResponse) SetStatus(status string) {
 	c.Status = status
 	c.require(checkStatusResponseFieldStatus)
+}
+
+// SetVersioning sets the Versioning field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckStatusResponse) SetVersioning(versioning *CheckStatusResponseVersioning) {
+	c.Versioning = versioning
+	c.require(checkStatusResponseFieldVersioning)
 }
 
 func (c *CheckStatusResponse) UnmarshalJSON(data []byte) error {
@@ -300,6 +316,159 @@ func (c *CheckStatusResponseRateLimit) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CheckStatusResponseRateLimit) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	checkStatusResponseVersioningFieldCurrent    = big.NewInt(1 << 0)
+	checkStatusResponseVersioningFieldDeprecated = big.NewInt(1 << 1)
+	checkStatusResponseVersioningFieldPolicyURL  = big.NewInt(1 << 2)
+	checkStatusResponseVersioningFieldSignalling = big.NewInt(1 << 3)
+	checkStatusResponseVersioningFieldSupported  = big.NewInt(1 << 4)
+)
+
+type CheckStatusResponseVersioning struct {
+	// The version to build against
+	Current string `json:"current" url:"current"`
+	// Versions that are deprecated but still serving
+	Deprecated []string `json:"deprecated" url:"deprecated"`
+	// The published versioning and deprecation policy
+	PolicyURL string `json:"policy_url" url:"policy_url"`
+	// The headers a deprecated version sends
+	Signalling string `json:"signalling" url:"signalling"`
+	// Every version still serving requests
+	Supported []string `json:"supported" url:"supported"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CheckStatusResponseVersioning) GetCurrent() string {
+	if c == nil {
+		return ""
+	}
+	return c.Current
+}
+
+func (c *CheckStatusResponseVersioning) GetDeprecated() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Deprecated
+}
+
+func (c *CheckStatusResponseVersioning) GetPolicyURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.PolicyURL
+}
+
+func (c *CheckStatusResponseVersioning) GetSignalling() string {
+	if c == nil {
+		return ""
+	}
+	return c.Signalling
+}
+
+func (c *CheckStatusResponseVersioning) GetSupported() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Supported
+}
+
+func (c *CheckStatusResponseVersioning) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CheckStatusResponseVersioning) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetCurrent sets the Current field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckStatusResponseVersioning) SetCurrent(current string) {
+	c.Current = current
+	c.require(checkStatusResponseVersioningFieldCurrent)
+}
+
+// SetDeprecated sets the Deprecated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckStatusResponseVersioning) SetDeprecated(deprecated []string) {
+	c.Deprecated = deprecated
+	c.require(checkStatusResponseVersioningFieldDeprecated)
+}
+
+// SetPolicyURL sets the PolicyURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckStatusResponseVersioning) SetPolicyURL(policyURL string) {
+	c.PolicyURL = policyURL
+	c.require(checkStatusResponseVersioningFieldPolicyURL)
+}
+
+// SetSignalling sets the Signalling field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckStatusResponseVersioning) SetSignalling(signalling string) {
+	c.Signalling = signalling
+	c.require(checkStatusResponseVersioningFieldSignalling)
+}
+
+// SetSupported sets the Supported field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckStatusResponseVersioning) SetSupported(supported []string) {
+	c.Supported = supported
+	c.require(checkStatusResponseVersioningFieldSupported)
+}
+
+func (c *CheckStatusResponseVersioning) UnmarshalJSON(data []byte) error {
+	type unmarshaler CheckStatusResponseVersioning
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CheckStatusResponseVersioning(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CheckStatusResponseVersioning) MarshalJSON() ([]byte, error) {
+	type embed CheckStatusResponseVersioning
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CheckStatusResponseVersioning) String() string {
 	if c == nil {
 		return "<nil>"
 	}
