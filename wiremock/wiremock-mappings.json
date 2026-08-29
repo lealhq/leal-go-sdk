@@ -123,7 +123,7 @@
       },
       "response": {
         "status": 200,
-        "body": "[\n  {\n    \"archived_at\": \"archived_at\",\n    \"card_color\": \"card_color\",\n    \"created_at\": \"created_at\",\n    \"customer_cards_count\": 1,\n    \"header_text\": \"header_text\",\n    \"id\": 1,\n    \"initial_stamps\": 1,\n    \"name\": \"name\",\n    \"rewards_count\": 1,\n    \"stamp_background_color\": \"stamp_background_color\",\n    \"stamp_color\": \"stamp_color\",\n    \"stamp_icon\": \"stamp_icon\",\n    \"stamps_required\": 1,\n    \"strip_color\": \"strip_color\",\n    \"strip_preset\": \"strip_preset\",\n    \"strip_type\": \"strip_type\",\n    \"text_color\": \"text_color\",\n    \"updated_at\": \"updated_at\"\n  }\n]",
+        "body": "[\n  {\n    \"archived_at\": \"archived_at\",\n    \"auxiliary_fields\": [\n      \"auxiliary_fields\"\n    ],\n    \"card_color\": \"card_color\",\n    \"created_at\": \"created_at\",\n    \"customer_cards_count\": 1,\n    \"expires_at\": \"expires_at\",\n    \"header_text\": \"header_text\",\n    \"id\": 1,\n    \"initial_stamps\": 1,\n    \"name\": \"name\",\n    \"rewards_count\": 1,\n    \"show_member_field\": true,\n    \"show_stamps_to_reward_field\": true,\n    \"stamp_background_color\": \"stamp_background_color\",\n    \"stamp_color\": \"stamp_color\",\n    \"stamp_icon\": \"stamp_icon\",\n    \"stamps_required\": 1,\n    \"strip_color\": \"strip_color\",\n    \"strip_preset\": \"strip_preset\",\n    \"strip_type\": \"strip_type\",\n    \"text_color\": \"text_color\",\n    \"updated_at\": \"updated_at\"\n  }\n]",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -159,7 +159,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
+        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"auxiliary_fields\": [\n    \"auxiliary_fields\"\n  ],\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"expires_at\": \"expires_at\",\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"show_member_field\": true,\n  \"show_stamps_to_reward_field\": true,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -198,7 +198,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
+        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"auxiliary_fields\": [\n    \"auxiliary_fields\"\n  ],\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"expires_at\": \"expires_at\",\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"show_member_field\": true,\n  \"show_stamps_to_reward_field\": true,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -237,7 +237,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
+        "body": "{\n  \"archived_at\": \"archived_at\",\n  \"auxiliary_fields\": [\n    \"auxiliary_fields\"\n  ],\n  \"card_color\": \"card_color\",\n  \"created_at\": \"created_at\",\n  \"customer_cards_count\": 1,\n  \"expires_at\": \"expires_at\",\n  \"header_text\": \"header_text\",\n  \"id\": 1,\n  \"initial_stamps\": 1,\n  \"name\": \"name\",\n  \"rewards_count\": 1,\n  \"show_member_field\": true,\n  \"show_stamps_to_reward_field\": true,\n  \"stamp_background_color\": \"stamp_background_color\",\n  \"stamp_color\": \"stamp_color\",\n  \"stamp_icon\": \"stamp_icon\",\n  \"stamps_required\": 1,\n  \"strip_color\": \"strip_color\",\n  \"strip_preset\": \"strip_preset\",\n  \"strip_type\": \"strip_type\",\n  \"text_color\": \"text_color\",\n  \"updated_at\": \"updated_at\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -777,7 +777,7 @@
       },
       "response": {
         "status": 200,
-        "body": "[\n  {\n    \"account_id\": 1,\n    \"active\": true,\n    \"card_id\": 1,\n    \"created_at\": \"created_at\",\n    \"display_url\": \"display_url\",\n    \"id\": 1,\n    \"paper_size\": \"paper_size\",\n    \"primary_color\": \"primary_color\",\n    \"qr_code_url\": \"qr_code_url\",\n    \"secondary_color\": \"secondary_color\",\n    \"signup_url\": \"signup_url\",\n    \"text_color\": \"text_color\",\n    \"title\": \"title\",\n    \"updated_at\": \"updated_at\"\n  }\n]",
+        "body": "[\n  {\n    \"account_id\": 1,\n    \"active\": true,\n    \"card_id\": 1,\n    \"collect_email\": true,\n    \"collect_phone\": true,\n    \"contact_collection_mode\": \"contact_collection_mode\",\n    \"created_at\": \"created_at\",\n    \"display_url\": \"display_url\",\n    \"id\": 1,\n    \"minimum_age\": 1.1,\n    \"paper_size\": \"paper_size\",\n    \"primary_color\": \"primary_color\",\n    \"qr_code_url\": \"qr_code_url\",\n    \"require_birthday\": true,\n    \"require_email\": true,\n    \"require_phone\": true,\n    \"secondary_color\": \"secondary_color\",\n    \"signup_url\": \"signup_url\",\n    \"text_color\": \"text_color\",\n    \"title\": \"title\",\n    \"updated_at\": \"updated_at\"\n  }\n]",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -813,7 +813,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"collect_email\": true,\n  \"collect_phone\": true,\n  \"contact_collection_mode\": \"contact_collection_mode\",\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"minimum_age\": 1.1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"require_birthday\": true,\n  \"require_email\": true,\n  \"require_phone\": true,\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -852,7 +852,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"collect_email\": true,\n  \"collect_phone\": true,\n  \"contact_collection_mode\": \"contact_collection_mode\",\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"minimum_age\": 1.1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"require_birthday\": true,\n  \"require_email\": true,\n  \"require_phone\": true,\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -930,7 +930,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
+        "body": "{\n  \"account_id\": 1,\n  \"active\": true,\n  \"card_id\": 1,\n  \"collect_email\": true,\n  \"collect_phone\": true,\n  \"contact_collection_mode\": \"contact_collection_mode\",\n  \"created_at\": \"created_at\",\n  \"display_url\": \"display_url\",\n  \"id\": 1,\n  \"minimum_age\": 1.1,\n  \"paper_size\": \"paper_size\",\n  \"primary_color\": \"primary_color\",\n  \"qr_code_url\": \"qr_code_url\",\n  \"require_birthday\": true,\n  \"require_email\": true,\n  \"require_phone\": true,\n  \"secondary_color\": \"secondary_color\",\n  \"signup_url\": \"signup_url\",\n  \"text_color\": \"text_color\",\n  \"title\": \"title\",\n  \"updated_at\": \"updated_at\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }

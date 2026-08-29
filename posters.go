@@ -184,13 +184,18 @@ func (l *ListPostersRequest) SetActive(active *string) {
 }
 
 var (
-	createPostersRequestPosterFieldActive         = big.NewInt(1 << 0)
-	createPostersRequestPosterFieldCardID         = big.NewInt(1 << 1)
-	createPostersRequestPosterFieldPaperSize      = big.NewInt(1 << 2)
-	createPostersRequestPosterFieldPrimaryColor   = big.NewInt(1 << 3)
-	createPostersRequestPosterFieldSecondaryColor = big.NewInt(1 << 4)
-	createPostersRequestPosterFieldTextColor      = big.NewInt(1 << 5)
-	createPostersRequestPosterFieldTitle          = big.NewInt(1 << 6)
+	createPostersRequestPosterFieldActive                = big.NewInt(1 << 0)
+	createPostersRequestPosterFieldCardID                = big.NewInt(1 << 1)
+	createPostersRequestPosterFieldContactCollectionMode = big.NewInt(1 << 2)
+	createPostersRequestPosterFieldMinimumAge            = big.NewInt(1 << 3)
+	createPostersRequestPosterFieldPaperSize             = big.NewInt(1 << 4)
+	createPostersRequestPosterFieldPrimaryColor          = big.NewInt(1 << 5)
+	createPostersRequestPosterFieldRequireBirthday       = big.NewInt(1 << 6)
+	createPostersRequestPosterFieldRequireEmail          = big.NewInt(1 << 7)
+	createPostersRequestPosterFieldRequirePhone          = big.NewInt(1 << 8)
+	createPostersRequestPosterFieldSecondaryColor        = big.NewInt(1 << 9)
+	createPostersRequestPosterFieldTextColor             = big.NewInt(1 << 10)
+	createPostersRequestPosterFieldTitle                 = big.NewInt(1 << 11)
 )
 
 type CreatePostersRequestPoster struct {
@@ -198,10 +203,20 @@ type CreatePostersRequestPoster struct {
 	Active *bool `json:"active,omitempty" url:"active,omitempty"`
 	// ID of the loyalty card this poster links to
 	CardID int `json:"card_id" url:"card_id"`
+	// Which contact fields appear on the public signup form
+	ContactCollectionMode *string `json:"contact_collection_mode,omitempty" url:"contact_collection_mode,omitempty"`
+	// Minimum customer age required for signup. Requires require_birthday to be true.
+	MinimumAge *float64 `json:"minimum_age,omitempty" url:"minimum_age,omitempty"`
 	// Print size – one of: a4, a5, a6, letter
 	PaperSize *string `json:"paper_size,omitempty" url:"paper_size,omitempty"`
 	// Primary brand color as a hex string (e.g. '#FF5733')
 	PrimaryColor *string `json:"primary_color,omitempty" url:"primary_color,omitempty"`
+	// Whether date of birth is required on the public signup form
+	RequireBirthday *bool `json:"require_birthday,omitempty" url:"require_birthday,omitempty"`
+	// Whether email is required when it is collected
+	RequireEmail *bool `json:"require_email,omitempty" url:"require_email,omitempty"`
+	// Whether phone number is required when it is collected
+	RequirePhone *bool `json:"require_phone,omitempty" url:"require_phone,omitempty"`
 	// Secondary brand color as a hex string
 	SecondaryColor *string `json:"secondary_color,omitempty" url:"secondary_color,omitempty"`
 	// Text color as a hex string
@@ -230,6 +245,20 @@ func (c *CreatePostersRequestPoster) GetCardID() int {
 	return c.CardID
 }
 
+func (c *CreatePostersRequestPoster) GetContactCollectionMode() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ContactCollectionMode
+}
+
+func (c *CreatePostersRequestPoster) GetMinimumAge() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.MinimumAge
+}
+
 func (c *CreatePostersRequestPoster) GetPaperSize() *string {
 	if c == nil {
 		return nil
@@ -242,6 +271,27 @@ func (c *CreatePostersRequestPoster) GetPrimaryColor() *string {
 		return nil
 	}
 	return c.PrimaryColor
+}
+
+func (c *CreatePostersRequestPoster) GetRequireBirthday() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.RequireBirthday
+}
+
+func (c *CreatePostersRequestPoster) GetRequireEmail() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.RequireEmail
+}
+
+func (c *CreatePostersRequestPoster) GetRequirePhone() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.RequirePhone
 }
 
 func (c *CreatePostersRequestPoster) GetSecondaryColor() *string {
@@ -293,6 +343,20 @@ func (c *CreatePostersRequestPoster) SetCardID(cardID int) {
 	c.require(createPostersRequestPosterFieldCardID)
 }
 
+// SetContactCollectionMode sets the ContactCollectionMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersRequestPoster) SetContactCollectionMode(contactCollectionMode *string) {
+	c.ContactCollectionMode = contactCollectionMode
+	c.require(createPostersRequestPosterFieldContactCollectionMode)
+}
+
+// SetMinimumAge sets the MinimumAge field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersRequestPoster) SetMinimumAge(minimumAge *float64) {
+	c.MinimumAge = minimumAge
+	c.require(createPostersRequestPosterFieldMinimumAge)
+}
+
 // SetPaperSize sets the PaperSize field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreatePostersRequestPoster) SetPaperSize(paperSize *string) {
@@ -305,6 +369,27 @@ func (c *CreatePostersRequestPoster) SetPaperSize(paperSize *string) {
 func (c *CreatePostersRequestPoster) SetPrimaryColor(primaryColor *string) {
 	c.PrimaryColor = primaryColor
 	c.require(createPostersRequestPosterFieldPrimaryColor)
+}
+
+// SetRequireBirthday sets the RequireBirthday field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersRequestPoster) SetRequireBirthday(requireBirthday *bool) {
+	c.RequireBirthday = requireBirthday
+	c.require(createPostersRequestPosterFieldRequireBirthday)
+}
+
+// SetRequireEmail sets the RequireEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersRequestPoster) SetRequireEmail(requireEmail *bool) {
+	c.RequireEmail = requireEmail
+	c.require(createPostersRequestPosterFieldRequireEmail)
+}
+
+// SetRequirePhone sets the RequirePhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersRequestPoster) SetRequirePhone(requirePhone *bool) {
+	c.RequirePhone = requirePhone
+	c.require(createPostersRequestPosterFieldRequirePhone)
 }
 
 // SetSecondaryColor sets the SecondaryColor field and marks it as non-optional;
@@ -371,20 +456,27 @@ func (c *CreatePostersRequestPoster) String() string {
 }
 
 var (
-	createPostersResponseFieldAccountID      = big.NewInt(1 << 0)
-	createPostersResponseFieldActive         = big.NewInt(1 << 1)
-	createPostersResponseFieldCardID         = big.NewInt(1 << 2)
-	createPostersResponseFieldCreatedAt      = big.NewInt(1 << 3)
-	createPostersResponseFieldDisplayURL     = big.NewInt(1 << 4)
-	createPostersResponseFieldID             = big.NewInt(1 << 5)
-	createPostersResponseFieldPaperSize      = big.NewInt(1 << 6)
-	createPostersResponseFieldPrimaryColor   = big.NewInt(1 << 7)
-	createPostersResponseFieldQrCodeURL      = big.NewInt(1 << 8)
-	createPostersResponseFieldSecondaryColor = big.NewInt(1 << 9)
-	createPostersResponseFieldSignupURL      = big.NewInt(1 << 10)
-	createPostersResponseFieldTextColor      = big.NewInt(1 << 11)
-	createPostersResponseFieldTitle          = big.NewInt(1 << 12)
-	createPostersResponseFieldUpdatedAt      = big.NewInt(1 << 13)
+	createPostersResponseFieldAccountID             = big.NewInt(1 << 0)
+	createPostersResponseFieldActive                = big.NewInt(1 << 1)
+	createPostersResponseFieldCardID                = big.NewInt(1 << 2)
+	createPostersResponseFieldCollectEmail          = big.NewInt(1 << 3)
+	createPostersResponseFieldCollectPhone          = big.NewInt(1 << 4)
+	createPostersResponseFieldContactCollectionMode = big.NewInt(1 << 5)
+	createPostersResponseFieldCreatedAt             = big.NewInt(1 << 6)
+	createPostersResponseFieldDisplayURL            = big.NewInt(1 << 7)
+	createPostersResponseFieldID                    = big.NewInt(1 << 8)
+	createPostersResponseFieldMinimumAge            = big.NewInt(1 << 9)
+	createPostersResponseFieldPaperSize             = big.NewInt(1 << 10)
+	createPostersResponseFieldPrimaryColor          = big.NewInt(1 << 11)
+	createPostersResponseFieldQrCodeURL             = big.NewInt(1 << 12)
+	createPostersResponseFieldRequireBirthday       = big.NewInt(1 << 13)
+	createPostersResponseFieldRequireEmail          = big.NewInt(1 << 14)
+	createPostersResponseFieldRequirePhone          = big.NewInt(1 << 15)
+	createPostersResponseFieldSecondaryColor        = big.NewInt(1 << 16)
+	createPostersResponseFieldSignupURL             = big.NewInt(1 << 17)
+	createPostersResponseFieldTextColor             = big.NewInt(1 << 18)
+	createPostersResponseFieldTitle                 = big.NewInt(1 << 19)
+	createPostersResponseFieldUpdatedAt             = big.NewInt(1 << 20)
 )
 
 type CreatePostersResponse struct {
@@ -394,18 +486,32 @@ type CreatePostersResponse struct {
 	Active bool `json:"active" url:"active"`
 	// Loyalty card customers are signed up to
 	CardID int `json:"card_id" url:"card_id"`
+	// Whether the public signup form collects email
+	CollectEmail bool `json:"collect_email" url:"collect_email"`
+	// Whether the public signup form collects phone number
+	CollectPhone bool `json:"collect_phone" url:"collect_phone"`
+	// Which contact fields appear on the public signup form: 'email_and_phone', 'email_only', or 'phone_only'
+	ContactCollectionMode string `json:"contact_collection_mode" url:"contact_collection_mode"`
 	// ISO 8601 creation timestamp
 	CreatedAt string `json:"created_at" url:"created_at"`
 	// URL of the on screen version of the poster
 	DisplayURL string `json:"display_url" url:"display_url"`
 	// Unique poster ID
 	ID int `json:"id" url:"id"`
+	// Minimum customer age required for signup
+	MinimumAge float64 `json:"minimum_age" url:"minimum_age"`
 	// Paper size the poster is laid out for
 	PaperSize string `json:"paper_size" url:"paper_size"`
 	// Hex colour for the poster background
 	PrimaryColor string `json:"primary_color" url:"primary_color"`
 	// URL encoded in the QR code
 	QrCodeURL string `json:"qr_code_url" url:"qr_code_url"`
+	// Whether date of birth is required on the public signup form
+	RequireBirthday bool `json:"require_birthday" url:"require_birthday"`
+	// Whether email is required when it is collected
+	RequireEmail bool `json:"require_email" url:"require_email"`
+	// Whether phone number is required when it is collected
+	RequirePhone bool `json:"require_phone" url:"require_phone"`
 	// Hex accent colour
 	SecondaryColor string `json:"secondary_color" url:"secondary_color"`
 	// Public URL the QR code points at
@@ -445,6 +551,27 @@ func (c *CreatePostersResponse) GetCardID() int {
 	return c.CardID
 }
 
+func (c *CreatePostersResponse) GetCollectEmail() bool {
+	if c == nil {
+		return false
+	}
+	return c.CollectEmail
+}
+
+func (c *CreatePostersResponse) GetCollectPhone() bool {
+	if c == nil {
+		return false
+	}
+	return c.CollectPhone
+}
+
+func (c *CreatePostersResponse) GetContactCollectionMode() string {
+	if c == nil {
+		return ""
+	}
+	return c.ContactCollectionMode
+}
+
 func (c *CreatePostersResponse) GetCreatedAt() string {
 	if c == nil {
 		return ""
@@ -466,6 +593,13 @@ func (c *CreatePostersResponse) GetID() int {
 	return c.ID
 }
 
+func (c *CreatePostersResponse) GetMinimumAge() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.MinimumAge
+}
+
 func (c *CreatePostersResponse) GetPaperSize() string {
 	if c == nil {
 		return ""
@@ -485,6 +619,27 @@ func (c *CreatePostersResponse) GetQrCodeURL() string {
 		return ""
 	}
 	return c.QrCodeURL
+}
+
+func (c *CreatePostersResponse) GetRequireBirthday() bool {
+	if c == nil {
+		return false
+	}
+	return c.RequireBirthday
+}
+
+func (c *CreatePostersResponse) GetRequireEmail() bool {
+	if c == nil {
+		return false
+	}
+	return c.RequireEmail
+}
+
+func (c *CreatePostersResponse) GetRequirePhone() bool {
+	if c == nil {
+		return false
+	}
+	return c.RequirePhone
 }
 
 func (c *CreatePostersResponse) GetSecondaryColor() string {
@@ -557,6 +712,27 @@ func (c *CreatePostersResponse) SetCardID(cardID int) {
 	c.require(createPostersResponseFieldCardID)
 }
 
+// SetCollectEmail sets the CollectEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersResponse) SetCollectEmail(collectEmail bool) {
+	c.CollectEmail = collectEmail
+	c.require(createPostersResponseFieldCollectEmail)
+}
+
+// SetCollectPhone sets the CollectPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersResponse) SetCollectPhone(collectPhone bool) {
+	c.CollectPhone = collectPhone
+	c.require(createPostersResponseFieldCollectPhone)
+}
+
+// SetContactCollectionMode sets the ContactCollectionMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersResponse) SetContactCollectionMode(contactCollectionMode string) {
+	c.ContactCollectionMode = contactCollectionMode
+	c.require(createPostersResponseFieldContactCollectionMode)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreatePostersResponse) SetCreatedAt(createdAt string) {
@@ -578,6 +754,13 @@ func (c *CreatePostersResponse) SetID(id int) {
 	c.require(createPostersResponseFieldID)
 }
 
+// SetMinimumAge sets the MinimumAge field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersResponse) SetMinimumAge(minimumAge float64) {
+	c.MinimumAge = minimumAge
+	c.require(createPostersResponseFieldMinimumAge)
+}
+
 // SetPaperSize sets the PaperSize field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreatePostersResponse) SetPaperSize(paperSize string) {
@@ -597,6 +780,27 @@ func (c *CreatePostersResponse) SetPrimaryColor(primaryColor string) {
 func (c *CreatePostersResponse) SetQrCodeURL(qrCodeURL string) {
 	c.QrCodeURL = qrCodeURL
 	c.require(createPostersResponseFieldQrCodeURL)
+}
+
+// SetRequireBirthday sets the RequireBirthday field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersResponse) SetRequireBirthday(requireBirthday bool) {
+	c.RequireBirthday = requireBirthday
+	c.require(createPostersResponseFieldRequireBirthday)
+}
+
+// SetRequireEmail sets the RequireEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersResponse) SetRequireEmail(requireEmail bool) {
+	c.RequireEmail = requireEmail
+	c.require(createPostersResponseFieldRequireEmail)
+}
+
+// SetRequirePhone sets the RequirePhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreatePostersResponse) SetRequirePhone(requirePhone bool) {
+	c.RequirePhone = requirePhone
+	c.require(createPostersResponseFieldRequirePhone)
 }
 
 // SetSecondaryColor sets the SecondaryColor field and marks it as non-optional;
@@ -677,20 +881,27 @@ func (c *CreatePostersResponse) String() string {
 }
 
 var (
-	getPostersResponseFieldAccountID      = big.NewInt(1 << 0)
-	getPostersResponseFieldActive         = big.NewInt(1 << 1)
-	getPostersResponseFieldCardID         = big.NewInt(1 << 2)
-	getPostersResponseFieldCreatedAt      = big.NewInt(1 << 3)
-	getPostersResponseFieldDisplayURL     = big.NewInt(1 << 4)
-	getPostersResponseFieldID             = big.NewInt(1 << 5)
-	getPostersResponseFieldPaperSize      = big.NewInt(1 << 6)
-	getPostersResponseFieldPrimaryColor   = big.NewInt(1 << 7)
-	getPostersResponseFieldQrCodeURL      = big.NewInt(1 << 8)
-	getPostersResponseFieldSecondaryColor = big.NewInt(1 << 9)
-	getPostersResponseFieldSignupURL      = big.NewInt(1 << 10)
-	getPostersResponseFieldTextColor      = big.NewInt(1 << 11)
-	getPostersResponseFieldTitle          = big.NewInt(1 << 12)
-	getPostersResponseFieldUpdatedAt      = big.NewInt(1 << 13)
+	getPostersResponseFieldAccountID             = big.NewInt(1 << 0)
+	getPostersResponseFieldActive                = big.NewInt(1 << 1)
+	getPostersResponseFieldCardID                = big.NewInt(1 << 2)
+	getPostersResponseFieldCollectEmail          = big.NewInt(1 << 3)
+	getPostersResponseFieldCollectPhone          = big.NewInt(1 << 4)
+	getPostersResponseFieldContactCollectionMode = big.NewInt(1 << 5)
+	getPostersResponseFieldCreatedAt             = big.NewInt(1 << 6)
+	getPostersResponseFieldDisplayURL            = big.NewInt(1 << 7)
+	getPostersResponseFieldID                    = big.NewInt(1 << 8)
+	getPostersResponseFieldMinimumAge            = big.NewInt(1 << 9)
+	getPostersResponseFieldPaperSize             = big.NewInt(1 << 10)
+	getPostersResponseFieldPrimaryColor          = big.NewInt(1 << 11)
+	getPostersResponseFieldQrCodeURL             = big.NewInt(1 << 12)
+	getPostersResponseFieldRequireBirthday       = big.NewInt(1 << 13)
+	getPostersResponseFieldRequireEmail          = big.NewInt(1 << 14)
+	getPostersResponseFieldRequirePhone          = big.NewInt(1 << 15)
+	getPostersResponseFieldSecondaryColor        = big.NewInt(1 << 16)
+	getPostersResponseFieldSignupURL             = big.NewInt(1 << 17)
+	getPostersResponseFieldTextColor             = big.NewInt(1 << 18)
+	getPostersResponseFieldTitle                 = big.NewInt(1 << 19)
+	getPostersResponseFieldUpdatedAt             = big.NewInt(1 << 20)
 )
 
 type GetPostersResponse struct {
@@ -700,18 +911,32 @@ type GetPostersResponse struct {
 	Active bool `json:"active" url:"active"`
 	// Loyalty card customers are signed up to
 	CardID int `json:"card_id" url:"card_id"`
+	// Whether the public signup form collects email
+	CollectEmail bool `json:"collect_email" url:"collect_email"`
+	// Whether the public signup form collects phone number
+	CollectPhone bool `json:"collect_phone" url:"collect_phone"`
+	// Which contact fields appear on the public signup form: 'email_and_phone', 'email_only', or 'phone_only'
+	ContactCollectionMode string `json:"contact_collection_mode" url:"contact_collection_mode"`
 	// ISO 8601 creation timestamp
 	CreatedAt string `json:"created_at" url:"created_at"`
 	// URL of the on screen version of the poster
 	DisplayURL string `json:"display_url" url:"display_url"`
 	// Unique poster ID
 	ID int `json:"id" url:"id"`
+	// Minimum customer age required for signup
+	MinimumAge float64 `json:"minimum_age" url:"minimum_age"`
 	// Paper size the poster is laid out for
 	PaperSize string `json:"paper_size" url:"paper_size"`
 	// Hex colour for the poster background
 	PrimaryColor string `json:"primary_color" url:"primary_color"`
 	// URL encoded in the QR code
 	QrCodeURL string `json:"qr_code_url" url:"qr_code_url"`
+	// Whether date of birth is required on the public signup form
+	RequireBirthday bool `json:"require_birthday" url:"require_birthday"`
+	// Whether email is required when it is collected
+	RequireEmail bool `json:"require_email" url:"require_email"`
+	// Whether phone number is required when it is collected
+	RequirePhone bool `json:"require_phone" url:"require_phone"`
 	// Hex accent colour
 	SecondaryColor string `json:"secondary_color" url:"secondary_color"`
 	// Public URL the QR code points at
@@ -751,6 +976,27 @@ func (g *GetPostersResponse) GetCardID() int {
 	return g.CardID
 }
 
+func (g *GetPostersResponse) GetCollectEmail() bool {
+	if g == nil {
+		return false
+	}
+	return g.CollectEmail
+}
+
+func (g *GetPostersResponse) GetCollectPhone() bool {
+	if g == nil {
+		return false
+	}
+	return g.CollectPhone
+}
+
+func (g *GetPostersResponse) GetContactCollectionMode() string {
+	if g == nil {
+		return ""
+	}
+	return g.ContactCollectionMode
+}
+
 func (g *GetPostersResponse) GetCreatedAt() string {
 	if g == nil {
 		return ""
@@ -772,6 +1018,13 @@ func (g *GetPostersResponse) GetID() int {
 	return g.ID
 }
 
+func (g *GetPostersResponse) GetMinimumAge() float64 {
+	if g == nil {
+		return 0
+	}
+	return g.MinimumAge
+}
+
 func (g *GetPostersResponse) GetPaperSize() string {
 	if g == nil {
 		return ""
@@ -791,6 +1044,27 @@ func (g *GetPostersResponse) GetQrCodeURL() string {
 		return ""
 	}
 	return g.QrCodeURL
+}
+
+func (g *GetPostersResponse) GetRequireBirthday() bool {
+	if g == nil {
+		return false
+	}
+	return g.RequireBirthday
+}
+
+func (g *GetPostersResponse) GetRequireEmail() bool {
+	if g == nil {
+		return false
+	}
+	return g.RequireEmail
+}
+
+func (g *GetPostersResponse) GetRequirePhone() bool {
+	if g == nil {
+		return false
+	}
+	return g.RequirePhone
 }
 
 func (g *GetPostersResponse) GetSecondaryColor() string {
@@ -863,6 +1137,27 @@ func (g *GetPostersResponse) SetCardID(cardID int) {
 	g.require(getPostersResponseFieldCardID)
 }
 
+// SetCollectEmail sets the CollectEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPostersResponse) SetCollectEmail(collectEmail bool) {
+	g.CollectEmail = collectEmail
+	g.require(getPostersResponseFieldCollectEmail)
+}
+
+// SetCollectPhone sets the CollectPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPostersResponse) SetCollectPhone(collectPhone bool) {
+	g.CollectPhone = collectPhone
+	g.require(getPostersResponseFieldCollectPhone)
+}
+
+// SetContactCollectionMode sets the ContactCollectionMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPostersResponse) SetContactCollectionMode(contactCollectionMode string) {
+	g.ContactCollectionMode = contactCollectionMode
+	g.require(getPostersResponseFieldContactCollectionMode)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetPostersResponse) SetCreatedAt(createdAt string) {
@@ -884,6 +1179,13 @@ func (g *GetPostersResponse) SetID(id int) {
 	g.require(getPostersResponseFieldID)
 }
 
+// SetMinimumAge sets the MinimumAge field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPostersResponse) SetMinimumAge(minimumAge float64) {
+	g.MinimumAge = minimumAge
+	g.require(getPostersResponseFieldMinimumAge)
+}
+
 // SetPaperSize sets the PaperSize field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetPostersResponse) SetPaperSize(paperSize string) {
@@ -903,6 +1205,27 @@ func (g *GetPostersResponse) SetPrimaryColor(primaryColor string) {
 func (g *GetPostersResponse) SetQrCodeURL(qrCodeURL string) {
 	g.QrCodeURL = qrCodeURL
 	g.require(getPostersResponseFieldQrCodeURL)
+}
+
+// SetRequireBirthday sets the RequireBirthday field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPostersResponse) SetRequireBirthday(requireBirthday bool) {
+	g.RequireBirthday = requireBirthday
+	g.require(getPostersResponseFieldRequireBirthday)
+}
+
+// SetRequireEmail sets the RequireEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPostersResponse) SetRequireEmail(requireEmail bool) {
+	g.RequireEmail = requireEmail
+	g.require(getPostersResponseFieldRequireEmail)
+}
+
+// SetRequirePhone sets the RequirePhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPostersResponse) SetRequirePhone(requirePhone bool) {
+	g.RequirePhone = requirePhone
+	g.require(getPostersResponseFieldRequirePhone)
 }
 
 // SetSecondaryColor sets the SecondaryColor field and marks it as non-optional;
@@ -983,20 +1306,27 @@ func (g *GetPostersResponse) String() string {
 }
 
 var (
-	listPostersResponseItemFieldAccountID      = big.NewInt(1 << 0)
-	listPostersResponseItemFieldActive         = big.NewInt(1 << 1)
-	listPostersResponseItemFieldCardID         = big.NewInt(1 << 2)
-	listPostersResponseItemFieldCreatedAt      = big.NewInt(1 << 3)
-	listPostersResponseItemFieldDisplayURL     = big.NewInt(1 << 4)
-	listPostersResponseItemFieldID             = big.NewInt(1 << 5)
-	listPostersResponseItemFieldPaperSize      = big.NewInt(1 << 6)
-	listPostersResponseItemFieldPrimaryColor   = big.NewInt(1 << 7)
-	listPostersResponseItemFieldQrCodeURL      = big.NewInt(1 << 8)
-	listPostersResponseItemFieldSecondaryColor = big.NewInt(1 << 9)
-	listPostersResponseItemFieldSignupURL      = big.NewInt(1 << 10)
-	listPostersResponseItemFieldTextColor      = big.NewInt(1 << 11)
-	listPostersResponseItemFieldTitle          = big.NewInt(1 << 12)
-	listPostersResponseItemFieldUpdatedAt      = big.NewInt(1 << 13)
+	listPostersResponseItemFieldAccountID             = big.NewInt(1 << 0)
+	listPostersResponseItemFieldActive                = big.NewInt(1 << 1)
+	listPostersResponseItemFieldCardID                = big.NewInt(1 << 2)
+	listPostersResponseItemFieldCollectEmail          = big.NewInt(1 << 3)
+	listPostersResponseItemFieldCollectPhone          = big.NewInt(1 << 4)
+	listPostersResponseItemFieldContactCollectionMode = big.NewInt(1 << 5)
+	listPostersResponseItemFieldCreatedAt             = big.NewInt(1 << 6)
+	listPostersResponseItemFieldDisplayURL            = big.NewInt(1 << 7)
+	listPostersResponseItemFieldID                    = big.NewInt(1 << 8)
+	listPostersResponseItemFieldMinimumAge            = big.NewInt(1 << 9)
+	listPostersResponseItemFieldPaperSize             = big.NewInt(1 << 10)
+	listPostersResponseItemFieldPrimaryColor          = big.NewInt(1 << 11)
+	listPostersResponseItemFieldQrCodeURL             = big.NewInt(1 << 12)
+	listPostersResponseItemFieldRequireBirthday       = big.NewInt(1 << 13)
+	listPostersResponseItemFieldRequireEmail          = big.NewInt(1 << 14)
+	listPostersResponseItemFieldRequirePhone          = big.NewInt(1 << 15)
+	listPostersResponseItemFieldSecondaryColor        = big.NewInt(1 << 16)
+	listPostersResponseItemFieldSignupURL             = big.NewInt(1 << 17)
+	listPostersResponseItemFieldTextColor             = big.NewInt(1 << 18)
+	listPostersResponseItemFieldTitle                 = big.NewInt(1 << 19)
+	listPostersResponseItemFieldUpdatedAt             = big.NewInt(1 << 20)
 )
 
 type ListPostersResponseItem struct {
@@ -1006,18 +1336,32 @@ type ListPostersResponseItem struct {
 	Active bool `json:"active" url:"active"`
 	// Loyalty card customers are signed up to
 	CardID int `json:"card_id" url:"card_id"`
+	// Whether the public signup form collects email
+	CollectEmail bool `json:"collect_email" url:"collect_email"`
+	// Whether the public signup form collects phone number
+	CollectPhone bool `json:"collect_phone" url:"collect_phone"`
+	// Which contact fields appear on the public signup form: 'email_and_phone', 'email_only', or 'phone_only'
+	ContactCollectionMode string `json:"contact_collection_mode" url:"contact_collection_mode"`
 	// ISO 8601 creation timestamp
 	CreatedAt string `json:"created_at" url:"created_at"`
 	// URL of the on screen version of the poster
 	DisplayURL string `json:"display_url" url:"display_url"`
 	// Unique poster ID
 	ID int `json:"id" url:"id"`
+	// Minimum customer age required for signup
+	MinimumAge float64 `json:"minimum_age" url:"minimum_age"`
 	// Paper size the poster is laid out for
 	PaperSize string `json:"paper_size" url:"paper_size"`
 	// Hex colour for the poster background
 	PrimaryColor string `json:"primary_color" url:"primary_color"`
 	// URL encoded in the QR code
 	QrCodeURL string `json:"qr_code_url" url:"qr_code_url"`
+	// Whether date of birth is required on the public signup form
+	RequireBirthday bool `json:"require_birthday" url:"require_birthday"`
+	// Whether email is required when it is collected
+	RequireEmail bool `json:"require_email" url:"require_email"`
+	// Whether phone number is required when it is collected
+	RequirePhone bool `json:"require_phone" url:"require_phone"`
 	// Hex accent colour
 	SecondaryColor string `json:"secondary_color" url:"secondary_color"`
 	// Public URL the QR code points at
@@ -1057,6 +1401,27 @@ func (l *ListPostersResponseItem) GetCardID() int {
 	return l.CardID
 }
 
+func (l *ListPostersResponseItem) GetCollectEmail() bool {
+	if l == nil {
+		return false
+	}
+	return l.CollectEmail
+}
+
+func (l *ListPostersResponseItem) GetCollectPhone() bool {
+	if l == nil {
+		return false
+	}
+	return l.CollectPhone
+}
+
+func (l *ListPostersResponseItem) GetContactCollectionMode() string {
+	if l == nil {
+		return ""
+	}
+	return l.ContactCollectionMode
+}
+
 func (l *ListPostersResponseItem) GetCreatedAt() string {
 	if l == nil {
 		return ""
@@ -1078,6 +1443,13 @@ func (l *ListPostersResponseItem) GetID() int {
 	return l.ID
 }
 
+func (l *ListPostersResponseItem) GetMinimumAge() float64 {
+	if l == nil {
+		return 0
+	}
+	return l.MinimumAge
+}
+
 func (l *ListPostersResponseItem) GetPaperSize() string {
 	if l == nil {
 		return ""
@@ -1097,6 +1469,27 @@ func (l *ListPostersResponseItem) GetQrCodeURL() string {
 		return ""
 	}
 	return l.QrCodeURL
+}
+
+func (l *ListPostersResponseItem) GetRequireBirthday() bool {
+	if l == nil {
+		return false
+	}
+	return l.RequireBirthday
+}
+
+func (l *ListPostersResponseItem) GetRequireEmail() bool {
+	if l == nil {
+		return false
+	}
+	return l.RequireEmail
+}
+
+func (l *ListPostersResponseItem) GetRequirePhone() bool {
+	if l == nil {
+		return false
+	}
+	return l.RequirePhone
 }
 
 func (l *ListPostersResponseItem) GetSecondaryColor() string {
@@ -1169,6 +1562,27 @@ func (l *ListPostersResponseItem) SetCardID(cardID int) {
 	l.require(listPostersResponseItemFieldCardID)
 }
 
+// SetCollectEmail sets the CollectEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPostersResponseItem) SetCollectEmail(collectEmail bool) {
+	l.CollectEmail = collectEmail
+	l.require(listPostersResponseItemFieldCollectEmail)
+}
+
+// SetCollectPhone sets the CollectPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPostersResponseItem) SetCollectPhone(collectPhone bool) {
+	l.CollectPhone = collectPhone
+	l.require(listPostersResponseItemFieldCollectPhone)
+}
+
+// SetContactCollectionMode sets the ContactCollectionMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPostersResponseItem) SetContactCollectionMode(contactCollectionMode string) {
+	l.ContactCollectionMode = contactCollectionMode
+	l.require(listPostersResponseItemFieldContactCollectionMode)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListPostersResponseItem) SetCreatedAt(createdAt string) {
@@ -1190,6 +1604,13 @@ func (l *ListPostersResponseItem) SetID(id int) {
 	l.require(listPostersResponseItemFieldID)
 }
 
+// SetMinimumAge sets the MinimumAge field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPostersResponseItem) SetMinimumAge(minimumAge float64) {
+	l.MinimumAge = minimumAge
+	l.require(listPostersResponseItemFieldMinimumAge)
+}
+
 // SetPaperSize sets the PaperSize field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListPostersResponseItem) SetPaperSize(paperSize string) {
@@ -1209,6 +1630,27 @@ func (l *ListPostersResponseItem) SetPrimaryColor(primaryColor string) {
 func (l *ListPostersResponseItem) SetQrCodeURL(qrCodeURL string) {
 	l.QrCodeURL = qrCodeURL
 	l.require(listPostersResponseItemFieldQrCodeURL)
+}
+
+// SetRequireBirthday sets the RequireBirthday field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPostersResponseItem) SetRequireBirthday(requireBirthday bool) {
+	l.RequireBirthday = requireBirthday
+	l.require(listPostersResponseItemFieldRequireBirthday)
+}
+
+// SetRequireEmail sets the RequireEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPostersResponseItem) SetRequireEmail(requireEmail bool) {
+	l.RequireEmail = requireEmail
+	l.require(listPostersResponseItemFieldRequireEmail)
+}
+
+// SetRequirePhone sets the RequirePhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPostersResponseItem) SetRequirePhone(requirePhone bool) {
+	l.RequirePhone = requirePhone
+	l.require(listPostersResponseItemFieldRequirePhone)
 }
 
 // SetSecondaryColor sets the SecondaryColor field and marks it as non-optional;
@@ -1289,21 +1731,36 @@ func (l *ListPostersResponseItem) String() string {
 }
 
 var (
-	updatePostersRequestPosterFieldActive         = big.NewInt(1 << 0)
-	updatePostersRequestPosterFieldPaperSize      = big.NewInt(1 << 1)
-	updatePostersRequestPosterFieldPrimaryColor   = big.NewInt(1 << 2)
-	updatePostersRequestPosterFieldSecondaryColor = big.NewInt(1 << 3)
-	updatePostersRequestPosterFieldTextColor      = big.NewInt(1 << 4)
-	updatePostersRequestPosterFieldTitle          = big.NewInt(1 << 5)
+	updatePostersRequestPosterFieldActive                = big.NewInt(1 << 0)
+	updatePostersRequestPosterFieldContactCollectionMode = big.NewInt(1 << 1)
+	updatePostersRequestPosterFieldMinimumAge            = big.NewInt(1 << 2)
+	updatePostersRequestPosterFieldPaperSize             = big.NewInt(1 << 3)
+	updatePostersRequestPosterFieldPrimaryColor          = big.NewInt(1 << 4)
+	updatePostersRequestPosterFieldRequireBirthday       = big.NewInt(1 << 5)
+	updatePostersRequestPosterFieldRequireEmail          = big.NewInt(1 << 6)
+	updatePostersRequestPosterFieldRequirePhone          = big.NewInt(1 << 7)
+	updatePostersRequestPosterFieldSecondaryColor        = big.NewInt(1 << 8)
+	updatePostersRequestPosterFieldTextColor             = big.NewInt(1 << 9)
+	updatePostersRequestPosterFieldTitle                 = big.NewInt(1 << 10)
 )
 
 type UpdatePostersRequestPoster struct {
 	// Whether the poster is active
 	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	// Which contact fields appear on the public signup form
+	ContactCollectionMode *string `json:"contact_collection_mode,omitempty" url:"contact_collection_mode,omitempty"`
+	// Minimum customer age required for signup. Requires require_birthday to be true.
+	MinimumAge *float64 `json:"minimum_age,omitempty" url:"minimum_age,omitempty"`
 	// Print size – one of: a4, a5, a6, letter
 	PaperSize *string `json:"paper_size,omitempty" url:"paper_size,omitempty"`
 	// Primary brand color as a hex string
 	PrimaryColor *string `json:"primary_color,omitempty" url:"primary_color,omitempty"`
+	// Whether date of birth is required on the public signup form
+	RequireBirthday *bool `json:"require_birthday,omitempty" url:"require_birthday,omitempty"`
+	// Whether email is required when it is collected
+	RequireEmail *bool `json:"require_email,omitempty" url:"require_email,omitempty"`
+	// Whether phone number is required when it is collected
+	RequirePhone *bool `json:"require_phone,omitempty" url:"require_phone,omitempty"`
 	// Secondary brand color as a hex string
 	SecondaryColor *string `json:"secondary_color,omitempty" url:"secondary_color,omitempty"`
 	// Text color as a hex string
@@ -1325,6 +1782,20 @@ func (u *UpdatePostersRequestPoster) GetActive() *bool {
 	return u.Active
 }
 
+func (u *UpdatePostersRequestPoster) GetContactCollectionMode() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ContactCollectionMode
+}
+
+func (u *UpdatePostersRequestPoster) GetMinimumAge() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.MinimumAge
+}
+
 func (u *UpdatePostersRequestPoster) GetPaperSize() *string {
 	if u == nil {
 		return nil
@@ -1337,6 +1808,27 @@ func (u *UpdatePostersRequestPoster) GetPrimaryColor() *string {
 		return nil
 	}
 	return u.PrimaryColor
+}
+
+func (u *UpdatePostersRequestPoster) GetRequireBirthday() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.RequireBirthday
+}
+
+func (u *UpdatePostersRequestPoster) GetRequireEmail() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.RequireEmail
+}
+
+func (u *UpdatePostersRequestPoster) GetRequirePhone() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.RequirePhone
 }
 
 func (u *UpdatePostersRequestPoster) GetSecondaryColor() *string {
@@ -1381,6 +1873,20 @@ func (u *UpdatePostersRequestPoster) SetActive(active *bool) {
 	u.require(updatePostersRequestPosterFieldActive)
 }
 
+// SetContactCollectionMode sets the ContactCollectionMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersRequestPoster) SetContactCollectionMode(contactCollectionMode *string) {
+	u.ContactCollectionMode = contactCollectionMode
+	u.require(updatePostersRequestPosterFieldContactCollectionMode)
+}
+
+// SetMinimumAge sets the MinimumAge field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersRequestPoster) SetMinimumAge(minimumAge *float64) {
+	u.MinimumAge = minimumAge
+	u.require(updatePostersRequestPosterFieldMinimumAge)
+}
+
 // SetPaperSize sets the PaperSize field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdatePostersRequestPoster) SetPaperSize(paperSize *string) {
@@ -1393,6 +1899,27 @@ func (u *UpdatePostersRequestPoster) SetPaperSize(paperSize *string) {
 func (u *UpdatePostersRequestPoster) SetPrimaryColor(primaryColor *string) {
 	u.PrimaryColor = primaryColor
 	u.require(updatePostersRequestPosterFieldPrimaryColor)
+}
+
+// SetRequireBirthday sets the RequireBirthday field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersRequestPoster) SetRequireBirthday(requireBirthday *bool) {
+	u.RequireBirthday = requireBirthday
+	u.require(updatePostersRequestPosterFieldRequireBirthday)
+}
+
+// SetRequireEmail sets the RequireEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersRequestPoster) SetRequireEmail(requireEmail *bool) {
+	u.RequireEmail = requireEmail
+	u.require(updatePostersRequestPosterFieldRequireEmail)
+}
+
+// SetRequirePhone sets the RequirePhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersRequestPoster) SetRequirePhone(requirePhone *bool) {
+	u.RequirePhone = requirePhone
+	u.require(updatePostersRequestPosterFieldRequirePhone)
 }
 
 // SetSecondaryColor sets the SecondaryColor field and marks it as non-optional;
@@ -1459,20 +1986,27 @@ func (u *UpdatePostersRequestPoster) String() string {
 }
 
 var (
-	updatePostersResponseFieldAccountID      = big.NewInt(1 << 0)
-	updatePostersResponseFieldActive         = big.NewInt(1 << 1)
-	updatePostersResponseFieldCardID         = big.NewInt(1 << 2)
-	updatePostersResponseFieldCreatedAt      = big.NewInt(1 << 3)
-	updatePostersResponseFieldDisplayURL     = big.NewInt(1 << 4)
-	updatePostersResponseFieldID             = big.NewInt(1 << 5)
-	updatePostersResponseFieldPaperSize      = big.NewInt(1 << 6)
-	updatePostersResponseFieldPrimaryColor   = big.NewInt(1 << 7)
-	updatePostersResponseFieldQrCodeURL      = big.NewInt(1 << 8)
-	updatePostersResponseFieldSecondaryColor = big.NewInt(1 << 9)
-	updatePostersResponseFieldSignupURL      = big.NewInt(1 << 10)
-	updatePostersResponseFieldTextColor      = big.NewInt(1 << 11)
-	updatePostersResponseFieldTitle          = big.NewInt(1 << 12)
-	updatePostersResponseFieldUpdatedAt      = big.NewInt(1 << 13)
+	updatePostersResponseFieldAccountID             = big.NewInt(1 << 0)
+	updatePostersResponseFieldActive                = big.NewInt(1 << 1)
+	updatePostersResponseFieldCardID                = big.NewInt(1 << 2)
+	updatePostersResponseFieldCollectEmail          = big.NewInt(1 << 3)
+	updatePostersResponseFieldCollectPhone          = big.NewInt(1 << 4)
+	updatePostersResponseFieldContactCollectionMode = big.NewInt(1 << 5)
+	updatePostersResponseFieldCreatedAt             = big.NewInt(1 << 6)
+	updatePostersResponseFieldDisplayURL            = big.NewInt(1 << 7)
+	updatePostersResponseFieldID                    = big.NewInt(1 << 8)
+	updatePostersResponseFieldMinimumAge            = big.NewInt(1 << 9)
+	updatePostersResponseFieldPaperSize             = big.NewInt(1 << 10)
+	updatePostersResponseFieldPrimaryColor          = big.NewInt(1 << 11)
+	updatePostersResponseFieldQrCodeURL             = big.NewInt(1 << 12)
+	updatePostersResponseFieldRequireBirthday       = big.NewInt(1 << 13)
+	updatePostersResponseFieldRequireEmail          = big.NewInt(1 << 14)
+	updatePostersResponseFieldRequirePhone          = big.NewInt(1 << 15)
+	updatePostersResponseFieldSecondaryColor        = big.NewInt(1 << 16)
+	updatePostersResponseFieldSignupURL             = big.NewInt(1 << 17)
+	updatePostersResponseFieldTextColor             = big.NewInt(1 << 18)
+	updatePostersResponseFieldTitle                 = big.NewInt(1 << 19)
+	updatePostersResponseFieldUpdatedAt             = big.NewInt(1 << 20)
 )
 
 type UpdatePostersResponse struct {
@@ -1482,18 +2016,32 @@ type UpdatePostersResponse struct {
 	Active bool `json:"active" url:"active"`
 	// Loyalty card customers are signed up to
 	CardID int `json:"card_id" url:"card_id"`
+	// Whether the public signup form collects email
+	CollectEmail bool `json:"collect_email" url:"collect_email"`
+	// Whether the public signup form collects phone number
+	CollectPhone bool `json:"collect_phone" url:"collect_phone"`
+	// Which contact fields appear on the public signup form: 'email_and_phone', 'email_only', or 'phone_only'
+	ContactCollectionMode string `json:"contact_collection_mode" url:"contact_collection_mode"`
 	// ISO 8601 creation timestamp
 	CreatedAt string `json:"created_at" url:"created_at"`
 	// URL of the on screen version of the poster
 	DisplayURL string `json:"display_url" url:"display_url"`
 	// Unique poster ID
 	ID int `json:"id" url:"id"`
+	// Minimum customer age required for signup
+	MinimumAge float64 `json:"minimum_age" url:"minimum_age"`
 	// Paper size the poster is laid out for
 	PaperSize string `json:"paper_size" url:"paper_size"`
 	// Hex colour for the poster background
 	PrimaryColor string `json:"primary_color" url:"primary_color"`
 	// URL encoded in the QR code
 	QrCodeURL string `json:"qr_code_url" url:"qr_code_url"`
+	// Whether date of birth is required on the public signup form
+	RequireBirthday bool `json:"require_birthday" url:"require_birthday"`
+	// Whether email is required when it is collected
+	RequireEmail bool `json:"require_email" url:"require_email"`
+	// Whether phone number is required when it is collected
+	RequirePhone bool `json:"require_phone" url:"require_phone"`
 	// Hex accent colour
 	SecondaryColor string `json:"secondary_color" url:"secondary_color"`
 	// Public URL the QR code points at
@@ -1533,6 +2081,27 @@ func (u *UpdatePostersResponse) GetCardID() int {
 	return u.CardID
 }
 
+func (u *UpdatePostersResponse) GetCollectEmail() bool {
+	if u == nil {
+		return false
+	}
+	return u.CollectEmail
+}
+
+func (u *UpdatePostersResponse) GetCollectPhone() bool {
+	if u == nil {
+		return false
+	}
+	return u.CollectPhone
+}
+
+func (u *UpdatePostersResponse) GetContactCollectionMode() string {
+	if u == nil {
+		return ""
+	}
+	return u.ContactCollectionMode
+}
+
 func (u *UpdatePostersResponse) GetCreatedAt() string {
 	if u == nil {
 		return ""
@@ -1554,6 +2123,13 @@ func (u *UpdatePostersResponse) GetID() int {
 	return u.ID
 }
 
+func (u *UpdatePostersResponse) GetMinimumAge() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.MinimumAge
+}
+
 func (u *UpdatePostersResponse) GetPaperSize() string {
 	if u == nil {
 		return ""
@@ -1573,6 +2149,27 @@ func (u *UpdatePostersResponse) GetQrCodeURL() string {
 		return ""
 	}
 	return u.QrCodeURL
+}
+
+func (u *UpdatePostersResponse) GetRequireBirthday() bool {
+	if u == nil {
+		return false
+	}
+	return u.RequireBirthday
+}
+
+func (u *UpdatePostersResponse) GetRequireEmail() bool {
+	if u == nil {
+		return false
+	}
+	return u.RequireEmail
+}
+
+func (u *UpdatePostersResponse) GetRequirePhone() bool {
+	if u == nil {
+		return false
+	}
+	return u.RequirePhone
 }
 
 func (u *UpdatePostersResponse) GetSecondaryColor() string {
@@ -1645,6 +2242,27 @@ func (u *UpdatePostersResponse) SetCardID(cardID int) {
 	u.require(updatePostersResponseFieldCardID)
 }
 
+// SetCollectEmail sets the CollectEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersResponse) SetCollectEmail(collectEmail bool) {
+	u.CollectEmail = collectEmail
+	u.require(updatePostersResponseFieldCollectEmail)
+}
+
+// SetCollectPhone sets the CollectPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersResponse) SetCollectPhone(collectPhone bool) {
+	u.CollectPhone = collectPhone
+	u.require(updatePostersResponseFieldCollectPhone)
+}
+
+// SetContactCollectionMode sets the ContactCollectionMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersResponse) SetContactCollectionMode(contactCollectionMode string) {
+	u.ContactCollectionMode = contactCollectionMode
+	u.require(updatePostersResponseFieldContactCollectionMode)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdatePostersResponse) SetCreatedAt(createdAt string) {
@@ -1666,6 +2284,13 @@ func (u *UpdatePostersResponse) SetID(id int) {
 	u.require(updatePostersResponseFieldID)
 }
 
+// SetMinimumAge sets the MinimumAge field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersResponse) SetMinimumAge(minimumAge float64) {
+	u.MinimumAge = minimumAge
+	u.require(updatePostersResponseFieldMinimumAge)
+}
+
 // SetPaperSize sets the PaperSize field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdatePostersResponse) SetPaperSize(paperSize string) {
@@ -1685,6 +2310,27 @@ func (u *UpdatePostersResponse) SetPrimaryColor(primaryColor string) {
 func (u *UpdatePostersResponse) SetQrCodeURL(qrCodeURL string) {
 	u.QrCodeURL = qrCodeURL
 	u.require(updatePostersResponseFieldQrCodeURL)
+}
+
+// SetRequireBirthday sets the RequireBirthday field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersResponse) SetRequireBirthday(requireBirthday bool) {
+	u.RequireBirthday = requireBirthday
+	u.require(updatePostersResponseFieldRequireBirthday)
+}
+
+// SetRequireEmail sets the RequireEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersResponse) SetRequireEmail(requireEmail bool) {
+	u.RequireEmail = requireEmail
+	u.require(updatePostersResponseFieldRequireEmail)
+}
+
+// SetRequirePhone sets the RequirePhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdatePostersResponse) SetRequirePhone(requirePhone bool) {
+	u.RequirePhone = requirePhone
+	u.require(updatePostersResponseFieldRequirePhone)
 }
 
 // SetSecondaryColor sets the SecondaryColor field and marks it as non-optional;

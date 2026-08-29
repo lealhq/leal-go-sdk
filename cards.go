@@ -138,29 +138,41 @@ func (l *ListCardsRequest) SetScope(scope *string) {
 }
 
 var (
-	createCardsRequestCardFieldCardColor            = big.NewInt(1 << 0)
-	createCardsRequestCardFieldHeaderText           = big.NewInt(1 << 1)
-	createCardsRequestCardFieldInitialStamps        = big.NewInt(1 << 2)
-	createCardsRequestCardFieldName                 = big.NewInt(1 << 3)
-	createCardsRequestCardFieldStampBackgroundColor = big.NewInt(1 << 4)
-	createCardsRequestCardFieldStampColor           = big.NewInt(1 << 5)
-	createCardsRequestCardFieldStampIcon            = big.NewInt(1 << 6)
-	createCardsRequestCardFieldStampsRequired       = big.NewInt(1 << 7)
-	createCardsRequestCardFieldStripColor           = big.NewInt(1 << 8)
-	createCardsRequestCardFieldStripPreset          = big.NewInt(1 << 9)
-	createCardsRequestCardFieldStripType            = big.NewInt(1 << 10)
-	createCardsRequestCardFieldTextColor            = big.NewInt(1 << 11)
+	createCardsRequestCardFieldAuxiliaryFields         = big.NewInt(1 << 0)
+	createCardsRequestCardFieldCardColor               = big.NewInt(1 << 1)
+	createCardsRequestCardFieldExpiresAt               = big.NewInt(1 << 2)
+	createCardsRequestCardFieldHeaderText              = big.NewInt(1 << 3)
+	createCardsRequestCardFieldInitialStamps           = big.NewInt(1 << 4)
+	createCardsRequestCardFieldName                    = big.NewInt(1 << 5)
+	createCardsRequestCardFieldShowMemberField         = big.NewInt(1 << 6)
+	createCardsRequestCardFieldShowStampsToRewardField = big.NewInt(1 << 7)
+	createCardsRequestCardFieldStampBackgroundColor    = big.NewInt(1 << 8)
+	createCardsRequestCardFieldStampColor              = big.NewInt(1 << 9)
+	createCardsRequestCardFieldStampIcon               = big.NewInt(1 << 10)
+	createCardsRequestCardFieldStampsRequired          = big.NewInt(1 << 11)
+	createCardsRequestCardFieldStripColor              = big.NewInt(1 << 12)
+	createCardsRequestCardFieldStripPreset             = big.NewInt(1 << 13)
+	createCardsRequestCardFieldStripType               = big.NewInt(1 << 14)
+	createCardsRequestCardFieldTextColor               = big.NewInt(1 << 15)
 )
 
 type CreateCardsRequestCard struct {
+	// Up to two extra front-of-pass fields. Blank values are ignored.
+	AuxiliaryFields []string `json:"auxiliary_fields,omitempty" url:"auxiliary_fields,omitempty"`
 	// Hex colour for the card background (e.g. '#6B4226')
 	CardColor *string `json:"card_color,omitempty" url:"card_color,omitempty"`
+	// Card expiry timestamp (ISO 8601)
+	ExpiresAt *string `json:"expires_at,omitempty" url:"expires_at,omitempty"`
 	// Optional header text displayed on the card
 	HeaderText *string `json:"header_text,omitempty" url:"header_text,omitempty"`
 	// Number of stamps pre-filled on new customer cards (must be >= 0 and < stamps_required)
 	InitialStamps *int `json:"initial_stamps,omitempty" url:"initial_stamps,omitempty"`
 	// Card name (e.g. 'Coffee Loyalty Card')
 	Name string `json:"name" url:"name"`
+	// Whether wallet passes show the member name field
+	ShowMemberField *bool `json:"show_member_field,omitempty" url:"show_member_field,omitempty"`
+	// Whether wallet passes show the stamps-to-reward field
+	ShowStampsToRewardField *bool `json:"show_stamps_to_reward_field,omitempty" url:"show_stamps_to_reward_field,omitempty"`
 	// Hex colour for stamp backgrounds
 	StampBackgroundColor *string `json:"stamp_background_color,omitempty" url:"stamp_background_color,omitempty"`
 	// Hex colour for stamp icons
@@ -185,11 +197,25 @@ type CreateCardsRequestCard struct {
 	rawJSON         json.RawMessage
 }
 
+func (c *CreateCardsRequestCard) GetAuxiliaryFields() []string {
+	if c == nil {
+		return nil
+	}
+	return c.AuxiliaryFields
+}
+
 func (c *CreateCardsRequestCard) GetCardColor() *string {
 	if c == nil {
 		return nil
 	}
 	return c.CardColor
+}
+
+func (c *CreateCardsRequestCard) GetExpiresAt() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ExpiresAt
 }
 
 func (c *CreateCardsRequestCard) GetHeaderText() *string {
@@ -211,6 +237,20 @@ func (c *CreateCardsRequestCard) GetName() string {
 		return ""
 	}
 	return c.Name
+}
+
+func (c *CreateCardsRequestCard) GetShowMemberField() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ShowMemberField
+}
+
+func (c *CreateCardsRequestCard) GetShowStampsToRewardField() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ShowStampsToRewardField
 }
 
 func (c *CreateCardsRequestCard) GetStampBackgroundColor() *string {
@@ -283,11 +323,25 @@ func (c *CreateCardsRequestCard) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
+// SetAuxiliaryFields sets the AuxiliaryFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetAuxiliaryFields(auxiliaryFields []string) {
+	c.AuxiliaryFields = auxiliaryFields
+	c.require(createCardsRequestCardFieldAuxiliaryFields)
+}
+
 // SetCardColor sets the CardColor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateCardsRequestCard) SetCardColor(cardColor *string) {
 	c.CardColor = cardColor
 	c.require(createCardsRequestCardFieldCardColor)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetExpiresAt(expiresAt *string) {
+	c.ExpiresAt = expiresAt
+	c.require(createCardsRequestCardFieldExpiresAt)
 }
 
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
@@ -309,6 +363,20 @@ func (c *CreateCardsRequestCard) SetInitialStamps(initialStamps *int) {
 func (c *CreateCardsRequestCard) SetName(name string) {
 	c.Name = name
 	c.require(createCardsRequestCardFieldName)
+}
+
+// SetShowMemberField sets the ShowMemberField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetShowMemberField(showMemberField *bool) {
+	c.ShowMemberField = showMemberField
+	c.require(createCardsRequestCardFieldShowMemberField)
+}
+
+// SetShowStampsToRewardField sets the ShowStampsToRewardField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetShowStampsToRewardField(showStampsToRewardField *bool) {
+	c.ShowStampsToRewardField = showStampsToRewardField
+	c.require(createCardsRequestCardFieldShowStampsToRewardField)
 }
 
 // SetStampBackgroundColor sets the StampBackgroundColor field and marks it as non-optional;
@@ -410,35 +478,43 @@ func (c *CreateCardsRequestCard) String() string {
 }
 
 var (
-	createCardsResponseFieldArchivedAt           = big.NewInt(1 << 0)
-	createCardsResponseFieldCardColor            = big.NewInt(1 << 1)
-	createCardsResponseFieldCreatedAt            = big.NewInt(1 << 2)
-	createCardsResponseFieldCustomerCardsCount   = big.NewInt(1 << 3)
-	createCardsResponseFieldHeaderText           = big.NewInt(1 << 4)
-	createCardsResponseFieldID                   = big.NewInt(1 << 5)
-	createCardsResponseFieldInitialStamps        = big.NewInt(1 << 6)
-	createCardsResponseFieldName                 = big.NewInt(1 << 7)
-	createCardsResponseFieldRewardsCount         = big.NewInt(1 << 8)
-	createCardsResponseFieldStampBackgroundColor = big.NewInt(1 << 9)
-	createCardsResponseFieldStampColor           = big.NewInt(1 << 10)
-	createCardsResponseFieldStampIcon            = big.NewInt(1 << 11)
-	createCardsResponseFieldStampsRequired       = big.NewInt(1 << 12)
-	createCardsResponseFieldStripColor           = big.NewInt(1 << 13)
-	createCardsResponseFieldStripPreset          = big.NewInt(1 << 14)
-	createCardsResponseFieldStripType            = big.NewInt(1 << 15)
-	createCardsResponseFieldTextColor            = big.NewInt(1 << 16)
-	createCardsResponseFieldUpdatedAt            = big.NewInt(1 << 17)
+	createCardsResponseFieldArchivedAt              = big.NewInt(1 << 0)
+	createCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 1)
+	createCardsResponseFieldCardColor               = big.NewInt(1 << 2)
+	createCardsResponseFieldCreatedAt               = big.NewInt(1 << 3)
+	createCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 4)
+	createCardsResponseFieldExpiresAt               = big.NewInt(1 << 5)
+	createCardsResponseFieldHeaderText              = big.NewInt(1 << 6)
+	createCardsResponseFieldID                      = big.NewInt(1 << 7)
+	createCardsResponseFieldInitialStamps           = big.NewInt(1 << 8)
+	createCardsResponseFieldName                    = big.NewInt(1 << 9)
+	createCardsResponseFieldRewardsCount            = big.NewInt(1 << 10)
+	createCardsResponseFieldShowMemberField         = big.NewInt(1 << 11)
+	createCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 12)
+	createCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 13)
+	createCardsResponseFieldStampColor              = big.NewInt(1 << 14)
+	createCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
+	createCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
+	createCardsResponseFieldStripColor              = big.NewInt(1 << 17)
+	createCardsResponseFieldStripPreset             = big.NewInt(1 << 18)
+	createCardsResponseFieldStripType               = big.NewInt(1 << 19)
+	createCardsResponseFieldTextColor               = big.NewInt(1 << 20)
+	createCardsResponseFieldUpdatedAt               = big.NewInt(1 << 21)
 )
 
 type CreateCardsResponse struct {
 	// ISO 8601 timestamp when the card was archived, or null if active
 	ArchivedAt string `json:"archived_at" url:"archived_at"`
+	// Up to two extra front-of-pass fields
+	AuxiliaryFields []string `json:"auxiliary_fields" url:"auxiliary_fields"`
 	// Hex colour for the card background (e.g. '#6B4226')
 	CardColor string `json:"card_color" url:"card_color"`
 	// ISO 8601 creation timestamp
 	CreatedAt string `json:"created_at" url:"created_at"`
 	// Number of customer card instances issued
 	CustomerCardsCount int `json:"customer_cards_count" url:"customer_cards_count"`
+	// ISO 8601 timestamp when the card expires, or null if it does not expire
+	ExpiresAt string `json:"expires_at" url:"expires_at"`
 	// Optional header text displayed on the card
 	HeaderText string `json:"header_text" url:"header_text"`
 	// Unique card ID
@@ -449,6 +525,10 @@ type CreateCardsResponse struct {
 	Name string `json:"name" url:"name"`
 	// Number of rewards defined for this card
 	RewardsCount int `json:"rewards_count" url:"rewards_count"`
+	// Whether wallet passes show the member name field
+	ShowMemberField bool `json:"show_member_field" url:"show_member_field"`
+	// Whether wallet passes show the stamps-to-reward field
+	ShowStampsToRewardField bool `json:"show_stamps_to_reward_field" url:"show_stamps_to_reward_field"`
 	// Hex colour for stamp backgrounds
 	StampBackgroundColor string `json:"stamp_background_color" url:"stamp_background_color"`
 	// Hex colour for stamp icons
@@ -482,6 +562,13 @@ func (c *CreateCardsResponse) GetArchivedAt() string {
 	return c.ArchivedAt
 }
 
+func (c *CreateCardsResponse) GetAuxiliaryFields() []string {
+	if c == nil {
+		return nil
+	}
+	return c.AuxiliaryFields
+}
+
 func (c *CreateCardsResponse) GetCardColor() string {
 	if c == nil {
 		return ""
@@ -501,6 +588,13 @@ func (c *CreateCardsResponse) GetCustomerCardsCount() int {
 		return 0
 	}
 	return c.CustomerCardsCount
+}
+
+func (c *CreateCardsResponse) GetExpiresAt() string {
+	if c == nil {
+		return ""
+	}
+	return c.ExpiresAt
 }
 
 func (c *CreateCardsResponse) GetHeaderText() string {
@@ -536,6 +630,20 @@ func (c *CreateCardsResponse) GetRewardsCount() int {
 		return 0
 	}
 	return c.RewardsCount
+}
+
+func (c *CreateCardsResponse) GetShowMemberField() bool {
+	if c == nil {
+		return false
+	}
+	return c.ShowMemberField
+}
+
+func (c *CreateCardsResponse) GetShowStampsToRewardField() bool {
+	if c == nil {
+		return false
+	}
+	return c.ShowStampsToRewardField
 }
 
 func (c *CreateCardsResponse) GetStampBackgroundColor() string {
@@ -622,6 +730,13 @@ func (c *CreateCardsResponse) SetArchivedAt(archivedAt string) {
 	c.require(createCardsResponseFieldArchivedAt)
 }
 
+// SetAuxiliaryFields sets the AuxiliaryFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetAuxiliaryFields(auxiliaryFields []string) {
+	c.AuxiliaryFields = auxiliaryFields
+	c.require(createCardsResponseFieldAuxiliaryFields)
+}
+
 // SetCardColor sets the CardColor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateCardsResponse) SetCardColor(cardColor string) {
@@ -641,6 +756,13 @@ func (c *CreateCardsResponse) SetCreatedAt(createdAt string) {
 func (c *CreateCardsResponse) SetCustomerCardsCount(customerCardsCount int) {
 	c.CustomerCardsCount = customerCardsCount
 	c.require(createCardsResponseFieldCustomerCardsCount)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetExpiresAt(expiresAt string) {
+	c.ExpiresAt = expiresAt
+	c.require(createCardsResponseFieldExpiresAt)
 }
 
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
@@ -676,6 +798,20 @@ func (c *CreateCardsResponse) SetName(name string) {
 func (c *CreateCardsResponse) SetRewardsCount(rewardsCount int) {
 	c.RewardsCount = rewardsCount
 	c.require(createCardsResponseFieldRewardsCount)
+}
+
+// SetShowMemberField sets the ShowMemberField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetShowMemberField(showMemberField bool) {
+	c.ShowMemberField = showMemberField
+	c.require(createCardsResponseFieldShowMemberField)
+}
+
+// SetShowStampsToRewardField sets the ShowStampsToRewardField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetShowStampsToRewardField(showStampsToRewardField bool) {
+	c.ShowStampsToRewardField = showStampsToRewardField
+	c.require(createCardsResponseFieldShowStampsToRewardField)
 }
 
 // SetStampBackgroundColor sets the StampBackgroundColor field and marks it as non-optional;
@@ -784,35 +920,43 @@ func (c *CreateCardsResponse) String() string {
 }
 
 var (
-	getCardsResponseFieldArchivedAt           = big.NewInt(1 << 0)
-	getCardsResponseFieldCardColor            = big.NewInt(1 << 1)
-	getCardsResponseFieldCreatedAt            = big.NewInt(1 << 2)
-	getCardsResponseFieldCustomerCardsCount   = big.NewInt(1 << 3)
-	getCardsResponseFieldHeaderText           = big.NewInt(1 << 4)
-	getCardsResponseFieldID                   = big.NewInt(1 << 5)
-	getCardsResponseFieldInitialStamps        = big.NewInt(1 << 6)
-	getCardsResponseFieldName                 = big.NewInt(1 << 7)
-	getCardsResponseFieldRewardsCount         = big.NewInt(1 << 8)
-	getCardsResponseFieldStampBackgroundColor = big.NewInt(1 << 9)
-	getCardsResponseFieldStampColor           = big.NewInt(1 << 10)
-	getCardsResponseFieldStampIcon            = big.NewInt(1 << 11)
-	getCardsResponseFieldStampsRequired       = big.NewInt(1 << 12)
-	getCardsResponseFieldStripColor           = big.NewInt(1 << 13)
-	getCardsResponseFieldStripPreset          = big.NewInt(1 << 14)
-	getCardsResponseFieldStripType            = big.NewInt(1 << 15)
-	getCardsResponseFieldTextColor            = big.NewInt(1 << 16)
-	getCardsResponseFieldUpdatedAt            = big.NewInt(1 << 17)
+	getCardsResponseFieldArchivedAt              = big.NewInt(1 << 0)
+	getCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 1)
+	getCardsResponseFieldCardColor               = big.NewInt(1 << 2)
+	getCardsResponseFieldCreatedAt               = big.NewInt(1 << 3)
+	getCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 4)
+	getCardsResponseFieldExpiresAt               = big.NewInt(1 << 5)
+	getCardsResponseFieldHeaderText              = big.NewInt(1 << 6)
+	getCardsResponseFieldID                      = big.NewInt(1 << 7)
+	getCardsResponseFieldInitialStamps           = big.NewInt(1 << 8)
+	getCardsResponseFieldName                    = big.NewInt(1 << 9)
+	getCardsResponseFieldRewardsCount            = big.NewInt(1 << 10)
+	getCardsResponseFieldShowMemberField         = big.NewInt(1 << 11)
+	getCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 12)
+	getCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 13)
+	getCardsResponseFieldStampColor              = big.NewInt(1 << 14)
+	getCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
+	getCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
+	getCardsResponseFieldStripColor              = big.NewInt(1 << 17)
+	getCardsResponseFieldStripPreset             = big.NewInt(1 << 18)
+	getCardsResponseFieldStripType               = big.NewInt(1 << 19)
+	getCardsResponseFieldTextColor               = big.NewInt(1 << 20)
+	getCardsResponseFieldUpdatedAt               = big.NewInt(1 << 21)
 )
 
 type GetCardsResponse struct {
 	// ISO 8601 timestamp when the card was archived, or null if active
 	ArchivedAt string `json:"archived_at" url:"archived_at"`
+	// Up to two extra front-of-pass fields
+	AuxiliaryFields []string `json:"auxiliary_fields" url:"auxiliary_fields"`
 	// Hex colour for the card background (e.g. '#6B4226')
 	CardColor string `json:"card_color" url:"card_color"`
 	// ISO 8601 creation timestamp
 	CreatedAt string `json:"created_at" url:"created_at"`
 	// Number of customer card instances issued
 	CustomerCardsCount int `json:"customer_cards_count" url:"customer_cards_count"`
+	// ISO 8601 timestamp when the card expires, or null if it does not expire
+	ExpiresAt string `json:"expires_at" url:"expires_at"`
 	// Optional header text displayed on the card
 	HeaderText string `json:"header_text" url:"header_text"`
 	// Unique card ID
@@ -823,6 +967,10 @@ type GetCardsResponse struct {
 	Name string `json:"name" url:"name"`
 	// Number of rewards defined for this card
 	RewardsCount int `json:"rewards_count" url:"rewards_count"`
+	// Whether wallet passes show the member name field
+	ShowMemberField bool `json:"show_member_field" url:"show_member_field"`
+	// Whether wallet passes show the stamps-to-reward field
+	ShowStampsToRewardField bool `json:"show_stamps_to_reward_field" url:"show_stamps_to_reward_field"`
 	// Hex colour for stamp backgrounds
 	StampBackgroundColor string `json:"stamp_background_color" url:"stamp_background_color"`
 	// Hex colour for stamp icons
@@ -856,6 +1004,13 @@ func (g *GetCardsResponse) GetArchivedAt() string {
 	return g.ArchivedAt
 }
 
+func (g *GetCardsResponse) GetAuxiliaryFields() []string {
+	if g == nil {
+		return nil
+	}
+	return g.AuxiliaryFields
+}
+
 func (g *GetCardsResponse) GetCardColor() string {
 	if g == nil {
 		return ""
@@ -875,6 +1030,13 @@ func (g *GetCardsResponse) GetCustomerCardsCount() int {
 		return 0
 	}
 	return g.CustomerCardsCount
+}
+
+func (g *GetCardsResponse) GetExpiresAt() string {
+	if g == nil {
+		return ""
+	}
+	return g.ExpiresAt
 }
 
 func (g *GetCardsResponse) GetHeaderText() string {
@@ -910,6 +1072,20 @@ func (g *GetCardsResponse) GetRewardsCount() int {
 		return 0
 	}
 	return g.RewardsCount
+}
+
+func (g *GetCardsResponse) GetShowMemberField() bool {
+	if g == nil {
+		return false
+	}
+	return g.ShowMemberField
+}
+
+func (g *GetCardsResponse) GetShowStampsToRewardField() bool {
+	if g == nil {
+		return false
+	}
+	return g.ShowStampsToRewardField
 }
 
 func (g *GetCardsResponse) GetStampBackgroundColor() string {
@@ -996,6 +1172,13 @@ func (g *GetCardsResponse) SetArchivedAt(archivedAt string) {
 	g.require(getCardsResponseFieldArchivedAt)
 }
 
+// SetAuxiliaryFields sets the AuxiliaryFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetAuxiliaryFields(auxiliaryFields []string) {
+	g.AuxiliaryFields = auxiliaryFields
+	g.require(getCardsResponseFieldAuxiliaryFields)
+}
+
 // SetCardColor sets the CardColor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetCardsResponse) SetCardColor(cardColor string) {
@@ -1015,6 +1198,13 @@ func (g *GetCardsResponse) SetCreatedAt(createdAt string) {
 func (g *GetCardsResponse) SetCustomerCardsCount(customerCardsCount int) {
 	g.CustomerCardsCount = customerCardsCount
 	g.require(getCardsResponseFieldCustomerCardsCount)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetExpiresAt(expiresAt string) {
+	g.ExpiresAt = expiresAt
+	g.require(getCardsResponseFieldExpiresAt)
 }
 
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
@@ -1050,6 +1240,20 @@ func (g *GetCardsResponse) SetName(name string) {
 func (g *GetCardsResponse) SetRewardsCount(rewardsCount int) {
 	g.RewardsCount = rewardsCount
 	g.require(getCardsResponseFieldRewardsCount)
+}
+
+// SetShowMemberField sets the ShowMemberField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetShowMemberField(showMemberField bool) {
+	g.ShowMemberField = showMemberField
+	g.require(getCardsResponseFieldShowMemberField)
+}
+
+// SetShowStampsToRewardField sets the ShowStampsToRewardField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetShowStampsToRewardField(showStampsToRewardField bool) {
+	g.ShowStampsToRewardField = showStampsToRewardField
+	g.require(getCardsResponseFieldShowStampsToRewardField)
 }
 
 // SetStampBackgroundColor sets the StampBackgroundColor field and marks it as non-optional;
@@ -1158,35 +1362,43 @@ func (g *GetCardsResponse) String() string {
 }
 
 var (
-	listCardsResponseItemFieldArchivedAt           = big.NewInt(1 << 0)
-	listCardsResponseItemFieldCardColor            = big.NewInt(1 << 1)
-	listCardsResponseItemFieldCreatedAt            = big.NewInt(1 << 2)
-	listCardsResponseItemFieldCustomerCardsCount   = big.NewInt(1 << 3)
-	listCardsResponseItemFieldHeaderText           = big.NewInt(1 << 4)
-	listCardsResponseItemFieldID                   = big.NewInt(1 << 5)
-	listCardsResponseItemFieldInitialStamps        = big.NewInt(1 << 6)
-	listCardsResponseItemFieldName                 = big.NewInt(1 << 7)
-	listCardsResponseItemFieldRewardsCount         = big.NewInt(1 << 8)
-	listCardsResponseItemFieldStampBackgroundColor = big.NewInt(1 << 9)
-	listCardsResponseItemFieldStampColor           = big.NewInt(1 << 10)
-	listCardsResponseItemFieldStampIcon            = big.NewInt(1 << 11)
-	listCardsResponseItemFieldStampsRequired       = big.NewInt(1 << 12)
-	listCardsResponseItemFieldStripColor           = big.NewInt(1 << 13)
-	listCardsResponseItemFieldStripPreset          = big.NewInt(1 << 14)
-	listCardsResponseItemFieldStripType            = big.NewInt(1 << 15)
-	listCardsResponseItemFieldTextColor            = big.NewInt(1 << 16)
-	listCardsResponseItemFieldUpdatedAt            = big.NewInt(1 << 17)
+	listCardsResponseItemFieldArchivedAt              = big.NewInt(1 << 0)
+	listCardsResponseItemFieldAuxiliaryFields         = big.NewInt(1 << 1)
+	listCardsResponseItemFieldCardColor               = big.NewInt(1 << 2)
+	listCardsResponseItemFieldCreatedAt               = big.NewInt(1 << 3)
+	listCardsResponseItemFieldCustomerCardsCount      = big.NewInt(1 << 4)
+	listCardsResponseItemFieldExpiresAt               = big.NewInt(1 << 5)
+	listCardsResponseItemFieldHeaderText              = big.NewInt(1 << 6)
+	listCardsResponseItemFieldID                      = big.NewInt(1 << 7)
+	listCardsResponseItemFieldInitialStamps           = big.NewInt(1 << 8)
+	listCardsResponseItemFieldName                    = big.NewInt(1 << 9)
+	listCardsResponseItemFieldRewardsCount            = big.NewInt(1 << 10)
+	listCardsResponseItemFieldShowMemberField         = big.NewInt(1 << 11)
+	listCardsResponseItemFieldShowStampsToRewardField = big.NewInt(1 << 12)
+	listCardsResponseItemFieldStampBackgroundColor    = big.NewInt(1 << 13)
+	listCardsResponseItemFieldStampColor              = big.NewInt(1 << 14)
+	listCardsResponseItemFieldStampIcon               = big.NewInt(1 << 15)
+	listCardsResponseItemFieldStampsRequired          = big.NewInt(1 << 16)
+	listCardsResponseItemFieldStripColor              = big.NewInt(1 << 17)
+	listCardsResponseItemFieldStripPreset             = big.NewInt(1 << 18)
+	listCardsResponseItemFieldStripType               = big.NewInt(1 << 19)
+	listCardsResponseItemFieldTextColor               = big.NewInt(1 << 20)
+	listCardsResponseItemFieldUpdatedAt               = big.NewInt(1 << 21)
 )
 
 type ListCardsResponseItem struct {
 	// ISO 8601 timestamp when the card was archived, or null if active
 	ArchivedAt string `json:"archived_at" url:"archived_at"`
+	// Up to two extra front-of-pass fields
+	AuxiliaryFields []string `json:"auxiliary_fields" url:"auxiliary_fields"`
 	// Hex colour for the card background (e.g. '#6B4226')
 	CardColor string `json:"card_color" url:"card_color"`
 	// ISO 8601 creation timestamp
 	CreatedAt string `json:"created_at" url:"created_at"`
 	// Number of customer card instances issued
 	CustomerCardsCount int `json:"customer_cards_count" url:"customer_cards_count"`
+	// ISO 8601 timestamp when the card expires, or null if it does not expire
+	ExpiresAt string `json:"expires_at" url:"expires_at"`
 	// Optional header text displayed on the card
 	HeaderText string `json:"header_text" url:"header_text"`
 	// Unique card ID
@@ -1197,6 +1409,10 @@ type ListCardsResponseItem struct {
 	Name string `json:"name" url:"name"`
 	// Number of rewards defined for this card
 	RewardsCount int `json:"rewards_count" url:"rewards_count"`
+	// Whether wallet passes show the member name field
+	ShowMemberField bool `json:"show_member_field" url:"show_member_field"`
+	// Whether wallet passes show the stamps-to-reward field
+	ShowStampsToRewardField bool `json:"show_stamps_to_reward_field" url:"show_stamps_to_reward_field"`
 	// Hex colour for stamp backgrounds
 	StampBackgroundColor string `json:"stamp_background_color" url:"stamp_background_color"`
 	// Hex colour for stamp icons
@@ -1230,6 +1446,13 @@ func (l *ListCardsResponseItem) GetArchivedAt() string {
 	return l.ArchivedAt
 }
 
+func (l *ListCardsResponseItem) GetAuxiliaryFields() []string {
+	if l == nil {
+		return nil
+	}
+	return l.AuxiliaryFields
+}
+
 func (l *ListCardsResponseItem) GetCardColor() string {
 	if l == nil {
 		return ""
@@ -1249,6 +1472,13 @@ func (l *ListCardsResponseItem) GetCustomerCardsCount() int {
 		return 0
 	}
 	return l.CustomerCardsCount
+}
+
+func (l *ListCardsResponseItem) GetExpiresAt() string {
+	if l == nil {
+		return ""
+	}
+	return l.ExpiresAt
 }
 
 func (l *ListCardsResponseItem) GetHeaderText() string {
@@ -1284,6 +1514,20 @@ func (l *ListCardsResponseItem) GetRewardsCount() int {
 		return 0
 	}
 	return l.RewardsCount
+}
+
+func (l *ListCardsResponseItem) GetShowMemberField() bool {
+	if l == nil {
+		return false
+	}
+	return l.ShowMemberField
+}
+
+func (l *ListCardsResponseItem) GetShowStampsToRewardField() bool {
+	if l == nil {
+		return false
+	}
+	return l.ShowStampsToRewardField
 }
 
 func (l *ListCardsResponseItem) GetStampBackgroundColor() string {
@@ -1370,6 +1614,13 @@ func (l *ListCardsResponseItem) SetArchivedAt(archivedAt string) {
 	l.require(listCardsResponseItemFieldArchivedAt)
 }
 
+// SetAuxiliaryFields sets the AuxiliaryFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetAuxiliaryFields(auxiliaryFields []string) {
+	l.AuxiliaryFields = auxiliaryFields
+	l.require(listCardsResponseItemFieldAuxiliaryFields)
+}
+
 // SetCardColor sets the CardColor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListCardsResponseItem) SetCardColor(cardColor string) {
@@ -1389,6 +1640,13 @@ func (l *ListCardsResponseItem) SetCreatedAt(createdAt string) {
 func (l *ListCardsResponseItem) SetCustomerCardsCount(customerCardsCount int) {
 	l.CustomerCardsCount = customerCardsCount
 	l.require(listCardsResponseItemFieldCustomerCardsCount)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetExpiresAt(expiresAt string) {
+	l.ExpiresAt = expiresAt
+	l.require(listCardsResponseItemFieldExpiresAt)
 }
 
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
@@ -1424,6 +1682,20 @@ func (l *ListCardsResponseItem) SetName(name string) {
 func (l *ListCardsResponseItem) SetRewardsCount(rewardsCount int) {
 	l.RewardsCount = rewardsCount
 	l.require(listCardsResponseItemFieldRewardsCount)
+}
+
+// SetShowMemberField sets the ShowMemberField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetShowMemberField(showMemberField bool) {
+	l.ShowMemberField = showMemberField
+	l.require(listCardsResponseItemFieldShowMemberField)
+}
+
+// SetShowStampsToRewardField sets the ShowStampsToRewardField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetShowStampsToRewardField(showStampsToRewardField bool) {
+	l.ShowStampsToRewardField = showStampsToRewardField
+	l.require(listCardsResponseItemFieldShowStampsToRewardField)
 }
 
 // SetStampBackgroundColor sets the StampBackgroundColor field and marks it as non-optional;
@@ -1532,29 +1804,41 @@ func (l *ListCardsResponseItem) String() string {
 }
 
 var (
-	updateCardsRequestCardFieldCardColor            = big.NewInt(1 << 0)
-	updateCardsRequestCardFieldHeaderText           = big.NewInt(1 << 1)
-	updateCardsRequestCardFieldInitialStamps        = big.NewInt(1 << 2)
-	updateCardsRequestCardFieldName                 = big.NewInt(1 << 3)
-	updateCardsRequestCardFieldStampBackgroundColor = big.NewInt(1 << 4)
-	updateCardsRequestCardFieldStampColor           = big.NewInt(1 << 5)
-	updateCardsRequestCardFieldStampIcon            = big.NewInt(1 << 6)
-	updateCardsRequestCardFieldStampsRequired       = big.NewInt(1 << 7)
-	updateCardsRequestCardFieldStripColor           = big.NewInt(1 << 8)
-	updateCardsRequestCardFieldStripPreset          = big.NewInt(1 << 9)
-	updateCardsRequestCardFieldStripType            = big.NewInt(1 << 10)
-	updateCardsRequestCardFieldTextColor            = big.NewInt(1 << 11)
+	updateCardsRequestCardFieldAuxiliaryFields         = big.NewInt(1 << 0)
+	updateCardsRequestCardFieldCardColor               = big.NewInt(1 << 1)
+	updateCardsRequestCardFieldExpiresAt               = big.NewInt(1 << 2)
+	updateCardsRequestCardFieldHeaderText              = big.NewInt(1 << 3)
+	updateCardsRequestCardFieldInitialStamps           = big.NewInt(1 << 4)
+	updateCardsRequestCardFieldName                    = big.NewInt(1 << 5)
+	updateCardsRequestCardFieldShowMemberField         = big.NewInt(1 << 6)
+	updateCardsRequestCardFieldShowStampsToRewardField = big.NewInt(1 << 7)
+	updateCardsRequestCardFieldStampBackgroundColor    = big.NewInt(1 << 8)
+	updateCardsRequestCardFieldStampColor              = big.NewInt(1 << 9)
+	updateCardsRequestCardFieldStampIcon               = big.NewInt(1 << 10)
+	updateCardsRequestCardFieldStampsRequired          = big.NewInt(1 << 11)
+	updateCardsRequestCardFieldStripColor              = big.NewInt(1 << 12)
+	updateCardsRequestCardFieldStripPreset             = big.NewInt(1 << 13)
+	updateCardsRequestCardFieldStripType               = big.NewInt(1 << 14)
+	updateCardsRequestCardFieldTextColor               = big.NewInt(1 << 15)
 )
 
 type UpdateCardsRequestCard struct {
+	// Up to two extra front-of-pass fields. Blank values are ignored.
+	AuxiliaryFields []string `json:"auxiliary_fields,omitempty" url:"auxiliary_fields,omitempty"`
 	// Hex colour for the card background
 	CardColor *string `json:"card_color,omitempty" url:"card_color,omitempty"`
+	// Card expiry timestamp (ISO 8601)
+	ExpiresAt *string `json:"expires_at,omitempty" url:"expires_at,omitempty"`
 	// Optional header text displayed on the card
 	HeaderText *string `json:"header_text,omitempty" url:"header_text,omitempty"`
 	// Pre-filled stamps (must be >= 0 and < stamps_required)
 	InitialStamps *int `json:"initial_stamps,omitempty" url:"initial_stamps,omitempty"`
 	// Card name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Whether wallet passes show the member name field
+	ShowMemberField *bool `json:"show_member_field,omitempty" url:"show_member_field,omitempty"`
+	// Whether wallet passes show the stamps-to-reward field
+	ShowStampsToRewardField *bool `json:"show_stamps_to_reward_field,omitempty" url:"show_stamps_to_reward_field,omitempty"`
 	// Hex colour for stamp backgrounds
 	StampBackgroundColor *string `json:"stamp_background_color,omitempty" url:"stamp_background_color,omitempty"`
 	// Hex colour for stamp icons
@@ -1579,11 +1863,25 @@ type UpdateCardsRequestCard struct {
 	rawJSON         json.RawMessage
 }
 
+func (u *UpdateCardsRequestCard) GetAuxiliaryFields() []string {
+	if u == nil {
+		return nil
+	}
+	return u.AuxiliaryFields
+}
+
 func (u *UpdateCardsRequestCard) GetCardColor() *string {
 	if u == nil {
 		return nil
 	}
 	return u.CardColor
+}
+
+func (u *UpdateCardsRequestCard) GetExpiresAt() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ExpiresAt
 }
 
 func (u *UpdateCardsRequestCard) GetHeaderText() *string {
@@ -1605,6 +1903,20 @@ func (u *UpdateCardsRequestCard) GetName() *string {
 		return nil
 	}
 	return u.Name
+}
+
+func (u *UpdateCardsRequestCard) GetShowMemberField() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.ShowMemberField
+}
+
+func (u *UpdateCardsRequestCard) GetShowStampsToRewardField() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.ShowStampsToRewardField
 }
 
 func (u *UpdateCardsRequestCard) GetStampBackgroundColor() *string {
@@ -1677,11 +1989,25 @@ func (u *UpdateCardsRequestCard) require(field *big.Int) {
 	u.explicitFields.Or(u.explicitFields, field)
 }
 
+// SetAuxiliaryFields sets the AuxiliaryFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetAuxiliaryFields(auxiliaryFields []string) {
+	u.AuxiliaryFields = auxiliaryFields
+	u.require(updateCardsRequestCardFieldAuxiliaryFields)
+}
+
 // SetCardColor sets the CardColor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateCardsRequestCard) SetCardColor(cardColor *string) {
 	u.CardColor = cardColor
 	u.require(updateCardsRequestCardFieldCardColor)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetExpiresAt(expiresAt *string) {
+	u.ExpiresAt = expiresAt
+	u.require(updateCardsRequestCardFieldExpiresAt)
 }
 
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
@@ -1703,6 +2029,20 @@ func (u *UpdateCardsRequestCard) SetInitialStamps(initialStamps *int) {
 func (u *UpdateCardsRequestCard) SetName(name *string) {
 	u.Name = name
 	u.require(updateCardsRequestCardFieldName)
+}
+
+// SetShowMemberField sets the ShowMemberField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetShowMemberField(showMemberField *bool) {
+	u.ShowMemberField = showMemberField
+	u.require(updateCardsRequestCardFieldShowMemberField)
+}
+
+// SetShowStampsToRewardField sets the ShowStampsToRewardField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetShowStampsToRewardField(showStampsToRewardField *bool) {
+	u.ShowStampsToRewardField = showStampsToRewardField
+	u.require(updateCardsRequestCardFieldShowStampsToRewardField)
 }
 
 // SetStampBackgroundColor sets the StampBackgroundColor field and marks it as non-optional;
@@ -1804,35 +2144,43 @@ func (u *UpdateCardsRequestCard) String() string {
 }
 
 var (
-	updateCardsResponseFieldArchivedAt           = big.NewInt(1 << 0)
-	updateCardsResponseFieldCardColor            = big.NewInt(1 << 1)
-	updateCardsResponseFieldCreatedAt            = big.NewInt(1 << 2)
-	updateCardsResponseFieldCustomerCardsCount   = big.NewInt(1 << 3)
-	updateCardsResponseFieldHeaderText           = big.NewInt(1 << 4)
-	updateCardsResponseFieldID                   = big.NewInt(1 << 5)
-	updateCardsResponseFieldInitialStamps        = big.NewInt(1 << 6)
-	updateCardsResponseFieldName                 = big.NewInt(1 << 7)
-	updateCardsResponseFieldRewardsCount         = big.NewInt(1 << 8)
-	updateCardsResponseFieldStampBackgroundColor = big.NewInt(1 << 9)
-	updateCardsResponseFieldStampColor           = big.NewInt(1 << 10)
-	updateCardsResponseFieldStampIcon            = big.NewInt(1 << 11)
-	updateCardsResponseFieldStampsRequired       = big.NewInt(1 << 12)
-	updateCardsResponseFieldStripColor           = big.NewInt(1 << 13)
-	updateCardsResponseFieldStripPreset          = big.NewInt(1 << 14)
-	updateCardsResponseFieldStripType            = big.NewInt(1 << 15)
-	updateCardsResponseFieldTextColor            = big.NewInt(1 << 16)
-	updateCardsResponseFieldUpdatedAt            = big.NewInt(1 << 17)
+	updateCardsResponseFieldArchivedAt              = big.NewInt(1 << 0)
+	updateCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 1)
+	updateCardsResponseFieldCardColor               = big.NewInt(1 << 2)
+	updateCardsResponseFieldCreatedAt               = big.NewInt(1 << 3)
+	updateCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 4)
+	updateCardsResponseFieldExpiresAt               = big.NewInt(1 << 5)
+	updateCardsResponseFieldHeaderText              = big.NewInt(1 << 6)
+	updateCardsResponseFieldID                      = big.NewInt(1 << 7)
+	updateCardsResponseFieldInitialStamps           = big.NewInt(1 << 8)
+	updateCardsResponseFieldName                    = big.NewInt(1 << 9)
+	updateCardsResponseFieldRewardsCount            = big.NewInt(1 << 10)
+	updateCardsResponseFieldShowMemberField         = big.NewInt(1 << 11)
+	updateCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 12)
+	updateCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 13)
+	updateCardsResponseFieldStampColor              = big.NewInt(1 << 14)
+	updateCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
+	updateCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
+	updateCardsResponseFieldStripColor              = big.NewInt(1 << 17)
+	updateCardsResponseFieldStripPreset             = big.NewInt(1 << 18)
+	updateCardsResponseFieldStripType               = big.NewInt(1 << 19)
+	updateCardsResponseFieldTextColor               = big.NewInt(1 << 20)
+	updateCardsResponseFieldUpdatedAt               = big.NewInt(1 << 21)
 )
 
 type UpdateCardsResponse struct {
 	// ISO 8601 timestamp when the card was archived, or null if active
 	ArchivedAt string `json:"archived_at" url:"archived_at"`
+	// Up to two extra front-of-pass fields
+	AuxiliaryFields []string `json:"auxiliary_fields" url:"auxiliary_fields"`
 	// Hex colour for the card background (e.g. '#6B4226')
 	CardColor string `json:"card_color" url:"card_color"`
 	// ISO 8601 creation timestamp
 	CreatedAt string `json:"created_at" url:"created_at"`
 	// Number of customer card instances issued
 	CustomerCardsCount int `json:"customer_cards_count" url:"customer_cards_count"`
+	// ISO 8601 timestamp when the card expires, or null if it does not expire
+	ExpiresAt string `json:"expires_at" url:"expires_at"`
 	// Optional header text displayed on the card
 	HeaderText string `json:"header_text" url:"header_text"`
 	// Unique card ID
@@ -1843,6 +2191,10 @@ type UpdateCardsResponse struct {
 	Name string `json:"name" url:"name"`
 	// Number of rewards defined for this card
 	RewardsCount int `json:"rewards_count" url:"rewards_count"`
+	// Whether wallet passes show the member name field
+	ShowMemberField bool `json:"show_member_field" url:"show_member_field"`
+	// Whether wallet passes show the stamps-to-reward field
+	ShowStampsToRewardField bool `json:"show_stamps_to_reward_field" url:"show_stamps_to_reward_field"`
 	// Hex colour for stamp backgrounds
 	StampBackgroundColor string `json:"stamp_background_color" url:"stamp_background_color"`
 	// Hex colour for stamp icons
@@ -1876,6 +2228,13 @@ func (u *UpdateCardsResponse) GetArchivedAt() string {
 	return u.ArchivedAt
 }
 
+func (u *UpdateCardsResponse) GetAuxiliaryFields() []string {
+	if u == nil {
+		return nil
+	}
+	return u.AuxiliaryFields
+}
+
 func (u *UpdateCardsResponse) GetCardColor() string {
 	if u == nil {
 		return ""
@@ -1895,6 +2254,13 @@ func (u *UpdateCardsResponse) GetCustomerCardsCount() int {
 		return 0
 	}
 	return u.CustomerCardsCount
+}
+
+func (u *UpdateCardsResponse) GetExpiresAt() string {
+	if u == nil {
+		return ""
+	}
+	return u.ExpiresAt
 }
 
 func (u *UpdateCardsResponse) GetHeaderText() string {
@@ -1930,6 +2296,20 @@ func (u *UpdateCardsResponse) GetRewardsCount() int {
 		return 0
 	}
 	return u.RewardsCount
+}
+
+func (u *UpdateCardsResponse) GetShowMemberField() bool {
+	if u == nil {
+		return false
+	}
+	return u.ShowMemberField
+}
+
+func (u *UpdateCardsResponse) GetShowStampsToRewardField() bool {
+	if u == nil {
+		return false
+	}
+	return u.ShowStampsToRewardField
 }
 
 func (u *UpdateCardsResponse) GetStampBackgroundColor() string {
@@ -2016,6 +2396,13 @@ func (u *UpdateCardsResponse) SetArchivedAt(archivedAt string) {
 	u.require(updateCardsResponseFieldArchivedAt)
 }
 
+// SetAuxiliaryFields sets the AuxiliaryFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetAuxiliaryFields(auxiliaryFields []string) {
+	u.AuxiliaryFields = auxiliaryFields
+	u.require(updateCardsResponseFieldAuxiliaryFields)
+}
+
 // SetCardColor sets the CardColor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateCardsResponse) SetCardColor(cardColor string) {
@@ -2035,6 +2422,13 @@ func (u *UpdateCardsResponse) SetCreatedAt(createdAt string) {
 func (u *UpdateCardsResponse) SetCustomerCardsCount(customerCardsCount int) {
 	u.CustomerCardsCount = customerCardsCount
 	u.require(updateCardsResponseFieldCustomerCardsCount)
+}
+
+// SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetExpiresAt(expiresAt string) {
+	u.ExpiresAt = expiresAt
+	u.require(updateCardsResponseFieldExpiresAt)
 }
 
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
@@ -2070,6 +2464,20 @@ func (u *UpdateCardsResponse) SetName(name string) {
 func (u *UpdateCardsResponse) SetRewardsCount(rewardsCount int) {
 	u.RewardsCount = rewardsCount
 	u.require(updateCardsResponseFieldRewardsCount)
+}
+
+// SetShowMemberField sets the ShowMemberField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetShowMemberField(showMemberField bool) {
+	u.ShowMemberField = showMemberField
+	u.require(updateCardsResponseFieldShowMemberField)
+}
+
+// SetShowStampsToRewardField sets the ShowStampsToRewardField field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetShowStampsToRewardField(showStampsToRewardField bool) {
+	u.ShowStampsToRewardField = showStampsToRewardField
+	u.require(updateCardsResponseFieldShowStampsToRewardField)
 }
 
 // SetStampBackgroundColor sets the StampBackgroundColor field and marks it as non-optional;
