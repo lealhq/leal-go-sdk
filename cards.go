@@ -151,9 +151,10 @@ var (
 	createCardsRequestCardFieldStampIcon               = big.NewInt(1 << 10)
 	createCardsRequestCardFieldStampsRequired          = big.NewInt(1 << 11)
 	createCardsRequestCardFieldStripColor              = big.NewInt(1 << 12)
-	createCardsRequestCardFieldStripPreset             = big.NewInt(1 << 13)
-	createCardsRequestCardFieldStripType               = big.NewInt(1 << 14)
-	createCardsRequestCardFieldTextColor               = big.NewInt(1 << 15)
+	createCardsRequestCardFieldStripOpacity            = big.NewInt(1 << 13)
+	createCardsRequestCardFieldStripPreset             = big.NewInt(1 << 14)
+	createCardsRequestCardFieldStripType               = big.NewInt(1 << 15)
+	createCardsRequestCardFieldTextColor               = big.NewInt(1 << 16)
 )
 
 type CreateCardsRequestCard struct {
@@ -183,6 +184,8 @@ type CreateCardsRequestCard struct {
 	StampsRequired *int `json:"stamps_required,omitempty" url:"stamps_required,omitempty"`
 	// Hex colour for the strip (used when strip_type is 'color')
 	StripColor *string `json:"strip_color,omitempty" url:"strip_color,omitempty"`
+	// Opacity (0–100) of the strip background over the card colour. Defaults to 100, which renders the colour or image exactly as supplied
+	StripOpacity *float64 `json:"strip_opacity,omitempty" url:"strip_opacity,omitempty"`
 	// Preset strip image identifier (used when strip_type is 'preset')
 	StripPreset *string `json:"strip_preset,omitempty" url:"strip_preset,omitempty"`
 	// Strip image type
@@ -286,6 +289,13 @@ func (c *CreateCardsRequestCard) GetStripColor() *string {
 		return nil
 	}
 	return c.StripColor
+}
+
+func (c *CreateCardsRequestCard) GetStripOpacity() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.StripOpacity
 }
 
 func (c *CreateCardsRequestCard) GetStripPreset() *string {
@@ -414,6 +424,13 @@ func (c *CreateCardsRequestCard) SetStripColor(stripColor *string) {
 	c.require(createCardsRequestCardFieldStripColor)
 }
 
+// SetStripOpacity sets the StripOpacity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetStripOpacity(stripOpacity *float64) {
+	c.StripOpacity = stripOpacity
+	c.require(createCardsRequestCardFieldStripOpacity)
+}
+
 // SetStripPreset sets the StripPreset field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateCardsRequestCard) SetStripPreset(stripPreset *string) {
@@ -496,10 +513,11 @@ var (
 	createCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
 	createCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
 	createCardsResponseFieldStripColor              = big.NewInt(1 << 17)
-	createCardsResponseFieldStripPreset             = big.NewInt(1 << 18)
-	createCardsResponseFieldStripType               = big.NewInt(1 << 19)
-	createCardsResponseFieldTextColor               = big.NewInt(1 << 20)
-	createCardsResponseFieldUpdatedAt               = big.NewInt(1 << 21)
+	createCardsResponseFieldStripOpacity            = big.NewInt(1 << 18)
+	createCardsResponseFieldStripPreset             = big.NewInt(1 << 19)
+	createCardsResponseFieldStripType               = big.NewInt(1 << 20)
+	createCardsResponseFieldTextColor               = big.NewInt(1 << 21)
+	createCardsResponseFieldUpdatedAt               = big.NewInt(1 << 22)
 )
 
 type CreateCardsResponse struct {
@@ -539,6 +557,8 @@ type CreateCardsResponse struct {
 	StampsRequired int `json:"stamps_required" url:"stamps_required"`
 	// Hex colour for the strip (when strip_type is 'color')
 	StripColor string `json:"strip_color" url:"strip_color"`
+	// Opacity (0–100) of the strip background over the card colour, for a colour, an uploaded image or a preset alike. 100 renders the colour or image exactly as supplied; lower values let the card colour show through
+	StripOpacity float64 `json:"strip_opacity" url:"strip_opacity"`
 	// Preset strip image identifier (when strip_type is 'preset')
 	StripPreset string `json:"strip_preset" url:"strip_preset"`
 	// Strip image type: 'color', 'image', or 'preset'
@@ -679,6 +699,13 @@ func (c *CreateCardsResponse) GetStripColor() string {
 		return ""
 	}
 	return c.StripColor
+}
+
+func (c *CreateCardsResponse) GetStripOpacity() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.StripOpacity
 }
 
 func (c *CreateCardsResponse) GetStripPreset() string {
@@ -849,6 +876,13 @@ func (c *CreateCardsResponse) SetStripColor(stripColor string) {
 	c.require(createCardsResponseFieldStripColor)
 }
 
+// SetStripOpacity sets the StripOpacity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetStripOpacity(stripOpacity float64) {
+	c.StripOpacity = stripOpacity
+	c.require(createCardsResponseFieldStripOpacity)
+}
+
 // SetStripPreset sets the StripPreset field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateCardsResponse) SetStripPreset(stripPreset string) {
@@ -938,10 +972,11 @@ var (
 	getCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
 	getCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
 	getCardsResponseFieldStripColor              = big.NewInt(1 << 17)
-	getCardsResponseFieldStripPreset             = big.NewInt(1 << 18)
-	getCardsResponseFieldStripType               = big.NewInt(1 << 19)
-	getCardsResponseFieldTextColor               = big.NewInt(1 << 20)
-	getCardsResponseFieldUpdatedAt               = big.NewInt(1 << 21)
+	getCardsResponseFieldStripOpacity            = big.NewInt(1 << 18)
+	getCardsResponseFieldStripPreset             = big.NewInt(1 << 19)
+	getCardsResponseFieldStripType               = big.NewInt(1 << 20)
+	getCardsResponseFieldTextColor               = big.NewInt(1 << 21)
+	getCardsResponseFieldUpdatedAt               = big.NewInt(1 << 22)
 )
 
 type GetCardsResponse struct {
@@ -981,6 +1016,8 @@ type GetCardsResponse struct {
 	StampsRequired int `json:"stamps_required" url:"stamps_required"`
 	// Hex colour for the strip (when strip_type is 'color')
 	StripColor string `json:"strip_color" url:"strip_color"`
+	// Opacity (0–100) of the strip background over the card colour, for a colour, an uploaded image or a preset alike. 100 renders the colour or image exactly as supplied; lower values let the card colour show through
+	StripOpacity float64 `json:"strip_opacity" url:"strip_opacity"`
 	// Preset strip image identifier (when strip_type is 'preset')
 	StripPreset string `json:"strip_preset" url:"strip_preset"`
 	// Strip image type: 'color', 'image', or 'preset'
@@ -1121,6 +1158,13 @@ func (g *GetCardsResponse) GetStripColor() string {
 		return ""
 	}
 	return g.StripColor
+}
+
+func (g *GetCardsResponse) GetStripOpacity() float64 {
+	if g == nil {
+		return 0
+	}
+	return g.StripOpacity
 }
 
 func (g *GetCardsResponse) GetStripPreset() string {
@@ -1291,6 +1335,13 @@ func (g *GetCardsResponse) SetStripColor(stripColor string) {
 	g.require(getCardsResponseFieldStripColor)
 }
 
+// SetStripOpacity sets the StripOpacity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetStripOpacity(stripOpacity float64) {
+	g.StripOpacity = stripOpacity
+	g.require(getCardsResponseFieldStripOpacity)
+}
+
 // SetStripPreset sets the StripPreset field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetCardsResponse) SetStripPreset(stripPreset string) {
@@ -1380,10 +1431,11 @@ var (
 	listCardsResponseItemFieldStampIcon               = big.NewInt(1 << 15)
 	listCardsResponseItemFieldStampsRequired          = big.NewInt(1 << 16)
 	listCardsResponseItemFieldStripColor              = big.NewInt(1 << 17)
-	listCardsResponseItemFieldStripPreset             = big.NewInt(1 << 18)
-	listCardsResponseItemFieldStripType               = big.NewInt(1 << 19)
-	listCardsResponseItemFieldTextColor               = big.NewInt(1 << 20)
-	listCardsResponseItemFieldUpdatedAt               = big.NewInt(1 << 21)
+	listCardsResponseItemFieldStripOpacity            = big.NewInt(1 << 18)
+	listCardsResponseItemFieldStripPreset             = big.NewInt(1 << 19)
+	listCardsResponseItemFieldStripType               = big.NewInt(1 << 20)
+	listCardsResponseItemFieldTextColor               = big.NewInt(1 << 21)
+	listCardsResponseItemFieldUpdatedAt               = big.NewInt(1 << 22)
 )
 
 type ListCardsResponseItem struct {
@@ -1423,6 +1475,8 @@ type ListCardsResponseItem struct {
 	StampsRequired int `json:"stamps_required" url:"stamps_required"`
 	// Hex colour for the strip (when strip_type is 'color')
 	StripColor string `json:"strip_color" url:"strip_color"`
+	// Opacity (0–100) of the strip background over the card colour, for a colour, an uploaded image or a preset alike. 100 renders the colour or image exactly as supplied; lower values let the card colour show through
+	StripOpacity float64 `json:"strip_opacity" url:"strip_opacity"`
 	// Preset strip image identifier (when strip_type is 'preset')
 	StripPreset string `json:"strip_preset" url:"strip_preset"`
 	// Strip image type: 'color', 'image', or 'preset'
@@ -1563,6 +1617,13 @@ func (l *ListCardsResponseItem) GetStripColor() string {
 		return ""
 	}
 	return l.StripColor
+}
+
+func (l *ListCardsResponseItem) GetStripOpacity() float64 {
+	if l == nil {
+		return 0
+	}
+	return l.StripOpacity
 }
 
 func (l *ListCardsResponseItem) GetStripPreset() string {
@@ -1733,6 +1794,13 @@ func (l *ListCardsResponseItem) SetStripColor(stripColor string) {
 	l.require(listCardsResponseItemFieldStripColor)
 }
 
+// SetStripOpacity sets the StripOpacity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetStripOpacity(stripOpacity float64) {
+	l.StripOpacity = stripOpacity
+	l.require(listCardsResponseItemFieldStripOpacity)
+}
+
 // SetStripPreset sets the StripPreset field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListCardsResponseItem) SetStripPreset(stripPreset string) {
@@ -1817,9 +1885,10 @@ var (
 	updateCardsRequestCardFieldStampIcon               = big.NewInt(1 << 10)
 	updateCardsRequestCardFieldStampsRequired          = big.NewInt(1 << 11)
 	updateCardsRequestCardFieldStripColor              = big.NewInt(1 << 12)
-	updateCardsRequestCardFieldStripPreset             = big.NewInt(1 << 13)
-	updateCardsRequestCardFieldStripType               = big.NewInt(1 << 14)
-	updateCardsRequestCardFieldTextColor               = big.NewInt(1 << 15)
+	updateCardsRequestCardFieldStripOpacity            = big.NewInt(1 << 13)
+	updateCardsRequestCardFieldStripPreset             = big.NewInt(1 << 14)
+	updateCardsRequestCardFieldStripType               = big.NewInt(1 << 15)
+	updateCardsRequestCardFieldTextColor               = big.NewInt(1 << 16)
 )
 
 type UpdateCardsRequestCard struct {
@@ -1849,6 +1918,8 @@ type UpdateCardsRequestCard struct {
 	StampsRequired *int `json:"stamps_required,omitempty" url:"stamps_required,omitempty"`
 	// Hex colour for the strip
 	StripColor *string `json:"strip_color,omitempty" url:"strip_color,omitempty"`
+	// Opacity (0–100) of the strip background over the card colour. 100 renders the colour or image exactly as supplied
+	StripOpacity *float64 `json:"strip_opacity,omitempty" url:"strip_opacity,omitempty"`
 	// Preset strip image identifier
 	StripPreset *string `json:"strip_preset,omitempty" url:"strip_preset,omitempty"`
 	// Strip image type
@@ -1952,6 +2023,13 @@ func (u *UpdateCardsRequestCard) GetStripColor() *string {
 		return nil
 	}
 	return u.StripColor
+}
+
+func (u *UpdateCardsRequestCard) GetStripOpacity() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.StripOpacity
 }
 
 func (u *UpdateCardsRequestCard) GetStripPreset() *string {
@@ -2080,6 +2158,13 @@ func (u *UpdateCardsRequestCard) SetStripColor(stripColor *string) {
 	u.require(updateCardsRequestCardFieldStripColor)
 }
 
+// SetStripOpacity sets the StripOpacity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetStripOpacity(stripOpacity *float64) {
+	u.StripOpacity = stripOpacity
+	u.require(updateCardsRequestCardFieldStripOpacity)
+}
+
 // SetStripPreset sets the StripPreset field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateCardsRequestCard) SetStripPreset(stripPreset *string) {
@@ -2162,10 +2247,11 @@ var (
 	updateCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
 	updateCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
 	updateCardsResponseFieldStripColor              = big.NewInt(1 << 17)
-	updateCardsResponseFieldStripPreset             = big.NewInt(1 << 18)
-	updateCardsResponseFieldStripType               = big.NewInt(1 << 19)
-	updateCardsResponseFieldTextColor               = big.NewInt(1 << 20)
-	updateCardsResponseFieldUpdatedAt               = big.NewInt(1 << 21)
+	updateCardsResponseFieldStripOpacity            = big.NewInt(1 << 18)
+	updateCardsResponseFieldStripPreset             = big.NewInt(1 << 19)
+	updateCardsResponseFieldStripType               = big.NewInt(1 << 20)
+	updateCardsResponseFieldTextColor               = big.NewInt(1 << 21)
+	updateCardsResponseFieldUpdatedAt               = big.NewInt(1 << 22)
 )
 
 type UpdateCardsResponse struct {
@@ -2205,6 +2291,8 @@ type UpdateCardsResponse struct {
 	StampsRequired int `json:"stamps_required" url:"stamps_required"`
 	// Hex colour for the strip (when strip_type is 'color')
 	StripColor string `json:"strip_color" url:"strip_color"`
+	// Opacity (0–100) of the strip background over the card colour, for a colour, an uploaded image or a preset alike. 100 renders the colour or image exactly as supplied; lower values let the card colour show through
+	StripOpacity float64 `json:"strip_opacity" url:"strip_opacity"`
 	// Preset strip image identifier (when strip_type is 'preset')
 	StripPreset string `json:"strip_preset" url:"strip_preset"`
 	// Strip image type: 'color', 'image', or 'preset'
@@ -2345,6 +2433,13 @@ func (u *UpdateCardsResponse) GetStripColor() string {
 		return ""
 	}
 	return u.StripColor
+}
+
+func (u *UpdateCardsResponse) GetStripOpacity() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.StripOpacity
 }
 
 func (u *UpdateCardsResponse) GetStripPreset() string {
@@ -2513,6 +2608,13 @@ func (u *UpdateCardsResponse) SetStampsRequired(stampsRequired int) {
 func (u *UpdateCardsResponse) SetStripColor(stripColor string) {
 	u.StripColor = stripColor
 	u.require(updateCardsResponseFieldStripColor)
+}
+
+// SetStripOpacity sets the StripOpacity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetStripOpacity(stripOpacity float64) {
+	u.StripOpacity = stripOpacity
+	u.require(updateCardsResponseFieldStripOpacity)
 }
 
 // SetStripPreset sets the StripPreset field and marks it as non-optional;

@@ -366,6 +366,14 @@ func TestSettersCreateCardsRequestCard(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetStripOpacity", func(t *testing.T) {
+		obj := &CreateCardsRequestCard{}
+		var fernTestValueStripOpacity *float64
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+		assert.Equal(t, fernTestValueStripOpacity, obj.StripOpacity)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetStripPreset", func(t *testing.T) {
 		obj := &CreateCardsRequestCard{}
 		var fernTestValueStripPreset *string
@@ -810,6 +818,39 @@ func TestGettersCreateCardsRequestCard(t *testing.T) {
 			}
 		}()
 		_ = obj.GetStripColor() // Should return zero value
+	})
+
+	t.Run("GetStripOpacity", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CreateCardsRequestCard{}
+		var expected *float64
+		obj.StripOpacity = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetStripOpacity(), "getter should return the property value")
+	})
+
+	t.Run("GetStripOpacity_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CreateCardsRequestCard{}
+		obj.StripOpacity = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetStripOpacity(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetStripOpacity_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CreateCardsRequestCard
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetStripOpacity() // Should return zero value
 	})
 
 	t.Run("GetStripPreset", func(t *testing.T) {
@@ -1317,6 +1358,37 @@ func TestSettersMarkExplicitCreateCardsRequestCard(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetStripOpacity_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CreateCardsRequestCard{}
+		var fernTestValueStripOpacity *float64
+
+		// Act
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetStripPreset_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -1554,6 +1626,14 @@ func TestSettersCreateCardsResponse(t *testing.T) {
 		var fernTestValueStripColor string
 		obj.SetStripColor(fernTestValueStripColor)
 		assert.Equal(t, fernTestValueStripColor, obj.StripColor)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetStripOpacity", func(t *testing.T) {
+		obj := &CreateCardsResponse{}
+		var fernTestValueStripOpacity float64
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+		assert.Equal(t, fernTestValueStripOpacity, obj.StripOpacity)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -2014,6 +2094,29 @@ func TestGettersCreateCardsResponse(t *testing.T) {
 			}
 		}()
 		_ = obj.GetStripColor() // Should return zero value
+	})
+
+	t.Run("GetStripOpacity", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CreateCardsResponse{}
+		var expected float64
+		obj.StripOpacity = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetStripOpacity(), "getter should return the property value")
+	})
+
+	t.Run("GetStripOpacity_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CreateCardsResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetStripOpacity() // Should return zero value
 	})
 
 	t.Run("GetStripPreset", func(t *testing.T) {
@@ -2669,6 +2772,37 @@ func TestSettersMarkExplicitCreateCardsResponse(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetStripOpacity_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CreateCardsResponse{}
+		var fernTestValueStripOpacity float64
+
+		// Act
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetStripPreset_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -2937,6 +3071,14 @@ func TestSettersGetCardsResponse(t *testing.T) {
 		var fernTestValueStripColor string
 		obj.SetStripColor(fernTestValueStripColor)
 		assert.Equal(t, fernTestValueStripColor, obj.StripColor)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetStripOpacity", func(t *testing.T) {
+		obj := &GetCardsResponse{}
+		var fernTestValueStripOpacity float64
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+		assert.Equal(t, fernTestValueStripOpacity, obj.StripOpacity)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -3397,6 +3539,29 @@ func TestGettersGetCardsResponse(t *testing.T) {
 			}
 		}()
 		_ = obj.GetStripColor() // Should return zero value
+	})
+
+	t.Run("GetStripOpacity", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &GetCardsResponse{}
+		var expected float64
+		obj.StripOpacity = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetStripOpacity(), "getter should return the property value")
+	})
+
+	t.Run("GetStripOpacity_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *GetCardsResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetStripOpacity() // Should return zero value
 	})
 
 	t.Run("GetStripPreset", func(t *testing.T) {
@@ -4052,6 +4217,37 @@ func TestSettersMarkExplicitGetCardsResponse(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetStripOpacity_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &GetCardsResponse{}
+		var fernTestValueStripOpacity float64
+
+		// Act
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetStripPreset_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -4320,6 +4516,14 @@ func TestSettersListCardsResponseItem(t *testing.T) {
 		var fernTestValueStripColor string
 		obj.SetStripColor(fernTestValueStripColor)
 		assert.Equal(t, fernTestValueStripColor, obj.StripColor)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetStripOpacity", func(t *testing.T) {
+		obj := &ListCardsResponseItem{}
+		var fernTestValueStripOpacity float64
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+		assert.Equal(t, fernTestValueStripOpacity, obj.StripOpacity)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -4780,6 +4984,29 @@ func TestGettersListCardsResponseItem(t *testing.T) {
 			}
 		}()
 		_ = obj.GetStripColor() // Should return zero value
+	})
+
+	t.Run("GetStripOpacity", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ListCardsResponseItem{}
+		var expected float64
+		obj.StripOpacity = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetStripOpacity(), "getter should return the property value")
+	})
+
+	t.Run("GetStripOpacity_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *ListCardsResponseItem
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetStripOpacity() // Should return zero value
 	})
 
 	t.Run("GetStripPreset", func(t *testing.T) {
@@ -5435,6 +5662,37 @@ func TestSettersMarkExplicitListCardsResponseItem(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetStripOpacity_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ListCardsResponseItem{}
+		var fernTestValueStripOpacity float64
+
+		// Act
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetStripPreset_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -5663,6 +5921,14 @@ func TestSettersUpdateCardsRequestCard(t *testing.T) {
 		var fernTestValueStripColor *string
 		obj.SetStripColor(fernTestValueStripColor)
 		assert.Equal(t, fernTestValueStripColor, obj.StripColor)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetStripOpacity", func(t *testing.T) {
+		obj := &UpdateCardsRequestCard{}
+		var fernTestValueStripOpacity *float64
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+		assert.Equal(t, fernTestValueStripOpacity, obj.StripOpacity)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -6120,6 +6386,39 @@ func TestGettersUpdateCardsRequestCard(t *testing.T) {
 			}
 		}()
 		_ = obj.GetStripColor() // Should return zero value
+	})
+
+	t.Run("GetStripOpacity", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UpdateCardsRequestCard{}
+		var expected *float64
+		obj.StripOpacity = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetStripOpacity(), "getter should return the property value")
+	})
+
+	t.Run("GetStripOpacity_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UpdateCardsRequestCard{}
+		obj.StripOpacity = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetStripOpacity(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetStripOpacity_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *UpdateCardsRequestCard
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetStripOpacity() // Should return zero value
 	})
 
 	t.Run("GetStripPreset", func(t *testing.T) {
@@ -6627,6 +6926,37 @@ func TestSettersMarkExplicitUpdateCardsRequestCard(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetStripOpacity_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UpdateCardsRequestCard{}
+		var fernTestValueStripOpacity *float64
+
+		// Act
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetStripPreset_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -6864,6 +7194,14 @@ func TestSettersUpdateCardsResponse(t *testing.T) {
 		var fernTestValueStripColor string
 		obj.SetStripColor(fernTestValueStripColor)
 		assert.Equal(t, fernTestValueStripColor, obj.StripColor)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetStripOpacity", func(t *testing.T) {
+		obj := &UpdateCardsResponse{}
+		var fernTestValueStripOpacity float64
+		obj.SetStripOpacity(fernTestValueStripOpacity)
+		assert.Equal(t, fernTestValueStripOpacity, obj.StripOpacity)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -7324,6 +7662,29 @@ func TestGettersUpdateCardsResponse(t *testing.T) {
 			}
 		}()
 		_ = obj.GetStripColor() // Should return zero value
+	})
+
+	t.Run("GetStripOpacity", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UpdateCardsResponse{}
+		var expected float64
+		obj.StripOpacity = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetStripOpacity(), "getter should return the property value")
+	})
+
+	t.Run("GetStripOpacity_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *UpdateCardsResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetStripOpacity() // Should return zero value
 	})
 
 	t.Run("GetStripPreset", func(t *testing.T) {
@@ -7956,6 +8317,37 @@ func TestSettersMarkExplicitUpdateCardsResponse(t *testing.T) {
 
 		// Act
 		obj.SetStripColor(fernTestValueStripColor)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetStripOpacity_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UpdateCardsResponse{}
+		var fernTestValueStripOpacity float64
+
+		// Act
+		obj.SetStripOpacity(fernTestValueStripOpacity)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
