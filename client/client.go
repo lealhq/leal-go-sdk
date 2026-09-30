@@ -14,17 +14,19 @@ import (
 	rewards "github.com/lealhq/leal-go-sdk/rewards"
 	status "github.com/lealhq/leal-go-sdk/status"
 	stores "github.com/lealhq/leal-go-sdk/stores"
+	webhooksubscriptions "github.com/lealhq/leal-go-sdk/webhooksubscriptions"
 )
 
 type Client struct {
-	Stores        *stores.Client
-	Cards         *cards.Client
-	Customers     *customers.Client
-	CustomerCards *customercards.Client
-	Locations     *locations.Client
-	Posters       *posters.Client
-	Rewards       *rewards.Client
-	Status        *status.Client
+	Stores               *stores.Client
+	Cards                *cards.Client
+	Customers            *customers.Client
+	CustomerCards        *customercards.Client
+	Locations            *locations.Client
+	Posters              *posters.Client
+	Rewards              *rewards.Client
+	WebhookSubscriptions *webhooksubscriptions.Client
+	Status               *status.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -34,16 +36,17 @@ type Client struct {
 func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
-		Stores:        stores.NewClient(options),
-		Cards:         cards.NewClient(options),
-		Customers:     customers.NewClient(options),
-		CustomerCards: customercards.NewClient(options),
-		Locations:     locations.NewClient(options),
-		Posters:       posters.NewClient(options),
-		Rewards:       rewards.NewClient(options),
-		Status:        status.NewClient(options),
-		options:       options,
-		baseURL:       options.BaseURL,
+		Stores:               stores.NewClient(options),
+		Cards:                cards.NewClient(options),
+		Customers:            customers.NewClient(options),
+		CustomerCards:        customercards.NewClient(options),
+		Locations:            locations.NewClient(options),
+		Posters:              posters.NewClient(options),
+		Rewards:              rewards.NewClient(options),
+		WebhookSubscriptions: webhooksubscriptions.NewClient(options),
+		Status:               status.NewClient(options),
+		options:              options,
+		baseURL:              options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
 				Client:         options.HTTPClient,

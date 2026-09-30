@@ -2236,6 +2236,582 @@ client.Rewards.Update(
 </dl>
 </details>
 
+## Webhook Subscriptions
+<details><summary><code>client.WebhookSubscriptions.GetAPIV1AccountsAccountIDWebhookSubscriptions(AccountID) -> []*leal.GetAPIV1AccountsAccountIDWebhookSubscriptionsResponseItem</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns every webhook subscription for the store, oldest first. Signing secrets are not included; fetch a single subscription to read its secret.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &leal.GetAPIV1AccountsAccountIDWebhookSubscriptionsRequest{
+    AccountID: 1,
+}
+client.WebhookSubscriptions.GetAPIV1AccountsAccountIDWebhookSubscriptions(
+    context.TODO(),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountID:** `int` — Store (account) ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event:** `*string` — Only return subscriptions that list this event (or `*`)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.WebhookSubscriptions.PostAPIV1AccountsAccountIDWebhookSubscriptions(AccountID, request) -> *leal.PostAPIV1AccountsAccountIDWebhookSubscriptionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Subscribes a URL to one or more events. The response includes the signing `secret`; store it to
+verify deliveries. The URL must be publicly reachable over https.
+
+Events: `customer.created`, `customer.updated`, `customer_card.created`, `stamp.earned`, `stamp.removed`, `reward.unlocked`, `reward.redeemed`, or `*` for all of them.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &leal.PostAPIV1AccountsAccountIDWebhookSubscriptionsRequest{
+    AccountID: 1,
+    TargetURL: "target_url",
+}
+client.WebhookSubscriptions.PostAPIV1AccountsAccountIDWebhookSubscriptions(
+    context.TODO(),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountID:** `int` — Store (account) ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` — Your own label, up to 255 characters
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enabled:** `*bool` — Create the subscription disabled by passing false (defaults to true)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event:** `*string` — A single event to subscribe to. Same as `events` with one entry
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**events:** `[]string` — Events to subscribe to, or `["*"]` for every event. Required unless `event` is given
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payloadFormat:** `*string` — `envelope` (default) or `flat`. `flat` sends the bare data object and cannot be combined with `*`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetURL:** `string` — Public https URL that will receive the POST requests
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.WebhookSubscriptions.GetAPIV1AccountsAccountIDWebhookSubscriptionsID(AccountID, ID) -> *leal.GetAPIV1AccountsAccountIDWebhookSubscriptionsIDResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a single subscription, including its signing secret and the result of the most recent delivery.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &leal.GetAPIV1AccountsAccountIDWebhookSubscriptionsIDRequest{
+    AccountID: 1,
+    ID: 1,
+}
+client.WebhookSubscriptions.GetAPIV1AccountsAccountIDWebhookSubscriptionsID(
+    context.TODO(),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountID:** `int` — Store (account) ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `int` — Webhook subscription ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.WebhookSubscriptions.DeleteAPIV1AccountsAccountIDWebhookSubscriptionsID(AccountID, ID) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Stops deliveries and deletes the subscription. This cannot be undone.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &leal.DeleteAPIV1AccountsAccountIDWebhookSubscriptionsIDRequest{
+    AccountID: 1,
+    ID: 1,
+}
+client.WebhookSubscriptions.DeleteAPIV1AccountsAccountIDWebhookSubscriptionsID(
+    context.TODO(),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountID:** `int` — Store (account) ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `int` — Webhook subscription ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.WebhookSubscriptions.PatchAPIV1AccountsAccountIDWebhookSubscriptionsID(AccountID, ID, request) -> *leal.PatchAPIV1AccountsAccountIDWebhookSubscriptionsIDResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Changes the URL, events, label or payload format, or turns the subscription off and on. Re-enabling a subscription that was disabled for failing clears its failure state.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &leal.PatchAPIV1AccountsAccountIDWebhookSubscriptionsIDRequest{
+    AccountID: 1,
+    ID: 1,
+}
+client.WebhookSubscriptions.PatchAPIV1AccountsAccountIDWebhookSubscriptionsID(
+    context.TODO(),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountID:** `int` — Store (account) ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `int` — Webhook subscription ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` — Your own label, up to 255 characters
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enabled:** `*bool` — false to pause deliveries, true to resume them
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event:** `*string` — A single event. Same as `events` with one entry
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**events:** `[]string` — Replaces the list of events, or `["*"]` for every event
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payloadFormat:** `*string` — `envelope` or `flat`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetURL:** `*string` — Public https URL that will receive the POST requests
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.WebhookSubscriptions.PostAPIV1AccountsAccountIDWebhookSubscriptionsIDRotateSecret(AccountID, ID) -> *leal.PostAPIV1AccountsAccountIDWebhookSubscriptionsIDRotateSecretResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Replaces the subscription's signing secret. Deliveries are signed with the new secret straight away, so update your receiver at the same time.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &leal.PostAPIV1AccountsAccountIDWebhookSubscriptionsIDRotateSecretRequest{
+    AccountID: 1,
+    ID: 1,
+}
+client.WebhookSubscriptions.PostAPIV1AccountsAccountIDWebhookSubscriptionsIDRotateSecret(
+    context.TODO(),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountID:** `int` — Store (account) ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `int` — Webhook subscription ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.WebhookSubscriptions.PostAPIV1AccountsAccountIDWebhookSubscriptionsIDTest(AccountID, ID) -> *leal.PostAPIV1AccountsAccountIDWebhookSubscriptionsIDTestResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Immediately sends a signed `webhook.test` event to the subscription's URL and reports what
+happened, so you can check your endpoint and signature verification without waiting for real
+activity. Test events are not retried and do not count towards disabling the subscription.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &leal.PostAPIV1AccountsAccountIDWebhookSubscriptionsIDTestRequest{
+    AccountID: 1,
+    ID: 1,
+}
+client.WebhookSubscriptions.PostAPIV1AccountsAccountIDWebhookSubscriptionsIDTest(
+    context.TODO(),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountID:** `int` — Store (account) ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `int` — Webhook subscription ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Status
 <details><summary><code>client.Status.Check() -> *leal.CheckStatusResponse</code></summary>
 <dl>
