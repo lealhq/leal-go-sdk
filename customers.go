@@ -13,7 +13,8 @@ var (
 	createCustomersRequestFieldAccountID     = big.NewInt(1 << 0)
 	createCustomersRequestFieldCardID        = big.NewInt(1 << 1)
 	createCustomersRequestFieldCustomer      = big.NewInt(1 << 2)
-	createCustomersRequestFieldSendCardLinks = big.NewInt(1 << 3)
+	createCustomersRequestFieldReferralCode  = big.NewInt(1 << 3)
+	createCustomersRequestFieldSendCardLinks = big.NewInt(1 << 4)
 )
 
 type CreateCustomersRequest struct {
@@ -22,6 +23,8 @@ type CreateCustomersRequest struct {
 	// Loyalty card ID to auto-enroll the customer in
 	CardID   *int                            `json:"card_id,omitempty" url:"-"`
 	Customer *CreateCustomersRequestCustomer `json:"customer" url:"-"`
+	// Records the new customer as invited by another customer: the code is the last part of that customer's `referral_url`. Needs `card_id`, for the same card, with referrals on. Nothing is given now; both customers get their stamps when the new customer's card is first stamped for a visit
+	ReferralCode *string `json:"referral_code,omitempty" url:"-"`
 	// When true, sends the card links to the customer via email/SMS after enrollment. Note: even without this flag, the response includes `apple_wallet_url` and `google_wallet_url` in each customer card object so you can deliver them yourself.
 	SendCardLinks *bool `json:"send_card_links,omitempty" url:"-"`
 
@@ -55,6 +58,13 @@ func (c *CreateCustomersRequest) SetCardID(cardID *int) {
 func (c *CreateCustomersRequest) SetCustomer(customer *CreateCustomersRequestCustomer) {
 	c.Customer = customer
 	c.require(createCustomersRequestFieldCustomer)
+}
+
+// SetReferralCode sets the ReferralCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCustomersRequest) SetReferralCode(referralCode *string) {
+	c.ReferralCode = referralCode
+	c.require(createCustomersRequestFieldReferralCode)
 }
 
 // SetSendCardLinks sets the SendCardLinks field and marks it as non-optional;
@@ -133,7 +143,7 @@ var (
 type ListCustomersRequest struct {
 	// Store (account) ID
 	AccountID int `json:"-" url:"-"`
-	// Search query to filter customers by name, email, phone, card code (barcode), or external reference ID
+	// Search query to filter customers by name, email, phone, card code (barcode, or the full scanned QR text), or external reference ID
 	Search *string `json:"-" url:"search,omitempty"`
 	// External system slug (e.g. `square`, `shopify`). When combined with `external_id`, performs an exact lookup.
 	Source *string `json:"-" url:"source,omitempty"`

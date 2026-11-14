@@ -3,4 +3,13 @@
 // Customer cards represent a customer's instance of a loyalty card template. They track
 // stamp progress, status, and wallet pass installation. Use these endpoints to view a
 // customer's enrolled loyalty cards and their current progress toward rewards.
+//
+// Every stamp change is recorded in the card's stamp ledger, and reported by the
+// `stamp.earned` and `stamp.removed` webhooks with an `entry_type`: `initial` (welcome stamps on a new card), `scan` (a staff member scanned the card in store), `redeem` (stamps spent on a reward), `adjust` (a manual correction, or stamps taken back for a POS refund), `api` (added through the API, a POS or an automation), `referral` (a referral bonus: the customer invited a friend, or joined with a friend's invite).
+// New types may be added; treat an unknown one like `adjust`.
+//
+// Referrals: when a card has referrals on, `referral_url` is the customer's invite link.
+// A friend who joins with it is recorded as a pending referral. It pays out the first time
+// the store adds stamps to the friend's card for a visit (`scan` or `api`), with a
+// `referral` entry on both cards and a `referral.rewarded` webhook.
 package customercards

@@ -10,10 +10,12 @@
 // - `customer.created`: A customer joined the loyalty program.
 // - `customer.updated`: A customer's name, email, phone, birthday, metadata or marketing and SMS consent changed.
 // - `customer_card.created`: A customer was issued a loyalty card. Includes the Apple Wallet and Google Wallet links.
-// - `stamp.earned`: Stamps were added to a customer's card, from a scan, the API or an adjustment.
+// - `stamp.earned`: Stamps were added to a customer's card. entry_type says how: scan, api, adjust, initial (welcome stamps) or referral.
 // - `stamp.removed`: Stamps were taken off a customer's card by an adjustment. Redeeming a reward sends reward.redeemed instead.
 // - `reward.unlocked`: A customer now has enough stamps to redeem a reward. Sent once per reward, when the threshold is crossed.
 // - `reward.redeemed`: A customer redeemed a reward.
+// - `referral.created`: A customer joined with another customer's invite link. Nothing is paid yet.
+// - `referral.rewarded`: A referred customer's card was stamped for a visit for the first time, so both customers got their referral stamps.
 //
 // # Payload
 //

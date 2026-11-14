@@ -138,38 +138,59 @@ func (l *ListCardsRequest) SetScope(scope *string) {
 }
 
 var (
-	createCardsRequestCardFieldAuxiliaryFields         = big.NewInt(1 << 0)
-	createCardsRequestCardFieldCardColor               = big.NewInt(1 << 1)
-	createCardsRequestCardFieldExpiresAt               = big.NewInt(1 << 2)
-	createCardsRequestCardFieldHeaderText              = big.NewInt(1 << 3)
-	createCardsRequestCardFieldInitialStamps           = big.NewInt(1 << 4)
-	createCardsRequestCardFieldName                    = big.NewInt(1 << 5)
-	createCardsRequestCardFieldShowMemberField         = big.NewInt(1 << 6)
-	createCardsRequestCardFieldShowStampsToRewardField = big.NewInt(1 << 7)
-	createCardsRequestCardFieldStampBackgroundColor    = big.NewInt(1 << 8)
-	createCardsRequestCardFieldStampColor              = big.NewInt(1 << 9)
-	createCardsRequestCardFieldStampIcon               = big.NewInt(1 << 10)
-	createCardsRequestCardFieldStampsRequired          = big.NewInt(1 << 11)
-	createCardsRequestCardFieldStripColor              = big.NewInt(1 << 12)
-	createCardsRequestCardFieldStripOpacity            = big.NewInt(1 << 13)
-	createCardsRequestCardFieldStripPreset             = big.NewInt(1 << 14)
-	createCardsRequestCardFieldStripType               = big.NewInt(1 << 15)
-	createCardsRequestCardFieldTextColor               = big.NewInt(1 << 16)
+	createCardsRequestCardFieldApplePassStyle          = big.NewInt(1 << 0)
+	createCardsRequestCardFieldAuxiliaryFields         = big.NewInt(1 << 1)
+	createCardsRequestCardFieldCardColor               = big.NewInt(1 << 2)
+	createCardsRequestCardFieldExpiresAt               = big.NewInt(1 << 3)
+	createCardsRequestCardFieldFeaturedActions         = big.NewInt(1 << 4)
+	createCardsRequestCardFieldGoogleLogoStyle         = big.NewInt(1 << 5)
+	createCardsRequestCardFieldHeaderText              = big.NewInt(1 << 6)
+	createCardsRequestCardFieldInitialStamps           = big.NewInt(1 << 7)
+	createCardsRequestCardFieldName                    = big.NewInt(1 << 8)
+	createCardsRequestCardFieldQrStyle                 = big.NewInt(1 << 9)
+	createCardsRequestCardFieldRefereeStamps           = big.NewInt(1 << 10)
+	createCardsRequestCardFieldReferralsEnabled        = big.NewInt(1 << 11)
+	createCardsRequestCardFieldReferrerStamps          = big.NewInt(1 << 12)
+	createCardsRequestCardFieldShowMemberField         = big.NewInt(1 << 13)
+	createCardsRequestCardFieldShowStampsToRewardField = big.NewInt(1 << 14)
+	createCardsRequestCardFieldStampBackgroundColor    = big.NewInt(1 << 15)
+	createCardsRequestCardFieldStampColor              = big.NewInt(1 << 16)
+	createCardsRequestCardFieldStampIcon               = big.NewInt(1 << 17)
+	createCardsRequestCardFieldStampsRequired          = big.NewInt(1 << 18)
+	createCardsRequestCardFieldStripColor              = big.NewInt(1 << 19)
+	createCardsRequestCardFieldStripOpacity            = big.NewInt(1 << 20)
+	createCardsRequestCardFieldStripPreset             = big.NewInt(1 << 21)
+	createCardsRequestCardFieldStripType               = big.NewInt(1 << 22)
+	createCardsRequestCardFieldTextColor               = big.NewInt(1 << 23)
 )
 
 type CreateCardsRequestCard struct {
+	// Apple Wallet layout. 'poster' is iOS 27's full-bleed layout; older iPhones show the store card. Defaults to 'store_card'
+	ApplePassStyle *CreateCardsRequestCardApplePassStyle `json:"apple_pass_style,omitempty" url:"apple_pass_style,omitempty"`
 	// Up to two extra front-of-pass fields. Blank values are ignored.
 	AuxiliaryFields []string `json:"auxiliary_fields,omitempty" url:"auxiliary_fields,omitempty"`
 	// Hex colour for the card background (e.g. '#6B4226')
 	CardColor *string `json:"card_color,omitempty" url:"card_color,omitempty"`
 	// Card expiry timestamp (ISO 8601)
 	ExpiresAt *string `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	// Up to two buttons, shown as Featured Actions under the iOS 27 poster and as links in Google Wallet. Send an empty array to remove them.
+	FeaturedActions []string `json:"featured_actions,omitempty" url:"featured_actions,omitempty"`
+	// How the logo sits on Google Wallet. Defaults to 'round'
+	GoogleLogoStyle *CreateCardsRequestCardGoogleLogoStyle `json:"google_logo_style,omitempty" url:"google_logo_style,omitempty"`
 	// Optional header text displayed on the card
 	HeaderText *string `json:"header_text,omitempty" url:"header_text,omitempty"`
 	// Number of stamps pre-filled on new customer cards (must be >= 0 and < stamps_required)
 	InitialStamps *int `json:"initial_stamps,omitempty" url:"initial_stamps,omitempty"`
 	// Card name (e.g. 'Coffee Loyalty Card')
 	Name string `json:"name" url:"name"`
+	// What the wallet pass QR holds. Defaults to 'link' for new cards
+	QrStyle *CreateCardsRequestCardQrStyle `json:"qr_style,omitempty" url:"qr_style,omitempty"`
+	// Stamps the invited friend gets on their first stamped visit (>= 0 and < stamps_required, default 1)
+	RefereeStamps *float64 `json:"referee_stamps,omitempty" url:"referee_stamps,omitempty"`
+	// Let customers invite friends from the back of their pass (default false)
+	ReferralsEnabled *bool `json:"referrals_enabled,omitempty" url:"referrals_enabled,omitempty"`
+	// Stamps the inviting customer gets when the friend's first visit is stamped (>= 0 and < stamps_required, default 1)
+	ReferrerStamps *float64 `json:"referrer_stamps,omitempty" url:"referrer_stamps,omitempty"`
 	// Whether wallet passes show the member name field
 	ShowMemberField *bool `json:"show_member_field,omitempty" url:"show_member_field,omitempty"`
 	// Whether wallet passes show the stamps-to-reward field
@@ -200,6 +221,13 @@ type CreateCardsRequestCard struct {
 	rawJSON         json.RawMessage
 }
 
+func (c *CreateCardsRequestCard) GetApplePassStyle() *CreateCardsRequestCardApplePassStyle {
+	if c == nil {
+		return nil
+	}
+	return c.ApplePassStyle
+}
+
 func (c *CreateCardsRequestCard) GetAuxiliaryFields() []string {
 	if c == nil {
 		return nil
@@ -221,6 +249,20 @@ func (c *CreateCardsRequestCard) GetExpiresAt() *string {
 	return c.ExpiresAt
 }
 
+func (c *CreateCardsRequestCard) GetFeaturedActions() []string {
+	if c == nil {
+		return nil
+	}
+	return c.FeaturedActions
+}
+
+func (c *CreateCardsRequestCard) GetGoogleLogoStyle() *CreateCardsRequestCardGoogleLogoStyle {
+	if c == nil {
+		return nil
+	}
+	return c.GoogleLogoStyle
+}
+
 func (c *CreateCardsRequestCard) GetHeaderText() *string {
 	if c == nil {
 		return nil
@@ -240,6 +282,34 @@ func (c *CreateCardsRequestCard) GetName() string {
 		return ""
 	}
 	return c.Name
+}
+
+func (c *CreateCardsRequestCard) GetQrStyle() *CreateCardsRequestCardQrStyle {
+	if c == nil {
+		return nil
+	}
+	return c.QrStyle
+}
+
+func (c *CreateCardsRequestCard) GetRefereeStamps() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.RefereeStamps
+}
+
+func (c *CreateCardsRequestCard) GetReferralsEnabled() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ReferralsEnabled
+}
+
+func (c *CreateCardsRequestCard) GetReferrerStamps() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.ReferrerStamps
 }
 
 func (c *CreateCardsRequestCard) GetShowMemberField() *bool {
@@ -333,6 +403,13 @@ func (c *CreateCardsRequestCard) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
+// SetApplePassStyle sets the ApplePassStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetApplePassStyle(applePassStyle *CreateCardsRequestCardApplePassStyle) {
+	c.ApplePassStyle = applePassStyle
+	c.require(createCardsRequestCardFieldApplePassStyle)
+}
+
 // SetAuxiliaryFields sets the AuxiliaryFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateCardsRequestCard) SetAuxiliaryFields(auxiliaryFields []string) {
@@ -354,6 +431,20 @@ func (c *CreateCardsRequestCard) SetExpiresAt(expiresAt *string) {
 	c.require(createCardsRequestCardFieldExpiresAt)
 }
 
+// SetFeaturedActions sets the FeaturedActions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetFeaturedActions(featuredActions []string) {
+	c.FeaturedActions = featuredActions
+	c.require(createCardsRequestCardFieldFeaturedActions)
+}
+
+// SetGoogleLogoStyle sets the GoogleLogoStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetGoogleLogoStyle(googleLogoStyle *CreateCardsRequestCardGoogleLogoStyle) {
+	c.GoogleLogoStyle = googleLogoStyle
+	c.require(createCardsRequestCardFieldGoogleLogoStyle)
+}
+
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateCardsRequestCard) SetHeaderText(headerText *string) {
@@ -373,6 +464,34 @@ func (c *CreateCardsRequestCard) SetInitialStamps(initialStamps *int) {
 func (c *CreateCardsRequestCard) SetName(name string) {
 	c.Name = name
 	c.require(createCardsRequestCardFieldName)
+}
+
+// SetQrStyle sets the QrStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetQrStyle(qrStyle *CreateCardsRequestCardQrStyle) {
+	c.QrStyle = qrStyle
+	c.require(createCardsRequestCardFieldQrStyle)
+}
+
+// SetRefereeStamps sets the RefereeStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetRefereeStamps(refereeStamps *float64) {
+	c.RefereeStamps = refereeStamps
+	c.require(createCardsRequestCardFieldRefereeStamps)
+}
+
+// SetReferralsEnabled sets the ReferralsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetReferralsEnabled(referralsEnabled *bool) {
+	c.ReferralsEnabled = referralsEnabled
+	c.require(createCardsRequestCardFieldReferralsEnabled)
+}
+
+// SetReferrerStamps sets the ReferrerStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsRequestCard) SetReferrerStamps(referrerStamps *float64) {
+	c.ReferrerStamps = referrerStamps
+	c.require(createCardsRequestCardFieldReferrerStamps)
 }
 
 // SetShowMemberField sets the ShowMemberField field and marks it as non-optional;
@@ -494,33 +613,112 @@ func (c *CreateCardsRequestCard) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// Apple Wallet layout. 'poster' is iOS 27's full-bleed layout; older iPhones show the store card. Defaults to 'store_card'
+type CreateCardsRequestCardApplePassStyle string
+
+const (
+	CreateCardsRequestCardApplePassStyleStoreCard CreateCardsRequestCardApplePassStyle = "store_card"
+	CreateCardsRequestCardApplePassStylePoster    CreateCardsRequestCardApplePassStyle = "poster"
+)
+
+func NewCreateCardsRequestCardApplePassStyleFromString(s string) (CreateCardsRequestCardApplePassStyle, error) {
+	switch s {
+	case "store_card":
+		return CreateCardsRequestCardApplePassStyleStoreCard, nil
+	case "poster":
+		return CreateCardsRequestCardApplePassStylePoster, nil
+	}
+	var t CreateCardsRequestCardApplePassStyle
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateCardsRequestCardApplePassStyle) Ptr() *CreateCardsRequestCardApplePassStyle {
+	return &c
+}
+
+// How the logo sits on Google Wallet. Defaults to 'round'
+type CreateCardsRequestCardGoogleLogoStyle string
+
+const (
+	CreateCardsRequestCardGoogleLogoStyleRound CreateCardsRequestCardGoogleLogoStyle = "round"
+	CreateCardsRequestCardGoogleLogoStyleWide  CreateCardsRequestCardGoogleLogoStyle = "wide"
+)
+
+func NewCreateCardsRequestCardGoogleLogoStyleFromString(s string) (CreateCardsRequestCardGoogleLogoStyle, error) {
+	switch s {
+	case "round":
+		return CreateCardsRequestCardGoogleLogoStyleRound, nil
+	case "wide":
+		return CreateCardsRequestCardGoogleLogoStyleWide, nil
+	}
+	var t CreateCardsRequestCardGoogleLogoStyle
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateCardsRequestCardGoogleLogoStyle) Ptr() *CreateCardsRequestCardGoogleLogoStyle {
+	return &c
+}
+
+// What the wallet pass QR holds. Defaults to 'link' for new cards
+type CreateCardsRequestCardQrStyle string
+
+const (
+	CreateCardsRequestCardQrStyleLink CreateCardsRequestCardQrStyle = "link"
+	CreateCardsRequestCardQrStyleCode CreateCardsRequestCardQrStyle = "code"
+)
+
+func NewCreateCardsRequestCardQrStyleFromString(s string) (CreateCardsRequestCardQrStyle, error) {
+	switch s {
+	case "link":
+		return CreateCardsRequestCardQrStyleLink, nil
+	case "code":
+		return CreateCardsRequestCardQrStyleCode, nil
+	}
+	var t CreateCardsRequestCardQrStyle
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateCardsRequestCardQrStyle) Ptr() *CreateCardsRequestCardQrStyle {
+	return &c
+}
+
 var (
-	createCardsResponseFieldArchivedAt              = big.NewInt(1 << 0)
-	createCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 1)
-	createCardsResponseFieldCardColor               = big.NewInt(1 << 2)
-	createCardsResponseFieldCreatedAt               = big.NewInt(1 << 3)
-	createCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 4)
-	createCardsResponseFieldExpiresAt               = big.NewInt(1 << 5)
-	createCardsResponseFieldHeaderText              = big.NewInt(1 << 6)
-	createCardsResponseFieldID                      = big.NewInt(1 << 7)
-	createCardsResponseFieldInitialStamps           = big.NewInt(1 << 8)
-	createCardsResponseFieldName                    = big.NewInt(1 << 9)
-	createCardsResponseFieldRewardsCount            = big.NewInt(1 << 10)
-	createCardsResponseFieldShowMemberField         = big.NewInt(1 << 11)
-	createCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 12)
-	createCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 13)
-	createCardsResponseFieldStampColor              = big.NewInt(1 << 14)
-	createCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
-	createCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
-	createCardsResponseFieldStripColor              = big.NewInt(1 << 17)
-	createCardsResponseFieldStripOpacity            = big.NewInt(1 << 18)
-	createCardsResponseFieldStripPreset             = big.NewInt(1 << 19)
-	createCardsResponseFieldStripType               = big.NewInt(1 << 20)
-	createCardsResponseFieldTextColor               = big.NewInt(1 << 21)
-	createCardsResponseFieldUpdatedAt               = big.NewInt(1 << 22)
+	createCardsResponseFieldApplePassStyle          = big.NewInt(1 << 0)
+	createCardsResponseFieldArchivedAt              = big.NewInt(1 << 1)
+	createCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 2)
+	createCardsResponseFieldCardColor               = big.NewInt(1 << 3)
+	createCardsResponseFieldCreatedAt               = big.NewInt(1 << 4)
+	createCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 5)
+	createCardsResponseFieldExpiresAt               = big.NewInt(1 << 6)
+	createCardsResponseFieldFeaturedActions         = big.NewInt(1 << 7)
+	createCardsResponseFieldGoogleLogoStyle         = big.NewInt(1 << 8)
+	createCardsResponseFieldGoogleWallet            = big.NewInt(1 << 9)
+	createCardsResponseFieldHeaderText              = big.NewInt(1 << 10)
+	createCardsResponseFieldID                      = big.NewInt(1 << 11)
+	createCardsResponseFieldInitialStamps           = big.NewInt(1 << 12)
+	createCardsResponseFieldName                    = big.NewInt(1 << 13)
+	createCardsResponseFieldQrStyle                 = big.NewInt(1 << 14)
+	createCardsResponseFieldRefereeStamps           = big.NewInt(1 << 15)
+	createCardsResponseFieldReferralsEnabled        = big.NewInt(1 << 16)
+	createCardsResponseFieldReferrerStamps          = big.NewInt(1 << 17)
+	createCardsResponseFieldRewardsCount            = big.NewInt(1 << 18)
+	createCardsResponseFieldShowMemberField         = big.NewInt(1 << 19)
+	createCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 20)
+	createCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 21)
+	createCardsResponseFieldStampColor              = big.NewInt(1 << 22)
+	createCardsResponseFieldStampIcon               = big.NewInt(1 << 23)
+	createCardsResponseFieldStampsRequired          = big.NewInt(1 << 24)
+	createCardsResponseFieldStripColor              = big.NewInt(1 << 25)
+	createCardsResponseFieldStripOpacity            = big.NewInt(1 << 26)
+	createCardsResponseFieldStripPreset             = big.NewInt(1 << 27)
+	createCardsResponseFieldStripType               = big.NewInt(1 << 28)
+	createCardsResponseFieldTextColor               = big.NewInt(1 << 29)
+	createCardsResponseFieldUpdatedAt               = big.NewInt(1 << 30)
 )
 
 type CreateCardsResponse struct {
+	// Apple Wallet layout: 'store_card' (the classic layout) or 'poster' (iOS 27 full-bleed artwork; iPhones on iOS 26 or earlier show the store card)
+	ApplePassStyle string `json:"apple_pass_style" url:"apple_pass_style"`
 	// ISO 8601 timestamp when the card was archived, or null if active
 	ArchivedAt string `json:"archived_at" url:"archived_at"`
 	// Up to two extra front-of-pass fields
@@ -533,6 +731,11 @@ type CreateCardsResponse struct {
 	CustomerCardsCount int `json:"customer_cards_count" url:"customer_cards_count"`
 	// ISO 8601 timestamp when the card expires, or null if it does not expire
 	ExpiresAt string `json:"expires_at" url:"expires_at"`
+	// Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet
+	FeaturedActions []string `json:"featured_actions" url:"featured_actions"`
+	// How the logo sits on Google Wallet: 'round' (the square icon in a circle, with the store name) or 'wide' (the logo in place of the circle and store name)
+	GoogleLogoStyle string                           `json:"google_logo_style" url:"google_logo_style"`
+	GoogleWallet    *CreateCardsResponseGoogleWallet `json:"google_wallet" url:"google_wallet"`
 	// Optional header text displayed on the card
 	HeaderText string `json:"header_text" url:"header_text"`
 	// Unique card ID
@@ -541,6 +744,14 @@ type CreateCardsResponse struct {
 	InitialStamps int `json:"initial_stamps" url:"initial_stamps"`
 	// Card name (e.g. 'Coffee Loyalty Card')
 	Name string `json:"name" url:"name"`
+	// What the wallet pass QR holds: 'link' (the customer's invite link with the card code after the #, readable by the Leal scanner and by `search`) or 'code' (the bare card code). Cards created before referrals use 'code'
+	QrStyle string `json:"qr_style" url:"qr_style"`
+	// Stamps the invited friend gets when the referral pays out
+	RefereeStamps float64 `json:"referee_stamps" url:"referee_stamps"`
+	// Whether customers can invite friends from the back of their pass. A referral pays out when the store first stamps the friend's card for a visit (a scan, or the API/POS), never for signing up
+	ReferralsEnabled bool `json:"referrals_enabled" url:"referrals_enabled"`
+	// Stamps the inviting customer gets when the referral pays out
+	ReferrerStamps float64 `json:"referrer_stamps" url:"referrer_stamps"`
 	// Number of rewards defined for this card
 	RewardsCount int `json:"rewards_count" url:"rewards_count"`
 	// Whether wallet passes show the member name field
@@ -573,6 +784,13 @@ type CreateCardsResponse struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (c *CreateCardsResponse) GetApplePassStyle() string {
+	if c == nil {
+		return ""
+	}
+	return c.ApplePassStyle
 }
 
 func (c *CreateCardsResponse) GetArchivedAt() string {
@@ -617,6 +835,27 @@ func (c *CreateCardsResponse) GetExpiresAt() string {
 	return c.ExpiresAt
 }
 
+func (c *CreateCardsResponse) GetFeaturedActions() []string {
+	if c == nil {
+		return nil
+	}
+	return c.FeaturedActions
+}
+
+func (c *CreateCardsResponse) GetGoogleLogoStyle() string {
+	if c == nil {
+		return ""
+	}
+	return c.GoogleLogoStyle
+}
+
+func (c *CreateCardsResponse) GetGoogleWallet() *CreateCardsResponseGoogleWallet {
+	if c == nil {
+		return nil
+	}
+	return c.GoogleWallet
+}
+
 func (c *CreateCardsResponse) GetHeaderText() string {
 	if c == nil {
 		return ""
@@ -643,6 +882,34 @@ func (c *CreateCardsResponse) GetName() string {
 		return ""
 	}
 	return c.Name
+}
+
+func (c *CreateCardsResponse) GetQrStyle() string {
+	if c == nil {
+		return ""
+	}
+	return c.QrStyle
+}
+
+func (c *CreateCardsResponse) GetRefereeStamps() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.RefereeStamps
+}
+
+func (c *CreateCardsResponse) GetReferralsEnabled() bool {
+	if c == nil {
+		return false
+	}
+	return c.ReferralsEnabled
+}
+
+func (c *CreateCardsResponse) GetReferrerStamps() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.ReferrerStamps
 }
 
 func (c *CreateCardsResponse) GetRewardsCount() int {
@@ -750,6 +1017,13 @@ func (c *CreateCardsResponse) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
+// SetApplePassStyle sets the ApplePassStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetApplePassStyle(applePassStyle string) {
+	c.ApplePassStyle = applePassStyle
+	c.require(createCardsResponseFieldApplePassStyle)
+}
+
 // SetArchivedAt sets the ArchivedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateCardsResponse) SetArchivedAt(archivedAt string) {
@@ -792,6 +1066,27 @@ func (c *CreateCardsResponse) SetExpiresAt(expiresAt string) {
 	c.require(createCardsResponseFieldExpiresAt)
 }
 
+// SetFeaturedActions sets the FeaturedActions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetFeaturedActions(featuredActions []string) {
+	c.FeaturedActions = featuredActions
+	c.require(createCardsResponseFieldFeaturedActions)
+}
+
+// SetGoogleLogoStyle sets the GoogleLogoStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetGoogleLogoStyle(googleLogoStyle string) {
+	c.GoogleLogoStyle = googleLogoStyle
+	c.require(createCardsResponseFieldGoogleLogoStyle)
+}
+
+// SetGoogleWallet sets the GoogleWallet field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetGoogleWallet(googleWallet *CreateCardsResponseGoogleWallet) {
+	c.GoogleWallet = googleWallet
+	c.require(createCardsResponseFieldGoogleWallet)
+}
+
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateCardsResponse) SetHeaderText(headerText string) {
@@ -818,6 +1113,34 @@ func (c *CreateCardsResponse) SetInitialStamps(initialStamps int) {
 func (c *CreateCardsResponse) SetName(name string) {
 	c.Name = name
 	c.require(createCardsResponseFieldName)
+}
+
+// SetQrStyle sets the QrStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetQrStyle(qrStyle string) {
+	c.QrStyle = qrStyle
+	c.require(createCardsResponseFieldQrStyle)
+}
+
+// SetRefereeStamps sets the RefereeStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetRefereeStamps(refereeStamps float64) {
+	c.RefereeStamps = refereeStamps
+	c.require(createCardsResponseFieldRefereeStamps)
+}
+
+// SetReferralsEnabled sets the ReferralsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetReferralsEnabled(referralsEnabled bool) {
+	c.ReferralsEnabled = referralsEnabled
+	c.require(createCardsResponseFieldReferralsEnabled)
+}
+
+// SetReferrerStamps sets the ReferrerStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponse) SetReferrerStamps(referrerStamps float64) {
+	c.ReferrerStamps = referrerStamps
+	c.require(createCardsResponseFieldReferrerStamps)
 }
 
 // SetRewardsCount sets the RewardsCount field and marks it as non-optional;
@@ -954,32 +1277,161 @@ func (c *CreateCardsResponse) String() string {
 }
 
 var (
-	getCardsResponseFieldArchivedAt              = big.NewInt(1 << 0)
-	getCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 1)
-	getCardsResponseFieldCardColor               = big.NewInt(1 << 2)
-	getCardsResponseFieldCreatedAt               = big.NewInt(1 << 3)
-	getCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 4)
-	getCardsResponseFieldExpiresAt               = big.NewInt(1 << 5)
-	getCardsResponseFieldHeaderText              = big.NewInt(1 << 6)
-	getCardsResponseFieldID                      = big.NewInt(1 << 7)
-	getCardsResponseFieldInitialStamps           = big.NewInt(1 << 8)
-	getCardsResponseFieldName                    = big.NewInt(1 << 9)
-	getCardsResponseFieldRewardsCount            = big.NewInt(1 << 10)
-	getCardsResponseFieldShowMemberField         = big.NewInt(1 << 11)
-	getCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 12)
-	getCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 13)
-	getCardsResponseFieldStampColor              = big.NewInt(1 << 14)
-	getCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
-	getCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
-	getCardsResponseFieldStripColor              = big.NewInt(1 << 17)
-	getCardsResponseFieldStripOpacity            = big.NewInt(1 << 18)
-	getCardsResponseFieldStripPreset             = big.NewInt(1 << 19)
-	getCardsResponseFieldStripType               = big.NewInt(1 << 20)
-	getCardsResponseFieldTextColor               = big.NewInt(1 << 21)
-	getCardsResponseFieldUpdatedAt               = big.NewInt(1 << 22)
+	createCardsResponseGoogleWalletFieldHeroImage = big.NewInt(1 << 0)
+	createCardsResponseGoogleWalletFieldTextColor = big.NewInt(1 << 1)
+	createCardsResponseGoogleWalletFieldWarnings  = big.NewInt(1 << 2)
+)
+
+type CreateCardsResponseGoogleWallet struct {
+	// What fills the hero image behind the stamps: 'hero_image' (uploaded in Leal), 'strip_image', 'preset' or 'color'
+	HeroImage string `json:"hero_image" url:"hero_image"`
+	// The text colour Google Wallet uses on this card: it picks black or white itself and ignores text_color
+	TextColor string `json:"text_color" url:"text_color"`
+	// Guidelines the card doesn't meet: any of 'color', 'title', 'issuer_name', 'field_labels', 'field_values', 'logo', 'hero'. Empty when it meets them all
+	Warnings []string `json:"warnings" url:"warnings"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateCardsResponseGoogleWallet) GetHeroImage() string {
+	if c == nil {
+		return ""
+	}
+	return c.HeroImage
+}
+
+func (c *CreateCardsResponseGoogleWallet) GetTextColor() string {
+	if c == nil {
+		return ""
+	}
+	return c.TextColor
+}
+
+func (c *CreateCardsResponseGoogleWallet) GetWarnings() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Warnings
+}
+
+func (c *CreateCardsResponseGoogleWallet) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CreateCardsResponseGoogleWallet) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetHeroImage sets the HeroImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponseGoogleWallet) SetHeroImage(heroImage string) {
+	c.HeroImage = heroImage
+	c.require(createCardsResponseGoogleWalletFieldHeroImage)
+}
+
+// SetTextColor sets the TextColor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponseGoogleWallet) SetTextColor(textColor string) {
+	c.TextColor = textColor
+	c.require(createCardsResponseGoogleWalletFieldTextColor)
+}
+
+// SetWarnings sets the Warnings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateCardsResponseGoogleWallet) SetWarnings(warnings []string) {
+	c.Warnings = warnings
+	c.require(createCardsResponseGoogleWalletFieldWarnings)
+}
+
+func (c *CreateCardsResponseGoogleWallet) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateCardsResponseGoogleWallet
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateCardsResponseGoogleWallet(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateCardsResponseGoogleWallet) MarshalJSON() ([]byte, error) {
+	type embed CreateCardsResponseGoogleWallet
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateCardsResponseGoogleWallet) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	getCardsResponseFieldApplePassStyle          = big.NewInt(1 << 0)
+	getCardsResponseFieldArchivedAt              = big.NewInt(1 << 1)
+	getCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 2)
+	getCardsResponseFieldCardColor               = big.NewInt(1 << 3)
+	getCardsResponseFieldCreatedAt               = big.NewInt(1 << 4)
+	getCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 5)
+	getCardsResponseFieldExpiresAt               = big.NewInt(1 << 6)
+	getCardsResponseFieldFeaturedActions         = big.NewInt(1 << 7)
+	getCardsResponseFieldGoogleLogoStyle         = big.NewInt(1 << 8)
+	getCardsResponseFieldGoogleWallet            = big.NewInt(1 << 9)
+	getCardsResponseFieldHeaderText              = big.NewInt(1 << 10)
+	getCardsResponseFieldID                      = big.NewInt(1 << 11)
+	getCardsResponseFieldInitialStamps           = big.NewInt(1 << 12)
+	getCardsResponseFieldName                    = big.NewInt(1 << 13)
+	getCardsResponseFieldQrStyle                 = big.NewInt(1 << 14)
+	getCardsResponseFieldRefereeStamps           = big.NewInt(1 << 15)
+	getCardsResponseFieldReferralsEnabled        = big.NewInt(1 << 16)
+	getCardsResponseFieldReferrerStamps          = big.NewInt(1 << 17)
+	getCardsResponseFieldRewardsCount            = big.NewInt(1 << 18)
+	getCardsResponseFieldShowMemberField         = big.NewInt(1 << 19)
+	getCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 20)
+	getCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 21)
+	getCardsResponseFieldStampColor              = big.NewInt(1 << 22)
+	getCardsResponseFieldStampIcon               = big.NewInt(1 << 23)
+	getCardsResponseFieldStampsRequired          = big.NewInt(1 << 24)
+	getCardsResponseFieldStripColor              = big.NewInt(1 << 25)
+	getCardsResponseFieldStripOpacity            = big.NewInt(1 << 26)
+	getCardsResponseFieldStripPreset             = big.NewInt(1 << 27)
+	getCardsResponseFieldStripType               = big.NewInt(1 << 28)
+	getCardsResponseFieldTextColor               = big.NewInt(1 << 29)
+	getCardsResponseFieldUpdatedAt               = big.NewInt(1 << 30)
 )
 
 type GetCardsResponse struct {
+	// Apple Wallet layout: 'store_card' (the classic layout) or 'poster' (iOS 27 full-bleed artwork; iPhones on iOS 26 or earlier show the store card)
+	ApplePassStyle string `json:"apple_pass_style" url:"apple_pass_style"`
 	// ISO 8601 timestamp when the card was archived, or null if active
 	ArchivedAt string `json:"archived_at" url:"archived_at"`
 	// Up to two extra front-of-pass fields
@@ -992,6 +1444,11 @@ type GetCardsResponse struct {
 	CustomerCardsCount int `json:"customer_cards_count" url:"customer_cards_count"`
 	// ISO 8601 timestamp when the card expires, or null if it does not expire
 	ExpiresAt string `json:"expires_at" url:"expires_at"`
+	// Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet
+	FeaturedActions []string `json:"featured_actions" url:"featured_actions"`
+	// How the logo sits on Google Wallet: 'round' (the square icon in a circle, with the store name) or 'wide' (the logo in place of the circle and store name)
+	GoogleLogoStyle string                        `json:"google_logo_style" url:"google_logo_style"`
+	GoogleWallet    *GetCardsResponseGoogleWallet `json:"google_wallet" url:"google_wallet"`
 	// Optional header text displayed on the card
 	HeaderText string `json:"header_text" url:"header_text"`
 	// Unique card ID
@@ -1000,6 +1457,14 @@ type GetCardsResponse struct {
 	InitialStamps int `json:"initial_stamps" url:"initial_stamps"`
 	// Card name (e.g. 'Coffee Loyalty Card')
 	Name string `json:"name" url:"name"`
+	// What the wallet pass QR holds: 'link' (the customer's invite link with the card code after the #, readable by the Leal scanner and by `search`) or 'code' (the bare card code). Cards created before referrals use 'code'
+	QrStyle string `json:"qr_style" url:"qr_style"`
+	// Stamps the invited friend gets when the referral pays out
+	RefereeStamps float64 `json:"referee_stamps" url:"referee_stamps"`
+	// Whether customers can invite friends from the back of their pass. A referral pays out when the store first stamps the friend's card for a visit (a scan, or the API/POS), never for signing up
+	ReferralsEnabled bool `json:"referrals_enabled" url:"referrals_enabled"`
+	// Stamps the inviting customer gets when the referral pays out
+	ReferrerStamps float64 `json:"referrer_stamps" url:"referrer_stamps"`
 	// Number of rewards defined for this card
 	RewardsCount int `json:"rewards_count" url:"rewards_count"`
 	// Whether wallet passes show the member name field
@@ -1032,6 +1497,13 @@ type GetCardsResponse struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (g *GetCardsResponse) GetApplePassStyle() string {
+	if g == nil {
+		return ""
+	}
+	return g.ApplePassStyle
 }
 
 func (g *GetCardsResponse) GetArchivedAt() string {
@@ -1076,6 +1548,27 @@ func (g *GetCardsResponse) GetExpiresAt() string {
 	return g.ExpiresAt
 }
 
+func (g *GetCardsResponse) GetFeaturedActions() []string {
+	if g == nil {
+		return nil
+	}
+	return g.FeaturedActions
+}
+
+func (g *GetCardsResponse) GetGoogleLogoStyle() string {
+	if g == nil {
+		return ""
+	}
+	return g.GoogleLogoStyle
+}
+
+func (g *GetCardsResponse) GetGoogleWallet() *GetCardsResponseGoogleWallet {
+	if g == nil {
+		return nil
+	}
+	return g.GoogleWallet
+}
+
 func (g *GetCardsResponse) GetHeaderText() string {
 	if g == nil {
 		return ""
@@ -1102,6 +1595,34 @@ func (g *GetCardsResponse) GetName() string {
 		return ""
 	}
 	return g.Name
+}
+
+func (g *GetCardsResponse) GetQrStyle() string {
+	if g == nil {
+		return ""
+	}
+	return g.QrStyle
+}
+
+func (g *GetCardsResponse) GetRefereeStamps() float64 {
+	if g == nil {
+		return 0
+	}
+	return g.RefereeStamps
+}
+
+func (g *GetCardsResponse) GetReferralsEnabled() bool {
+	if g == nil {
+		return false
+	}
+	return g.ReferralsEnabled
+}
+
+func (g *GetCardsResponse) GetReferrerStamps() float64 {
+	if g == nil {
+		return 0
+	}
+	return g.ReferrerStamps
 }
 
 func (g *GetCardsResponse) GetRewardsCount() int {
@@ -1209,6 +1730,13 @@ func (g *GetCardsResponse) require(field *big.Int) {
 	g.explicitFields.Or(g.explicitFields, field)
 }
 
+// SetApplePassStyle sets the ApplePassStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetApplePassStyle(applePassStyle string) {
+	g.ApplePassStyle = applePassStyle
+	g.require(getCardsResponseFieldApplePassStyle)
+}
+
 // SetArchivedAt sets the ArchivedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetCardsResponse) SetArchivedAt(archivedAt string) {
@@ -1251,6 +1779,27 @@ func (g *GetCardsResponse) SetExpiresAt(expiresAt string) {
 	g.require(getCardsResponseFieldExpiresAt)
 }
 
+// SetFeaturedActions sets the FeaturedActions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetFeaturedActions(featuredActions []string) {
+	g.FeaturedActions = featuredActions
+	g.require(getCardsResponseFieldFeaturedActions)
+}
+
+// SetGoogleLogoStyle sets the GoogleLogoStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetGoogleLogoStyle(googleLogoStyle string) {
+	g.GoogleLogoStyle = googleLogoStyle
+	g.require(getCardsResponseFieldGoogleLogoStyle)
+}
+
+// SetGoogleWallet sets the GoogleWallet field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetGoogleWallet(googleWallet *GetCardsResponseGoogleWallet) {
+	g.GoogleWallet = googleWallet
+	g.require(getCardsResponseFieldGoogleWallet)
+}
+
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetCardsResponse) SetHeaderText(headerText string) {
@@ -1277,6 +1826,34 @@ func (g *GetCardsResponse) SetInitialStamps(initialStamps int) {
 func (g *GetCardsResponse) SetName(name string) {
 	g.Name = name
 	g.require(getCardsResponseFieldName)
+}
+
+// SetQrStyle sets the QrStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetQrStyle(qrStyle string) {
+	g.QrStyle = qrStyle
+	g.require(getCardsResponseFieldQrStyle)
+}
+
+// SetRefereeStamps sets the RefereeStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetRefereeStamps(refereeStamps float64) {
+	g.RefereeStamps = refereeStamps
+	g.require(getCardsResponseFieldRefereeStamps)
+}
+
+// SetReferralsEnabled sets the ReferralsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetReferralsEnabled(referralsEnabled bool) {
+	g.ReferralsEnabled = referralsEnabled
+	g.require(getCardsResponseFieldReferralsEnabled)
+}
+
+// SetReferrerStamps sets the ReferrerStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponse) SetReferrerStamps(referrerStamps float64) {
+	g.ReferrerStamps = referrerStamps
+	g.require(getCardsResponseFieldReferrerStamps)
 }
 
 // SetRewardsCount sets the RewardsCount field and marks it as non-optional;
@@ -1413,32 +1990,161 @@ func (g *GetCardsResponse) String() string {
 }
 
 var (
-	listCardsResponseItemFieldArchivedAt              = big.NewInt(1 << 0)
-	listCardsResponseItemFieldAuxiliaryFields         = big.NewInt(1 << 1)
-	listCardsResponseItemFieldCardColor               = big.NewInt(1 << 2)
-	listCardsResponseItemFieldCreatedAt               = big.NewInt(1 << 3)
-	listCardsResponseItemFieldCustomerCardsCount      = big.NewInt(1 << 4)
-	listCardsResponseItemFieldExpiresAt               = big.NewInt(1 << 5)
-	listCardsResponseItemFieldHeaderText              = big.NewInt(1 << 6)
-	listCardsResponseItemFieldID                      = big.NewInt(1 << 7)
-	listCardsResponseItemFieldInitialStamps           = big.NewInt(1 << 8)
-	listCardsResponseItemFieldName                    = big.NewInt(1 << 9)
-	listCardsResponseItemFieldRewardsCount            = big.NewInt(1 << 10)
-	listCardsResponseItemFieldShowMemberField         = big.NewInt(1 << 11)
-	listCardsResponseItemFieldShowStampsToRewardField = big.NewInt(1 << 12)
-	listCardsResponseItemFieldStampBackgroundColor    = big.NewInt(1 << 13)
-	listCardsResponseItemFieldStampColor              = big.NewInt(1 << 14)
-	listCardsResponseItemFieldStampIcon               = big.NewInt(1 << 15)
-	listCardsResponseItemFieldStampsRequired          = big.NewInt(1 << 16)
-	listCardsResponseItemFieldStripColor              = big.NewInt(1 << 17)
-	listCardsResponseItemFieldStripOpacity            = big.NewInt(1 << 18)
-	listCardsResponseItemFieldStripPreset             = big.NewInt(1 << 19)
-	listCardsResponseItemFieldStripType               = big.NewInt(1 << 20)
-	listCardsResponseItemFieldTextColor               = big.NewInt(1 << 21)
-	listCardsResponseItemFieldUpdatedAt               = big.NewInt(1 << 22)
+	getCardsResponseGoogleWalletFieldHeroImage = big.NewInt(1 << 0)
+	getCardsResponseGoogleWalletFieldTextColor = big.NewInt(1 << 1)
+	getCardsResponseGoogleWalletFieldWarnings  = big.NewInt(1 << 2)
+)
+
+type GetCardsResponseGoogleWallet struct {
+	// What fills the hero image behind the stamps: 'hero_image' (uploaded in Leal), 'strip_image', 'preset' or 'color'
+	HeroImage string `json:"hero_image" url:"hero_image"`
+	// The text colour Google Wallet uses on this card: it picks black or white itself and ignores text_color
+	TextColor string `json:"text_color" url:"text_color"`
+	// Guidelines the card doesn't meet: any of 'color', 'title', 'issuer_name', 'field_labels', 'field_values', 'logo', 'hero'. Empty when it meets them all
+	Warnings []string `json:"warnings" url:"warnings"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetCardsResponseGoogleWallet) GetHeroImage() string {
+	if g == nil {
+		return ""
+	}
+	return g.HeroImage
+}
+
+func (g *GetCardsResponseGoogleWallet) GetTextColor() string {
+	if g == nil {
+		return ""
+	}
+	return g.TextColor
+}
+
+func (g *GetCardsResponseGoogleWallet) GetWarnings() []string {
+	if g == nil {
+		return nil
+	}
+	return g.Warnings
+}
+
+func (g *GetCardsResponseGoogleWallet) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.extraProperties
+}
+
+func (g *GetCardsResponseGoogleWallet) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetHeroImage sets the HeroImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponseGoogleWallet) SetHeroImage(heroImage string) {
+	g.HeroImage = heroImage
+	g.require(getCardsResponseGoogleWalletFieldHeroImage)
+}
+
+// SetTextColor sets the TextColor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponseGoogleWallet) SetTextColor(textColor string) {
+	g.TextColor = textColor
+	g.require(getCardsResponseGoogleWalletFieldTextColor)
+}
+
+// SetWarnings sets the Warnings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCardsResponseGoogleWallet) SetWarnings(warnings []string) {
+	g.Warnings = warnings
+	g.require(getCardsResponseGoogleWalletFieldWarnings)
+}
+
+func (g *GetCardsResponseGoogleWallet) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetCardsResponseGoogleWallet
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetCardsResponseGoogleWallet(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetCardsResponseGoogleWallet) MarshalJSON() ([]byte, error) {
+	type embed GetCardsResponseGoogleWallet
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetCardsResponseGoogleWallet) String() string {
+	if g == nil {
+		return "<nil>"
+	}
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	listCardsResponseItemFieldApplePassStyle          = big.NewInt(1 << 0)
+	listCardsResponseItemFieldArchivedAt              = big.NewInt(1 << 1)
+	listCardsResponseItemFieldAuxiliaryFields         = big.NewInt(1 << 2)
+	listCardsResponseItemFieldCardColor               = big.NewInt(1 << 3)
+	listCardsResponseItemFieldCreatedAt               = big.NewInt(1 << 4)
+	listCardsResponseItemFieldCustomerCardsCount      = big.NewInt(1 << 5)
+	listCardsResponseItemFieldExpiresAt               = big.NewInt(1 << 6)
+	listCardsResponseItemFieldFeaturedActions         = big.NewInt(1 << 7)
+	listCardsResponseItemFieldGoogleLogoStyle         = big.NewInt(1 << 8)
+	listCardsResponseItemFieldGoogleWallet            = big.NewInt(1 << 9)
+	listCardsResponseItemFieldHeaderText              = big.NewInt(1 << 10)
+	listCardsResponseItemFieldID                      = big.NewInt(1 << 11)
+	listCardsResponseItemFieldInitialStamps           = big.NewInt(1 << 12)
+	listCardsResponseItemFieldName                    = big.NewInt(1 << 13)
+	listCardsResponseItemFieldQrStyle                 = big.NewInt(1 << 14)
+	listCardsResponseItemFieldRefereeStamps           = big.NewInt(1 << 15)
+	listCardsResponseItemFieldReferralsEnabled        = big.NewInt(1 << 16)
+	listCardsResponseItemFieldReferrerStamps          = big.NewInt(1 << 17)
+	listCardsResponseItemFieldRewardsCount            = big.NewInt(1 << 18)
+	listCardsResponseItemFieldShowMemberField         = big.NewInt(1 << 19)
+	listCardsResponseItemFieldShowStampsToRewardField = big.NewInt(1 << 20)
+	listCardsResponseItemFieldStampBackgroundColor    = big.NewInt(1 << 21)
+	listCardsResponseItemFieldStampColor              = big.NewInt(1 << 22)
+	listCardsResponseItemFieldStampIcon               = big.NewInt(1 << 23)
+	listCardsResponseItemFieldStampsRequired          = big.NewInt(1 << 24)
+	listCardsResponseItemFieldStripColor              = big.NewInt(1 << 25)
+	listCardsResponseItemFieldStripOpacity            = big.NewInt(1 << 26)
+	listCardsResponseItemFieldStripPreset             = big.NewInt(1 << 27)
+	listCardsResponseItemFieldStripType               = big.NewInt(1 << 28)
+	listCardsResponseItemFieldTextColor               = big.NewInt(1 << 29)
+	listCardsResponseItemFieldUpdatedAt               = big.NewInt(1 << 30)
 )
 
 type ListCardsResponseItem struct {
+	// Apple Wallet layout: 'store_card' (the classic layout) or 'poster' (iOS 27 full-bleed artwork; iPhones on iOS 26 or earlier show the store card)
+	ApplePassStyle string `json:"apple_pass_style" url:"apple_pass_style"`
 	// ISO 8601 timestamp when the card was archived, or null if active
 	ArchivedAt string `json:"archived_at" url:"archived_at"`
 	// Up to two extra front-of-pass fields
@@ -1451,6 +2157,11 @@ type ListCardsResponseItem struct {
 	CustomerCardsCount int `json:"customer_cards_count" url:"customer_cards_count"`
 	// ISO 8601 timestamp when the card expires, or null if it does not expire
 	ExpiresAt string `json:"expires_at" url:"expires_at"`
+	// Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet
+	FeaturedActions []string `json:"featured_actions" url:"featured_actions"`
+	// How the logo sits on Google Wallet: 'round' (the square icon in a circle, with the store name) or 'wide' (the logo in place of the circle and store name)
+	GoogleLogoStyle string                             `json:"google_logo_style" url:"google_logo_style"`
+	GoogleWallet    *ListCardsResponseItemGoogleWallet `json:"google_wallet" url:"google_wallet"`
 	// Optional header text displayed on the card
 	HeaderText string `json:"header_text" url:"header_text"`
 	// Unique card ID
@@ -1459,6 +2170,14 @@ type ListCardsResponseItem struct {
 	InitialStamps int `json:"initial_stamps" url:"initial_stamps"`
 	// Card name (e.g. 'Coffee Loyalty Card')
 	Name string `json:"name" url:"name"`
+	// What the wallet pass QR holds: 'link' (the customer's invite link with the card code after the #, readable by the Leal scanner and by `search`) or 'code' (the bare card code). Cards created before referrals use 'code'
+	QrStyle string `json:"qr_style" url:"qr_style"`
+	// Stamps the invited friend gets when the referral pays out
+	RefereeStamps float64 `json:"referee_stamps" url:"referee_stamps"`
+	// Whether customers can invite friends from the back of their pass. A referral pays out when the store first stamps the friend's card for a visit (a scan, or the API/POS), never for signing up
+	ReferralsEnabled bool `json:"referrals_enabled" url:"referrals_enabled"`
+	// Stamps the inviting customer gets when the referral pays out
+	ReferrerStamps float64 `json:"referrer_stamps" url:"referrer_stamps"`
 	// Number of rewards defined for this card
 	RewardsCount int `json:"rewards_count" url:"rewards_count"`
 	// Whether wallet passes show the member name field
@@ -1491,6 +2210,13 @@ type ListCardsResponseItem struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (l *ListCardsResponseItem) GetApplePassStyle() string {
+	if l == nil {
+		return ""
+	}
+	return l.ApplePassStyle
 }
 
 func (l *ListCardsResponseItem) GetArchivedAt() string {
@@ -1535,6 +2261,27 @@ func (l *ListCardsResponseItem) GetExpiresAt() string {
 	return l.ExpiresAt
 }
 
+func (l *ListCardsResponseItem) GetFeaturedActions() []string {
+	if l == nil {
+		return nil
+	}
+	return l.FeaturedActions
+}
+
+func (l *ListCardsResponseItem) GetGoogleLogoStyle() string {
+	if l == nil {
+		return ""
+	}
+	return l.GoogleLogoStyle
+}
+
+func (l *ListCardsResponseItem) GetGoogleWallet() *ListCardsResponseItemGoogleWallet {
+	if l == nil {
+		return nil
+	}
+	return l.GoogleWallet
+}
+
 func (l *ListCardsResponseItem) GetHeaderText() string {
 	if l == nil {
 		return ""
@@ -1561,6 +2308,34 @@ func (l *ListCardsResponseItem) GetName() string {
 		return ""
 	}
 	return l.Name
+}
+
+func (l *ListCardsResponseItem) GetQrStyle() string {
+	if l == nil {
+		return ""
+	}
+	return l.QrStyle
+}
+
+func (l *ListCardsResponseItem) GetRefereeStamps() float64 {
+	if l == nil {
+		return 0
+	}
+	return l.RefereeStamps
+}
+
+func (l *ListCardsResponseItem) GetReferralsEnabled() bool {
+	if l == nil {
+		return false
+	}
+	return l.ReferralsEnabled
+}
+
+func (l *ListCardsResponseItem) GetReferrerStamps() float64 {
+	if l == nil {
+		return 0
+	}
+	return l.ReferrerStamps
 }
 
 func (l *ListCardsResponseItem) GetRewardsCount() int {
@@ -1668,6 +2443,13 @@ func (l *ListCardsResponseItem) require(field *big.Int) {
 	l.explicitFields.Or(l.explicitFields, field)
 }
 
+// SetApplePassStyle sets the ApplePassStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetApplePassStyle(applePassStyle string) {
+	l.ApplePassStyle = applePassStyle
+	l.require(listCardsResponseItemFieldApplePassStyle)
+}
+
 // SetArchivedAt sets the ArchivedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListCardsResponseItem) SetArchivedAt(archivedAt string) {
@@ -1710,6 +2492,27 @@ func (l *ListCardsResponseItem) SetExpiresAt(expiresAt string) {
 	l.require(listCardsResponseItemFieldExpiresAt)
 }
 
+// SetFeaturedActions sets the FeaturedActions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetFeaturedActions(featuredActions []string) {
+	l.FeaturedActions = featuredActions
+	l.require(listCardsResponseItemFieldFeaturedActions)
+}
+
+// SetGoogleLogoStyle sets the GoogleLogoStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetGoogleLogoStyle(googleLogoStyle string) {
+	l.GoogleLogoStyle = googleLogoStyle
+	l.require(listCardsResponseItemFieldGoogleLogoStyle)
+}
+
+// SetGoogleWallet sets the GoogleWallet field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetGoogleWallet(googleWallet *ListCardsResponseItemGoogleWallet) {
+	l.GoogleWallet = googleWallet
+	l.require(listCardsResponseItemFieldGoogleWallet)
+}
+
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (l *ListCardsResponseItem) SetHeaderText(headerText string) {
@@ -1736,6 +2539,34 @@ func (l *ListCardsResponseItem) SetInitialStamps(initialStamps int) {
 func (l *ListCardsResponseItem) SetName(name string) {
 	l.Name = name
 	l.require(listCardsResponseItemFieldName)
+}
+
+// SetQrStyle sets the QrStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetQrStyle(qrStyle string) {
+	l.QrStyle = qrStyle
+	l.require(listCardsResponseItemFieldQrStyle)
+}
+
+// SetRefereeStamps sets the RefereeStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetRefereeStamps(refereeStamps float64) {
+	l.RefereeStamps = refereeStamps
+	l.require(listCardsResponseItemFieldRefereeStamps)
+}
+
+// SetReferralsEnabled sets the ReferralsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetReferralsEnabled(referralsEnabled bool) {
+	l.ReferralsEnabled = referralsEnabled
+	l.require(listCardsResponseItemFieldReferralsEnabled)
+}
+
+// SetReferrerStamps sets the ReferrerStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItem) SetReferrerStamps(referrerStamps float64) {
+	l.ReferrerStamps = referrerStamps
+	l.require(listCardsResponseItemFieldReferrerStamps)
 }
 
 // SetRewardsCount sets the RewardsCount field and marks it as non-optional;
@@ -1872,38 +2703,178 @@ func (l *ListCardsResponseItem) String() string {
 }
 
 var (
-	updateCardsRequestCardFieldAuxiliaryFields         = big.NewInt(1 << 0)
-	updateCardsRequestCardFieldCardColor               = big.NewInt(1 << 1)
-	updateCardsRequestCardFieldExpiresAt               = big.NewInt(1 << 2)
-	updateCardsRequestCardFieldHeaderText              = big.NewInt(1 << 3)
-	updateCardsRequestCardFieldInitialStamps           = big.NewInt(1 << 4)
-	updateCardsRequestCardFieldName                    = big.NewInt(1 << 5)
-	updateCardsRequestCardFieldShowMemberField         = big.NewInt(1 << 6)
-	updateCardsRequestCardFieldShowStampsToRewardField = big.NewInt(1 << 7)
-	updateCardsRequestCardFieldStampBackgroundColor    = big.NewInt(1 << 8)
-	updateCardsRequestCardFieldStampColor              = big.NewInt(1 << 9)
-	updateCardsRequestCardFieldStampIcon               = big.NewInt(1 << 10)
-	updateCardsRequestCardFieldStampsRequired          = big.NewInt(1 << 11)
-	updateCardsRequestCardFieldStripColor              = big.NewInt(1 << 12)
-	updateCardsRequestCardFieldStripOpacity            = big.NewInt(1 << 13)
-	updateCardsRequestCardFieldStripPreset             = big.NewInt(1 << 14)
-	updateCardsRequestCardFieldStripType               = big.NewInt(1 << 15)
-	updateCardsRequestCardFieldTextColor               = big.NewInt(1 << 16)
+	listCardsResponseItemGoogleWalletFieldHeroImage = big.NewInt(1 << 0)
+	listCardsResponseItemGoogleWalletFieldTextColor = big.NewInt(1 << 1)
+	listCardsResponseItemGoogleWalletFieldWarnings  = big.NewInt(1 << 2)
+)
+
+type ListCardsResponseItemGoogleWallet struct {
+	// What fills the hero image behind the stamps: 'hero_image' (uploaded in Leal), 'strip_image', 'preset' or 'color'
+	HeroImage string `json:"hero_image" url:"hero_image"`
+	// The text colour Google Wallet uses on this card: it picks black or white itself and ignores text_color
+	TextColor string `json:"text_color" url:"text_color"`
+	// Guidelines the card doesn't meet: any of 'color', 'title', 'issuer_name', 'field_labels', 'field_values', 'logo', 'hero'. Empty when it meets them all
+	Warnings []string `json:"warnings" url:"warnings"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListCardsResponseItemGoogleWallet) GetHeroImage() string {
+	if l == nil {
+		return ""
+	}
+	return l.HeroImage
+}
+
+func (l *ListCardsResponseItemGoogleWallet) GetTextColor() string {
+	if l == nil {
+		return ""
+	}
+	return l.TextColor
+}
+
+func (l *ListCardsResponseItemGoogleWallet) GetWarnings() []string {
+	if l == nil {
+		return nil
+	}
+	return l.Warnings
+}
+
+func (l *ListCardsResponseItemGoogleWallet) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListCardsResponseItemGoogleWallet) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetHeroImage sets the HeroImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItemGoogleWallet) SetHeroImage(heroImage string) {
+	l.HeroImage = heroImage
+	l.require(listCardsResponseItemGoogleWalletFieldHeroImage)
+}
+
+// SetTextColor sets the TextColor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItemGoogleWallet) SetTextColor(textColor string) {
+	l.TextColor = textColor
+	l.require(listCardsResponseItemGoogleWalletFieldTextColor)
+}
+
+// SetWarnings sets the Warnings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCardsResponseItemGoogleWallet) SetWarnings(warnings []string) {
+	l.Warnings = warnings
+	l.require(listCardsResponseItemGoogleWalletFieldWarnings)
+}
+
+func (l *ListCardsResponseItemGoogleWallet) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListCardsResponseItemGoogleWallet
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListCardsResponseItemGoogleWallet(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListCardsResponseItemGoogleWallet) MarshalJSON() ([]byte, error) {
+	type embed ListCardsResponseItemGoogleWallet
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListCardsResponseItemGoogleWallet) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	updateCardsRequestCardFieldApplePassStyle          = big.NewInt(1 << 0)
+	updateCardsRequestCardFieldAuxiliaryFields         = big.NewInt(1 << 1)
+	updateCardsRequestCardFieldCardColor               = big.NewInt(1 << 2)
+	updateCardsRequestCardFieldExpiresAt               = big.NewInt(1 << 3)
+	updateCardsRequestCardFieldFeaturedActions         = big.NewInt(1 << 4)
+	updateCardsRequestCardFieldGoogleLogoStyle         = big.NewInt(1 << 5)
+	updateCardsRequestCardFieldHeaderText              = big.NewInt(1 << 6)
+	updateCardsRequestCardFieldInitialStamps           = big.NewInt(1 << 7)
+	updateCardsRequestCardFieldName                    = big.NewInt(1 << 8)
+	updateCardsRequestCardFieldQrStyle                 = big.NewInt(1 << 9)
+	updateCardsRequestCardFieldRefereeStamps           = big.NewInt(1 << 10)
+	updateCardsRequestCardFieldReferralsEnabled        = big.NewInt(1 << 11)
+	updateCardsRequestCardFieldReferrerStamps          = big.NewInt(1 << 12)
+	updateCardsRequestCardFieldShowMemberField         = big.NewInt(1 << 13)
+	updateCardsRequestCardFieldShowStampsToRewardField = big.NewInt(1 << 14)
+	updateCardsRequestCardFieldStampBackgroundColor    = big.NewInt(1 << 15)
+	updateCardsRequestCardFieldStampColor              = big.NewInt(1 << 16)
+	updateCardsRequestCardFieldStampIcon               = big.NewInt(1 << 17)
+	updateCardsRequestCardFieldStampsRequired          = big.NewInt(1 << 18)
+	updateCardsRequestCardFieldStripColor              = big.NewInt(1 << 19)
+	updateCardsRequestCardFieldStripOpacity            = big.NewInt(1 << 20)
+	updateCardsRequestCardFieldStripPreset             = big.NewInt(1 << 21)
+	updateCardsRequestCardFieldStripType               = big.NewInt(1 << 22)
+	updateCardsRequestCardFieldTextColor               = big.NewInt(1 << 23)
 )
 
 type UpdateCardsRequestCard struct {
+	// Apple Wallet layout. 'poster' is iOS 27's full-bleed layout; older iPhones show the store card. Defaults to 'store_card'
+	ApplePassStyle *UpdateCardsRequestCardApplePassStyle `json:"apple_pass_style,omitempty" url:"apple_pass_style,omitempty"`
 	// Up to two extra front-of-pass fields. Blank values are ignored.
 	AuxiliaryFields []string `json:"auxiliary_fields,omitempty" url:"auxiliary_fields,omitempty"`
 	// Hex colour for the card background
 	CardColor *string `json:"card_color,omitempty" url:"card_color,omitempty"`
 	// Card expiry timestamp (ISO 8601)
 	ExpiresAt *string `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	// Up to two buttons, shown as Featured Actions under the iOS 27 poster and as links in Google Wallet. Send an empty array to remove them.
+	FeaturedActions []string `json:"featured_actions,omitempty" url:"featured_actions,omitempty"`
+	// How the logo sits on Google Wallet. Defaults to 'round'
+	GoogleLogoStyle *UpdateCardsRequestCardGoogleLogoStyle `json:"google_logo_style,omitempty" url:"google_logo_style,omitempty"`
 	// Optional header text displayed on the card
 	HeaderText *string `json:"header_text,omitempty" url:"header_text,omitempty"`
 	// Pre-filled stamps (must be >= 0 and < stamps_required)
 	InitialStamps *int `json:"initial_stamps,omitempty" url:"initial_stamps,omitempty"`
 	// Card name
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// What the wallet pass QR holds. Changing it refreshes installed passes; passes still showing the old QR keep scanning
+	QrStyle *UpdateCardsRequestCardQrStyle `json:"qr_style,omitempty" url:"qr_style,omitempty"`
+	// Stamps the invited friend gets (>= 0 and < stamps_required)
+	RefereeStamps *float64 `json:"referee_stamps,omitempty" url:"referee_stamps,omitempty"`
+	// Let customers invite friends from the back of their pass. Installed passes are refreshed, as for any card change
+	ReferralsEnabled *bool `json:"referrals_enabled,omitempty" url:"referrals_enabled,omitempty"`
+	// Stamps the inviting customer gets (>= 0 and < stamps_required)
+	ReferrerStamps *float64 `json:"referrer_stamps,omitempty" url:"referrer_stamps,omitempty"`
 	// Whether wallet passes show the member name field
 	ShowMemberField *bool `json:"show_member_field,omitempty" url:"show_member_field,omitempty"`
 	// Whether wallet passes show the stamps-to-reward field
@@ -1934,6 +2905,13 @@ type UpdateCardsRequestCard struct {
 	rawJSON         json.RawMessage
 }
 
+func (u *UpdateCardsRequestCard) GetApplePassStyle() *UpdateCardsRequestCardApplePassStyle {
+	if u == nil {
+		return nil
+	}
+	return u.ApplePassStyle
+}
+
 func (u *UpdateCardsRequestCard) GetAuxiliaryFields() []string {
 	if u == nil {
 		return nil
@@ -1955,6 +2933,20 @@ func (u *UpdateCardsRequestCard) GetExpiresAt() *string {
 	return u.ExpiresAt
 }
 
+func (u *UpdateCardsRequestCard) GetFeaturedActions() []string {
+	if u == nil {
+		return nil
+	}
+	return u.FeaturedActions
+}
+
+func (u *UpdateCardsRequestCard) GetGoogleLogoStyle() *UpdateCardsRequestCardGoogleLogoStyle {
+	if u == nil {
+		return nil
+	}
+	return u.GoogleLogoStyle
+}
+
 func (u *UpdateCardsRequestCard) GetHeaderText() *string {
 	if u == nil {
 		return nil
@@ -1974,6 +2966,34 @@ func (u *UpdateCardsRequestCard) GetName() *string {
 		return nil
 	}
 	return u.Name
+}
+
+func (u *UpdateCardsRequestCard) GetQrStyle() *UpdateCardsRequestCardQrStyle {
+	if u == nil {
+		return nil
+	}
+	return u.QrStyle
+}
+
+func (u *UpdateCardsRequestCard) GetRefereeStamps() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.RefereeStamps
+}
+
+func (u *UpdateCardsRequestCard) GetReferralsEnabled() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.ReferralsEnabled
+}
+
+func (u *UpdateCardsRequestCard) GetReferrerStamps() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.ReferrerStamps
 }
 
 func (u *UpdateCardsRequestCard) GetShowMemberField() *bool {
@@ -2067,6 +3087,13 @@ func (u *UpdateCardsRequestCard) require(field *big.Int) {
 	u.explicitFields.Or(u.explicitFields, field)
 }
 
+// SetApplePassStyle sets the ApplePassStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetApplePassStyle(applePassStyle *UpdateCardsRequestCardApplePassStyle) {
+	u.ApplePassStyle = applePassStyle
+	u.require(updateCardsRequestCardFieldApplePassStyle)
+}
+
 // SetAuxiliaryFields sets the AuxiliaryFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateCardsRequestCard) SetAuxiliaryFields(auxiliaryFields []string) {
@@ -2088,6 +3115,20 @@ func (u *UpdateCardsRequestCard) SetExpiresAt(expiresAt *string) {
 	u.require(updateCardsRequestCardFieldExpiresAt)
 }
 
+// SetFeaturedActions sets the FeaturedActions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetFeaturedActions(featuredActions []string) {
+	u.FeaturedActions = featuredActions
+	u.require(updateCardsRequestCardFieldFeaturedActions)
+}
+
+// SetGoogleLogoStyle sets the GoogleLogoStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetGoogleLogoStyle(googleLogoStyle *UpdateCardsRequestCardGoogleLogoStyle) {
+	u.GoogleLogoStyle = googleLogoStyle
+	u.require(updateCardsRequestCardFieldGoogleLogoStyle)
+}
+
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateCardsRequestCard) SetHeaderText(headerText *string) {
@@ -2107,6 +3148,34 @@ func (u *UpdateCardsRequestCard) SetInitialStamps(initialStamps *int) {
 func (u *UpdateCardsRequestCard) SetName(name *string) {
 	u.Name = name
 	u.require(updateCardsRequestCardFieldName)
+}
+
+// SetQrStyle sets the QrStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetQrStyle(qrStyle *UpdateCardsRequestCardQrStyle) {
+	u.QrStyle = qrStyle
+	u.require(updateCardsRequestCardFieldQrStyle)
+}
+
+// SetRefereeStamps sets the RefereeStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetRefereeStamps(refereeStamps *float64) {
+	u.RefereeStamps = refereeStamps
+	u.require(updateCardsRequestCardFieldRefereeStamps)
+}
+
+// SetReferralsEnabled sets the ReferralsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetReferralsEnabled(referralsEnabled *bool) {
+	u.ReferralsEnabled = referralsEnabled
+	u.require(updateCardsRequestCardFieldReferralsEnabled)
+}
+
+// SetReferrerStamps sets the ReferrerStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsRequestCard) SetReferrerStamps(referrerStamps *float64) {
+	u.ReferrerStamps = referrerStamps
+	u.require(updateCardsRequestCardFieldReferrerStamps)
 }
 
 // SetShowMemberField sets the ShowMemberField field and marks it as non-optional;
@@ -2228,33 +3297,112 @@ func (u *UpdateCardsRequestCard) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+// Apple Wallet layout. 'poster' is iOS 27's full-bleed layout; older iPhones show the store card. Defaults to 'store_card'
+type UpdateCardsRequestCardApplePassStyle string
+
+const (
+	UpdateCardsRequestCardApplePassStyleStoreCard UpdateCardsRequestCardApplePassStyle = "store_card"
+	UpdateCardsRequestCardApplePassStylePoster    UpdateCardsRequestCardApplePassStyle = "poster"
+)
+
+func NewUpdateCardsRequestCardApplePassStyleFromString(s string) (UpdateCardsRequestCardApplePassStyle, error) {
+	switch s {
+	case "store_card":
+		return UpdateCardsRequestCardApplePassStyleStoreCard, nil
+	case "poster":
+		return UpdateCardsRequestCardApplePassStylePoster, nil
+	}
+	var t UpdateCardsRequestCardApplePassStyle
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateCardsRequestCardApplePassStyle) Ptr() *UpdateCardsRequestCardApplePassStyle {
+	return &u
+}
+
+// How the logo sits on Google Wallet. Defaults to 'round'
+type UpdateCardsRequestCardGoogleLogoStyle string
+
+const (
+	UpdateCardsRequestCardGoogleLogoStyleRound UpdateCardsRequestCardGoogleLogoStyle = "round"
+	UpdateCardsRequestCardGoogleLogoStyleWide  UpdateCardsRequestCardGoogleLogoStyle = "wide"
+)
+
+func NewUpdateCardsRequestCardGoogleLogoStyleFromString(s string) (UpdateCardsRequestCardGoogleLogoStyle, error) {
+	switch s {
+	case "round":
+		return UpdateCardsRequestCardGoogleLogoStyleRound, nil
+	case "wide":
+		return UpdateCardsRequestCardGoogleLogoStyleWide, nil
+	}
+	var t UpdateCardsRequestCardGoogleLogoStyle
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateCardsRequestCardGoogleLogoStyle) Ptr() *UpdateCardsRequestCardGoogleLogoStyle {
+	return &u
+}
+
+// What the wallet pass QR holds. Changing it refreshes installed passes; passes still showing the old QR keep scanning
+type UpdateCardsRequestCardQrStyle string
+
+const (
+	UpdateCardsRequestCardQrStyleLink UpdateCardsRequestCardQrStyle = "link"
+	UpdateCardsRequestCardQrStyleCode UpdateCardsRequestCardQrStyle = "code"
+)
+
+func NewUpdateCardsRequestCardQrStyleFromString(s string) (UpdateCardsRequestCardQrStyle, error) {
+	switch s {
+	case "link":
+		return UpdateCardsRequestCardQrStyleLink, nil
+	case "code":
+		return UpdateCardsRequestCardQrStyleCode, nil
+	}
+	var t UpdateCardsRequestCardQrStyle
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateCardsRequestCardQrStyle) Ptr() *UpdateCardsRequestCardQrStyle {
+	return &u
+}
+
 var (
-	updateCardsResponseFieldArchivedAt              = big.NewInt(1 << 0)
-	updateCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 1)
-	updateCardsResponseFieldCardColor               = big.NewInt(1 << 2)
-	updateCardsResponseFieldCreatedAt               = big.NewInt(1 << 3)
-	updateCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 4)
-	updateCardsResponseFieldExpiresAt               = big.NewInt(1 << 5)
-	updateCardsResponseFieldHeaderText              = big.NewInt(1 << 6)
-	updateCardsResponseFieldID                      = big.NewInt(1 << 7)
-	updateCardsResponseFieldInitialStamps           = big.NewInt(1 << 8)
-	updateCardsResponseFieldName                    = big.NewInt(1 << 9)
-	updateCardsResponseFieldRewardsCount            = big.NewInt(1 << 10)
-	updateCardsResponseFieldShowMemberField         = big.NewInt(1 << 11)
-	updateCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 12)
-	updateCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 13)
-	updateCardsResponseFieldStampColor              = big.NewInt(1 << 14)
-	updateCardsResponseFieldStampIcon               = big.NewInt(1 << 15)
-	updateCardsResponseFieldStampsRequired          = big.NewInt(1 << 16)
-	updateCardsResponseFieldStripColor              = big.NewInt(1 << 17)
-	updateCardsResponseFieldStripOpacity            = big.NewInt(1 << 18)
-	updateCardsResponseFieldStripPreset             = big.NewInt(1 << 19)
-	updateCardsResponseFieldStripType               = big.NewInt(1 << 20)
-	updateCardsResponseFieldTextColor               = big.NewInt(1 << 21)
-	updateCardsResponseFieldUpdatedAt               = big.NewInt(1 << 22)
+	updateCardsResponseFieldApplePassStyle          = big.NewInt(1 << 0)
+	updateCardsResponseFieldArchivedAt              = big.NewInt(1 << 1)
+	updateCardsResponseFieldAuxiliaryFields         = big.NewInt(1 << 2)
+	updateCardsResponseFieldCardColor               = big.NewInt(1 << 3)
+	updateCardsResponseFieldCreatedAt               = big.NewInt(1 << 4)
+	updateCardsResponseFieldCustomerCardsCount      = big.NewInt(1 << 5)
+	updateCardsResponseFieldExpiresAt               = big.NewInt(1 << 6)
+	updateCardsResponseFieldFeaturedActions         = big.NewInt(1 << 7)
+	updateCardsResponseFieldGoogleLogoStyle         = big.NewInt(1 << 8)
+	updateCardsResponseFieldGoogleWallet            = big.NewInt(1 << 9)
+	updateCardsResponseFieldHeaderText              = big.NewInt(1 << 10)
+	updateCardsResponseFieldID                      = big.NewInt(1 << 11)
+	updateCardsResponseFieldInitialStamps           = big.NewInt(1 << 12)
+	updateCardsResponseFieldName                    = big.NewInt(1 << 13)
+	updateCardsResponseFieldQrStyle                 = big.NewInt(1 << 14)
+	updateCardsResponseFieldRefereeStamps           = big.NewInt(1 << 15)
+	updateCardsResponseFieldReferralsEnabled        = big.NewInt(1 << 16)
+	updateCardsResponseFieldReferrerStamps          = big.NewInt(1 << 17)
+	updateCardsResponseFieldRewardsCount            = big.NewInt(1 << 18)
+	updateCardsResponseFieldShowMemberField         = big.NewInt(1 << 19)
+	updateCardsResponseFieldShowStampsToRewardField = big.NewInt(1 << 20)
+	updateCardsResponseFieldStampBackgroundColor    = big.NewInt(1 << 21)
+	updateCardsResponseFieldStampColor              = big.NewInt(1 << 22)
+	updateCardsResponseFieldStampIcon               = big.NewInt(1 << 23)
+	updateCardsResponseFieldStampsRequired          = big.NewInt(1 << 24)
+	updateCardsResponseFieldStripColor              = big.NewInt(1 << 25)
+	updateCardsResponseFieldStripOpacity            = big.NewInt(1 << 26)
+	updateCardsResponseFieldStripPreset             = big.NewInt(1 << 27)
+	updateCardsResponseFieldStripType               = big.NewInt(1 << 28)
+	updateCardsResponseFieldTextColor               = big.NewInt(1 << 29)
+	updateCardsResponseFieldUpdatedAt               = big.NewInt(1 << 30)
 )
 
 type UpdateCardsResponse struct {
+	// Apple Wallet layout: 'store_card' (the classic layout) or 'poster' (iOS 27 full-bleed artwork; iPhones on iOS 26 or earlier show the store card)
+	ApplePassStyle string `json:"apple_pass_style" url:"apple_pass_style"`
 	// ISO 8601 timestamp when the card was archived, or null if active
 	ArchivedAt string `json:"archived_at" url:"archived_at"`
 	// Up to two extra front-of-pass fields
@@ -2267,6 +3415,11 @@ type UpdateCardsResponse struct {
 	CustomerCardsCount int `json:"customer_cards_count" url:"customer_cards_count"`
 	// ISO 8601 timestamp when the card expires, or null if it does not expire
 	ExpiresAt string `json:"expires_at" url:"expires_at"`
+	// Up to two buttons: Featured Actions under the iOS 27 poster, and links under the pass in Google Wallet
+	FeaturedActions []string `json:"featured_actions" url:"featured_actions"`
+	// How the logo sits on Google Wallet: 'round' (the square icon in a circle, with the store name) or 'wide' (the logo in place of the circle and store name)
+	GoogleLogoStyle string                           `json:"google_logo_style" url:"google_logo_style"`
+	GoogleWallet    *UpdateCardsResponseGoogleWallet `json:"google_wallet" url:"google_wallet"`
 	// Optional header text displayed on the card
 	HeaderText string `json:"header_text" url:"header_text"`
 	// Unique card ID
@@ -2275,6 +3428,14 @@ type UpdateCardsResponse struct {
 	InitialStamps int `json:"initial_stamps" url:"initial_stamps"`
 	// Card name (e.g. 'Coffee Loyalty Card')
 	Name string `json:"name" url:"name"`
+	// What the wallet pass QR holds: 'link' (the customer's invite link with the card code after the #, readable by the Leal scanner and by `search`) or 'code' (the bare card code). Cards created before referrals use 'code'
+	QrStyle string `json:"qr_style" url:"qr_style"`
+	// Stamps the invited friend gets when the referral pays out
+	RefereeStamps float64 `json:"referee_stamps" url:"referee_stamps"`
+	// Whether customers can invite friends from the back of their pass. A referral pays out when the store first stamps the friend's card for a visit (a scan, or the API/POS), never for signing up
+	ReferralsEnabled bool `json:"referrals_enabled" url:"referrals_enabled"`
+	// Stamps the inviting customer gets when the referral pays out
+	ReferrerStamps float64 `json:"referrer_stamps" url:"referrer_stamps"`
 	// Number of rewards defined for this card
 	RewardsCount int `json:"rewards_count" url:"rewards_count"`
 	// Whether wallet passes show the member name field
@@ -2307,6 +3468,13 @@ type UpdateCardsResponse struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (u *UpdateCardsResponse) GetApplePassStyle() string {
+	if u == nil {
+		return ""
+	}
+	return u.ApplePassStyle
 }
 
 func (u *UpdateCardsResponse) GetArchivedAt() string {
@@ -2351,6 +3519,27 @@ func (u *UpdateCardsResponse) GetExpiresAt() string {
 	return u.ExpiresAt
 }
 
+func (u *UpdateCardsResponse) GetFeaturedActions() []string {
+	if u == nil {
+		return nil
+	}
+	return u.FeaturedActions
+}
+
+func (u *UpdateCardsResponse) GetGoogleLogoStyle() string {
+	if u == nil {
+		return ""
+	}
+	return u.GoogleLogoStyle
+}
+
+func (u *UpdateCardsResponse) GetGoogleWallet() *UpdateCardsResponseGoogleWallet {
+	if u == nil {
+		return nil
+	}
+	return u.GoogleWallet
+}
+
 func (u *UpdateCardsResponse) GetHeaderText() string {
 	if u == nil {
 		return ""
@@ -2377,6 +3566,34 @@ func (u *UpdateCardsResponse) GetName() string {
 		return ""
 	}
 	return u.Name
+}
+
+func (u *UpdateCardsResponse) GetQrStyle() string {
+	if u == nil {
+		return ""
+	}
+	return u.QrStyle
+}
+
+func (u *UpdateCardsResponse) GetRefereeStamps() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.RefereeStamps
+}
+
+func (u *UpdateCardsResponse) GetReferralsEnabled() bool {
+	if u == nil {
+		return false
+	}
+	return u.ReferralsEnabled
+}
+
+func (u *UpdateCardsResponse) GetReferrerStamps() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.ReferrerStamps
 }
 
 func (u *UpdateCardsResponse) GetRewardsCount() int {
@@ -2484,6 +3701,13 @@ func (u *UpdateCardsResponse) require(field *big.Int) {
 	u.explicitFields.Or(u.explicitFields, field)
 }
 
+// SetApplePassStyle sets the ApplePassStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetApplePassStyle(applePassStyle string) {
+	u.ApplePassStyle = applePassStyle
+	u.require(updateCardsResponseFieldApplePassStyle)
+}
+
 // SetArchivedAt sets the ArchivedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateCardsResponse) SetArchivedAt(archivedAt string) {
@@ -2526,6 +3750,27 @@ func (u *UpdateCardsResponse) SetExpiresAt(expiresAt string) {
 	u.require(updateCardsResponseFieldExpiresAt)
 }
 
+// SetFeaturedActions sets the FeaturedActions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetFeaturedActions(featuredActions []string) {
+	u.FeaturedActions = featuredActions
+	u.require(updateCardsResponseFieldFeaturedActions)
+}
+
+// SetGoogleLogoStyle sets the GoogleLogoStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetGoogleLogoStyle(googleLogoStyle string) {
+	u.GoogleLogoStyle = googleLogoStyle
+	u.require(updateCardsResponseFieldGoogleLogoStyle)
+}
+
+// SetGoogleWallet sets the GoogleWallet field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetGoogleWallet(googleWallet *UpdateCardsResponseGoogleWallet) {
+	u.GoogleWallet = googleWallet
+	u.require(updateCardsResponseFieldGoogleWallet)
+}
+
 // SetHeaderText sets the HeaderText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UpdateCardsResponse) SetHeaderText(headerText string) {
@@ -2552,6 +3797,34 @@ func (u *UpdateCardsResponse) SetInitialStamps(initialStamps int) {
 func (u *UpdateCardsResponse) SetName(name string) {
 	u.Name = name
 	u.require(updateCardsResponseFieldName)
+}
+
+// SetQrStyle sets the QrStyle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetQrStyle(qrStyle string) {
+	u.QrStyle = qrStyle
+	u.require(updateCardsResponseFieldQrStyle)
+}
+
+// SetRefereeStamps sets the RefereeStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetRefereeStamps(refereeStamps float64) {
+	u.RefereeStamps = refereeStamps
+	u.require(updateCardsResponseFieldRefereeStamps)
+}
+
+// SetReferralsEnabled sets the ReferralsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetReferralsEnabled(referralsEnabled bool) {
+	u.ReferralsEnabled = referralsEnabled
+	u.require(updateCardsResponseFieldReferralsEnabled)
+}
+
+// SetReferrerStamps sets the ReferrerStamps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponse) SetReferrerStamps(referrerStamps float64) {
+	u.ReferrerStamps = referrerStamps
+	u.require(updateCardsResponseFieldReferrerStamps)
 }
 
 // SetRewardsCount sets the RewardsCount field and marks it as non-optional;
@@ -2673,6 +3946,125 @@ func (u *UpdateCardsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateCardsResponse) String() string {
+	if u == nil {
+		return "<nil>"
+	}
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	updateCardsResponseGoogleWalletFieldHeroImage = big.NewInt(1 << 0)
+	updateCardsResponseGoogleWalletFieldTextColor = big.NewInt(1 << 1)
+	updateCardsResponseGoogleWalletFieldWarnings  = big.NewInt(1 << 2)
+)
+
+type UpdateCardsResponseGoogleWallet struct {
+	// What fills the hero image behind the stamps: 'hero_image' (uploaded in Leal), 'strip_image', 'preset' or 'color'
+	HeroImage string `json:"hero_image" url:"hero_image"`
+	// The text colour Google Wallet uses on this card: it picks black or white itself and ignores text_color
+	TextColor string `json:"text_color" url:"text_color"`
+	// Guidelines the card doesn't meet: any of 'color', 'title', 'issuer_name', 'field_labels', 'field_values', 'logo', 'hero'. Empty when it meets them all
+	Warnings []string `json:"warnings" url:"warnings"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateCardsResponseGoogleWallet) GetHeroImage() string {
+	if u == nil {
+		return ""
+	}
+	return u.HeroImage
+}
+
+func (u *UpdateCardsResponseGoogleWallet) GetTextColor() string {
+	if u == nil {
+		return ""
+	}
+	return u.TextColor
+}
+
+func (u *UpdateCardsResponseGoogleWallet) GetWarnings() []string {
+	if u == nil {
+		return nil
+	}
+	return u.Warnings
+}
+
+func (u *UpdateCardsResponseGoogleWallet) GetExtraProperties() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
+	return u.extraProperties
+}
+
+func (u *UpdateCardsResponseGoogleWallet) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetHeroImage sets the HeroImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponseGoogleWallet) SetHeroImage(heroImage string) {
+	u.HeroImage = heroImage
+	u.require(updateCardsResponseGoogleWalletFieldHeroImage)
+}
+
+// SetTextColor sets the TextColor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponseGoogleWallet) SetTextColor(textColor string) {
+	u.TextColor = textColor
+	u.require(updateCardsResponseGoogleWalletFieldTextColor)
+}
+
+// SetWarnings sets the Warnings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpdateCardsResponseGoogleWallet) SetWarnings(warnings []string) {
+	u.Warnings = warnings
+	u.require(updateCardsResponseGoogleWalletFieldWarnings)
+}
+
+func (u *UpdateCardsResponseGoogleWallet) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateCardsResponseGoogleWallet
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateCardsResponseGoogleWallet(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateCardsResponseGoogleWallet) MarshalJSON() ([]byte, error) {
+	type embed UpdateCardsResponseGoogleWallet
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UpdateCardsResponseGoogleWallet) String() string {
 	if u == nil {
 		return "<nil>"
 	}

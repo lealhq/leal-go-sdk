@@ -8,9 +8,9 @@
       "path": "github.com/lealhq/leal-go-sdk"
     }
   },
-  "originGitCommit": "cf2e805c2a9dd96e6e7e0632ed8a5e47243a8d4f",
+  "originGitCommit": "c03884d025c65aea35e127adc0c37730010aac3f",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "ciProvider": "github",
-  "sdkVersion": "v0.0.21"
+  "sdkVersion": "v0.0.22"
 }

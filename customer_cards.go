@@ -268,11 +268,14 @@ var (
 	getCustomerCardsResponseFieldIssuedAt           = big.NewInt(1 << 9)
 	getCustomerCardsResponseFieldPassInstalled      = big.NewInt(1 << 10)
 	getCustomerCardsResponseFieldProgressPercentage = big.NewInt(1 << 11)
-	getCustomerCardsResponseFieldStampsCount        = big.NewInt(1 << 12)
-	getCustomerCardsResponseFieldStampsRemaining    = big.NewInt(1 << 13)
-	getCustomerCardsResponseFieldStatus             = big.NewInt(1 << 14)
-	getCustomerCardsResponseFieldUpdatedAt          = big.NewInt(1 << 15)
-	getCustomerCardsResponseFieldUUID               = big.NewInt(1 << 16)
+	getCustomerCardsResponseFieldReferralURL        = big.NewInt(1 << 12)
+	getCustomerCardsResponseFieldReferralsCount     = big.NewInt(1 << 13)
+	getCustomerCardsResponseFieldReferredBy         = big.NewInt(1 << 14)
+	getCustomerCardsResponseFieldStampsCount        = big.NewInt(1 << 15)
+	getCustomerCardsResponseFieldStampsRemaining    = big.NewInt(1 << 16)
+	getCustomerCardsResponseFieldStatus             = big.NewInt(1 << 17)
+	getCustomerCardsResponseFieldUpdatedAt          = big.NewInt(1 << 18)
+	getCustomerCardsResponseFieldUUID               = big.NewInt(1 << 19)
 )
 
 type GetCustomerCardsResponse struct {
@@ -300,6 +303,11 @@ type GetCustomerCardsResponse struct {
 	PassInstalled bool `json:"pass_installed" url:"pass_installed"`
 	// Completion towards the next reward, 0 to 100
 	ProgressPercentage float64 `json:"progress_percentage" url:"progress_percentage"`
+	// The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem
+	ReferralURL string `json:"referral_url" url:"referral_url"`
+	// Friends this customer has invited who joined, rewarded or not
+	ReferralsCount float64                             `json:"referrals_count" url:"referrals_count"`
+	ReferredBy     *GetCustomerCardsResponseReferredBy `json:"referred_by" url:"referred_by"`
 	// Stamps collected so far
 	StampsCount int `json:"stamps_count" url:"stamps_count"`
 	// Stamps still needed to complete the card
@@ -308,7 +316,7 @@ type GetCustomerCardsResponse struct {
 	Status string `json:"status" url:"status"`
 	// ISO 8601 last-update timestamp
 	UpdatedAt string `json:"updated_at" url:"updated_at"`
-	// Public identifier used in wallet pass URLs
+	// The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem
 	UUID string `json:"uuid" url:"uuid"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -400,6 +408,27 @@ func (g *GetCustomerCardsResponse) GetProgressPercentage() float64 {
 		return 0
 	}
 	return g.ProgressPercentage
+}
+
+func (g *GetCustomerCardsResponse) GetReferralURL() string {
+	if g == nil {
+		return ""
+	}
+	return g.ReferralURL
+}
+
+func (g *GetCustomerCardsResponse) GetReferralsCount() float64 {
+	if g == nil {
+		return 0
+	}
+	return g.ReferralsCount
+}
+
+func (g *GetCustomerCardsResponse) GetReferredBy() *GetCustomerCardsResponseReferredBy {
+	if g == nil {
+		return nil
+	}
+	return g.ReferredBy
 }
 
 func (g *GetCustomerCardsResponse) GetStampsCount() int {
@@ -535,6 +564,27 @@ func (g *GetCustomerCardsResponse) SetProgressPercentage(progressPercentage floa
 	g.require(getCustomerCardsResponseFieldProgressPercentage)
 }
 
+// SetReferralURL sets the ReferralURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCustomerCardsResponse) SetReferralURL(referralURL string) {
+	g.ReferralURL = referralURL
+	g.require(getCustomerCardsResponseFieldReferralURL)
+}
+
+// SetReferralsCount sets the ReferralsCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCustomerCardsResponse) SetReferralsCount(referralsCount float64) {
+	g.ReferralsCount = referralsCount
+	g.require(getCustomerCardsResponseFieldReferralsCount)
+}
+
+// SetReferredBy sets the ReferredBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCustomerCardsResponse) SetReferredBy(referredBy *GetCustomerCardsResponseReferredBy) {
+	g.ReferredBy = referredBy
+	g.require(getCustomerCardsResponseFieldReferredBy)
+}
+
 // SetStampsCount sets the StampsCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetCustomerCardsResponse) SetStampsCount(stampsCount int) {
@@ -613,6 +663,159 @@ func (g *GetCustomerCardsResponse) String() string {
 }
 
 var (
+	getCustomerCardsResponseReferredByFieldCustomerCardID = big.NewInt(1 << 0)
+	getCustomerCardsResponseReferredByFieldCustomerID     = big.NewInt(1 << 1)
+	getCustomerCardsResponseReferredByFieldReferralID     = big.NewInt(1 << 2)
+	getCustomerCardsResponseReferredByFieldRewardedAt     = big.NewInt(1 << 3)
+	getCustomerCardsResponseReferredByFieldStatus         = big.NewInt(1 << 4)
+)
+
+type GetCustomerCardsResponseReferredBy struct {
+	// The inviting customer's card
+	CustomerCardID float64 `json:"customer_card_id" url:"customer_card_id"`
+	// The customer who invited them
+	CustomerID int `json:"customer_id" url:"customer_id"`
+	// Referral ID
+	ReferralID float64 `json:"referral_id" url:"referral_id"`
+	// ISO 8601 timestamp the referral paid out
+	RewardedAt string `json:"rewarded_at" url:"rewarded_at"`
+	// 'pending' until the store first stamps this card for a visit, then 'rewarded'
+	Status string `json:"status" url:"status"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetCustomerCardsResponseReferredBy) GetCustomerCardID() float64 {
+	if g == nil {
+		return 0
+	}
+	return g.CustomerCardID
+}
+
+func (g *GetCustomerCardsResponseReferredBy) GetCustomerID() int {
+	if g == nil {
+		return 0
+	}
+	return g.CustomerID
+}
+
+func (g *GetCustomerCardsResponseReferredBy) GetReferralID() float64 {
+	if g == nil {
+		return 0
+	}
+	return g.ReferralID
+}
+
+func (g *GetCustomerCardsResponseReferredBy) GetRewardedAt() string {
+	if g == nil {
+		return ""
+	}
+	return g.RewardedAt
+}
+
+func (g *GetCustomerCardsResponseReferredBy) GetStatus() string {
+	if g == nil {
+		return ""
+	}
+	return g.Status
+}
+
+func (g *GetCustomerCardsResponseReferredBy) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.extraProperties
+}
+
+func (g *GetCustomerCardsResponseReferredBy) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetCustomerCardID sets the CustomerCardID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCustomerCardsResponseReferredBy) SetCustomerCardID(customerCardID float64) {
+	g.CustomerCardID = customerCardID
+	g.require(getCustomerCardsResponseReferredByFieldCustomerCardID)
+}
+
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCustomerCardsResponseReferredBy) SetCustomerID(customerID int) {
+	g.CustomerID = customerID
+	g.require(getCustomerCardsResponseReferredByFieldCustomerID)
+}
+
+// SetReferralID sets the ReferralID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCustomerCardsResponseReferredBy) SetReferralID(referralID float64) {
+	g.ReferralID = referralID
+	g.require(getCustomerCardsResponseReferredByFieldReferralID)
+}
+
+// SetRewardedAt sets the RewardedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCustomerCardsResponseReferredBy) SetRewardedAt(rewardedAt string) {
+	g.RewardedAt = rewardedAt
+	g.require(getCustomerCardsResponseReferredByFieldRewardedAt)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetCustomerCardsResponseReferredBy) SetStatus(status string) {
+	g.Status = status
+	g.require(getCustomerCardsResponseReferredByFieldStatus)
+}
+
+func (g *GetCustomerCardsResponseReferredBy) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetCustomerCardsResponseReferredBy
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetCustomerCardsResponseReferredBy(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetCustomerCardsResponseReferredBy) MarshalJSON() ([]byte, error) {
+	type embed GetCustomerCardsResponseReferredBy
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetCustomerCardsResponseReferredBy) String() string {
+	if g == nil {
+		return "<nil>"
+	}
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
 	listCustomerCardsResponseItemFieldAppleWalletURL     = big.NewInt(1 << 0)
 	listCustomerCardsResponseItemFieldCardID             = big.NewInt(1 << 1)
 	listCustomerCardsResponseItemFieldCardName           = big.NewInt(1 << 2)
@@ -622,11 +825,12 @@ var (
 	listCustomerCardsResponseItemFieldIssuedAt           = big.NewInt(1 << 6)
 	listCustomerCardsResponseItemFieldPassInstalled      = big.NewInt(1 << 7)
 	listCustomerCardsResponseItemFieldProgressPercentage = big.NewInt(1 << 8)
-	listCustomerCardsResponseItemFieldStampsCount        = big.NewInt(1 << 9)
-	listCustomerCardsResponseItemFieldStampsRemaining    = big.NewInt(1 << 10)
-	listCustomerCardsResponseItemFieldStatus             = big.NewInt(1 << 11)
-	listCustomerCardsResponseItemFieldUpdatedAt          = big.NewInt(1 << 12)
-	listCustomerCardsResponseItemFieldUUID               = big.NewInt(1 << 13)
+	listCustomerCardsResponseItemFieldReferralURL        = big.NewInt(1 << 9)
+	listCustomerCardsResponseItemFieldStampsCount        = big.NewInt(1 << 10)
+	listCustomerCardsResponseItemFieldStampsRemaining    = big.NewInt(1 << 11)
+	listCustomerCardsResponseItemFieldStatus             = big.NewInt(1 << 12)
+	listCustomerCardsResponseItemFieldUpdatedAt          = big.NewInt(1 << 13)
+	listCustomerCardsResponseItemFieldUUID               = big.NewInt(1 << 14)
 )
 
 type ListCustomerCardsResponseItem struct {
@@ -648,6 +852,8 @@ type ListCustomerCardsResponseItem struct {
 	PassInstalled bool `json:"pass_installed" url:"pass_installed"`
 	// Completion towards the next reward, 0 to 100
 	ProgressPercentage float64 `json:"progress_percentage" url:"progress_percentage"`
+	// The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem
+	ReferralURL string `json:"referral_url" url:"referral_url"`
 	// Stamps collected so far
 	StampsCount int `json:"stamps_count" url:"stamps_count"`
 	// Stamps still needed to complete the card
@@ -656,7 +862,7 @@ type ListCustomerCardsResponseItem struct {
 	Status string `json:"status" url:"status"`
 	// ISO 8601 last-update timestamp
 	UpdatedAt string `json:"updated_at" url:"updated_at"`
-	// Public identifier used in wallet pass URLs
+	// The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem
 	UUID string `json:"uuid" url:"uuid"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -727,6 +933,13 @@ func (l *ListCustomerCardsResponseItem) GetProgressPercentage() float64 {
 		return 0
 	}
 	return l.ProgressPercentage
+}
+
+func (l *ListCustomerCardsResponseItem) GetReferralURL() string {
+	if l == nil {
+		return ""
+	}
+	return l.ReferralURL
 }
 
 func (l *ListCustomerCardsResponseItem) GetStampsCount() int {
@@ -839,6 +1052,13 @@ func (l *ListCustomerCardsResponseItem) SetPassInstalled(passInstalled bool) {
 func (l *ListCustomerCardsResponseItem) SetProgressPercentage(progressPercentage float64) {
 	l.ProgressPercentage = progressPercentage
 	l.require(listCustomerCardsResponseItemFieldProgressPercentage)
+}
+
+// SetReferralURL sets the ReferralURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomerCardsResponseItem) SetReferralURL(referralURL string) {
+	l.ReferralURL = referralURL
+	l.require(listCustomerCardsResponseItemFieldReferralURL)
 }
 
 // SetStampsCount sets the StampsCount field and marks it as non-optional;
@@ -1202,11 +1422,14 @@ var (
 	stampCustomerCardsResponseFieldIssuedAt           = big.NewInt(1 << 9)
 	stampCustomerCardsResponseFieldPassInstalled      = big.NewInt(1 << 10)
 	stampCustomerCardsResponseFieldProgressPercentage = big.NewInt(1 << 11)
-	stampCustomerCardsResponseFieldStampsCount        = big.NewInt(1 << 12)
-	stampCustomerCardsResponseFieldStampsRemaining    = big.NewInt(1 << 13)
-	stampCustomerCardsResponseFieldStatus             = big.NewInt(1 << 14)
-	stampCustomerCardsResponseFieldUpdatedAt          = big.NewInt(1 << 15)
-	stampCustomerCardsResponseFieldUUID               = big.NewInt(1 << 16)
+	stampCustomerCardsResponseFieldReferralURL        = big.NewInt(1 << 12)
+	stampCustomerCardsResponseFieldReferralsCount     = big.NewInt(1 << 13)
+	stampCustomerCardsResponseFieldReferredBy         = big.NewInt(1 << 14)
+	stampCustomerCardsResponseFieldStampsCount        = big.NewInt(1 << 15)
+	stampCustomerCardsResponseFieldStampsRemaining    = big.NewInt(1 << 16)
+	stampCustomerCardsResponseFieldStatus             = big.NewInt(1 << 17)
+	stampCustomerCardsResponseFieldUpdatedAt          = big.NewInt(1 << 18)
+	stampCustomerCardsResponseFieldUUID               = big.NewInt(1 << 19)
 )
 
 type StampCustomerCardsResponse struct {
@@ -1234,6 +1457,11 @@ type StampCustomerCardsResponse struct {
 	PassInstalled bool `json:"pass_installed" url:"pass_installed"`
 	// Completion towards the next reward, 0 to 100
 	ProgressPercentage float64 `json:"progress_percentage" url:"progress_percentage"`
+	// The customer's invite link while the card has referrals on (null otherwise). Safe to share: it names the customer as referrer and can't be used to stamp or redeem
+	ReferralURL string `json:"referral_url" url:"referral_url"`
+	// Friends this customer has invited who joined, rewarded or not
+	ReferralsCount float64                               `json:"referrals_count" url:"referrals_count"`
+	ReferredBy     *StampCustomerCardsResponseReferredBy `json:"referred_by" url:"referred_by"`
 	// Stamps collected so far
 	StampsCount int `json:"stamps_count" url:"stamps_count"`
 	// Stamps still needed to complete the card
@@ -1242,7 +1470,7 @@ type StampCustomerCardsResponse struct {
 	Status string `json:"status" url:"status"`
 	// ISO 8601 last-update timestamp
 	UpdatedAt string `json:"updated_at" url:"updated_at"`
-	// Public identifier used in wallet pass URLs
+	// The card code: what the store scanner reads from the wallet pass QR and what staff can type in. Treat it like a membership number; it can be used to stamp and redeem
 	UUID string `json:"uuid" url:"uuid"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1334,6 +1562,27 @@ func (s *StampCustomerCardsResponse) GetProgressPercentage() float64 {
 		return 0
 	}
 	return s.ProgressPercentage
+}
+
+func (s *StampCustomerCardsResponse) GetReferralURL() string {
+	if s == nil {
+		return ""
+	}
+	return s.ReferralURL
+}
+
+func (s *StampCustomerCardsResponse) GetReferralsCount() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.ReferralsCount
+}
+
+func (s *StampCustomerCardsResponse) GetReferredBy() *StampCustomerCardsResponseReferredBy {
+	if s == nil {
+		return nil
+	}
+	return s.ReferredBy
 }
 
 func (s *StampCustomerCardsResponse) GetStampsCount() int {
@@ -1469,6 +1718,27 @@ func (s *StampCustomerCardsResponse) SetProgressPercentage(progressPercentage fl
 	s.require(stampCustomerCardsResponseFieldProgressPercentage)
 }
 
+// SetReferralURL sets the ReferralURL field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StampCustomerCardsResponse) SetReferralURL(referralURL string) {
+	s.ReferralURL = referralURL
+	s.require(stampCustomerCardsResponseFieldReferralURL)
+}
+
+// SetReferralsCount sets the ReferralsCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StampCustomerCardsResponse) SetReferralsCount(referralsCount float64) {
+	s.ReferralsCount = referralsCount
+	s.require(stampCustomerCardsResponseFieldReferralsCount)
+}
+
+// SetReferredBy sets the ReferredBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StampCustomerCardsResponse) SetReferredBy(referredBy *StampCustomerCardsResponseReferredBy) {
+	s.ReferredBy = referredBy
+	s.require(stampCustomerCardsResponseFieldReferredBy)
+}
+
 // SetStampsCount sets the StampsCount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (s *StampCustomerCardsResponse) SetStampsCount(stampsCount int) {
@@ -1532,6 +1802,159 @@ func (s *StampCustomerCardsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StampCustomerCardsResponse) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	stampCustomerCardsResponseReferredByFieldCustomerCardID = big.NewInt(1 << 0)
+	stampCustomerCardsResponseReferredByFieldCustomerID     = big.NewInt(1 << 1)
+	stampCustomerCardsResponseReferredByFieldReferralID     = big.NewInt(1 << 2)
+	stampCustomerCardsResponseReferredByFieldRewardedAt     = big.NewInt(1 << 3)
+	stampCustomerCardsResponseReferredByFieldStatus         = big.NewInt(1 << 4)
+)
+
+type StampCustomerCardsResponseReferredBy struct {
+	// The inviting customer's card
+	CustomerCardID float64 `json:"customer_card_id" url:"customer_card_id"`
+	// The customer who invited them
+	CustomerID int `json:"customer_id" url:"customer_id"`
+	// Referral ID
+	ReferralID float64 `json:"referral_id" url:"referral_id"`
+	// ISO 8601 timestamp the referral paid out
+	RewardedAt string `json:"rewarded_at" url:"rewarded_at"`
+	// 'pending' until the store first stamps this card for a visit, then 'rewarded'
+	Status string `json:"status" url:"status"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *StampCustomerCardsResponseReferredBy) GetCustomerCardID() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.CustomerCardID
+}
+
+func (s *StampCustomerCardsResponseReferredBy) GetCustomerID() int {
+	if s == nil {
+		return 0
+	}
+	return s.CustomerID
+}
+
+func (s *StampCustomerCardsResponseReferredBy) GetReferralID() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.ReferralID
+}
+
+func (s *StampCustomerCardsResponseReferredBy) GetRewardedAt() string {
+	if s == nil {
+		return ""
+	}
+	return s.RewardedAt
+}
+
+func (s *StampCustomerCardsResponseReferredBy) GetStatus() string {
+	if s == nil {
+		return ""
+	}
+	return s.Status
+}
+
+func (s *StampCustomerCardsResponseReferredBy) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *StampCustomerCardsResponseReferredBy) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetCustomerCardID sets the CustomerCardID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StampCustomerCardsResponseReferredBy) SetCustomerCardID(customerCardID float64) {
+	s.CustomerCardID = customerCardID
+	s.require(stampCustomerCardsResponseReferredByFieldCustomerCardID)
+}
+
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StampCustomerCardsResponseReferredBy) SetCustomerID(customerID int) {
+	s.CustomerID = customerID
+	s.require(stampCustomerCardsResponseReferredByFieldCustomerID)
+}
+
+// SetReferralID sets the ReferralID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StampCustomerCardsResponseReferredBy) SetReferralID(referralID float64) {
+	s.ReferralID = referralID
+	s.require(stampCustomerCardsResponseReferredByFieldReferralID)
+}
+
+// SetRewardedAt sets the RewardedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StampCustomerCardsResponseReferredBy) SetRewardedAt(rewardedAt string) {
+	s.RewardedAt = rewardedAt
+	s.require(stampCustomerCardsResponseReferredByFieldRewardedAt)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StampCustomerCardsResponseReferredBy) SetStatus(status string) {
+	s.Status = status
+	s.require(stampCustomerCardsResponseReferredByFieldStatus)
+}
+
+func (s *StampCustomerCardsResponseReferredBy) UnmarshalJSON(data []byte) error {
+	type unmarshaler StampCustomerCardsResponseReferredBy
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = StampCustomerCardsResponseReferredBy(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *StampCustomerCardsResponseReferredBy) MarshalJSON() ([]byte, error) {
+	type embed StampCustomerCardsResponseReferredBy
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *StampCustomerCardsResponseReferredBy) String() string {
 	if s == nil {
 		return "<nil>"
 	}
